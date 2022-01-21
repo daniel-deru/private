@@ -203,3 +203,50 @@ add_filter( 'page_template', 'editproduct_page_template' );
 
 
 // add_action( 'wp_enqueue_scripts', 'wpse_enqueue_page_template_styles' );
+
+
+add_action('admin_menu', 'SetupPage');
+add_action('admin_init', 'RegisterSettings');
+
+function SetupPage() {
+    add_menu_page(__("WPSmartProducts "), __("WP Smart Products"), "manage_options", __FILE__, 'PageContent', "");
+}
+
+function RegisterSettings() {
+    // Add options to database if they don't already exist
+    add_option("wp_smart_products_consumer_key", "", "", "yes");
+    add_option("wp_smart_products_consumer_secret", "", "", "yes");
+
+    // Register settings that this form is allowed to update
+    register_setting('wp_smart_products_settings', 'wp_smart_products_consumer_key');
+    register_setting('wp_smart_products_settings', 'wp_smart_products_consumer_secret');
+}
+
+function PageContent() {
+    if (!current_user_can('manage_options'))
+        wp_die(__("You don't have access to this page"));
+    ?><div class="wrap">
+        <h1>Enter the WooCommerce API Credentials below</h1>
+        <form method="post" action="options.php">
+
+            <?php settings_fields('wp_smart_products_settings'); ?>
+
+            <table class="form-table">
+                <tr valign="top">
+                    <th scope="row">Consumer Key</th>
+                    <td><input type="text" name="wp_smart_products_consumer_key" value="<?php echo get_option('wp_smart_products_consumer_key'); ?>" /></td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row">Consumer Secret</th>
+                    <td><input type="text" name="wp_smart_products_consumer_secret" value="<?php echo get_option('wp_smart_products_consumer_secret'); ?>" /></td>
+                </tr>
+            </table>
+
+            <p class="submit">
+                <input type="submit" class="button-primary" value="Save" />
+            </p>
+
+        </form>
+    </div>
+    <?php }

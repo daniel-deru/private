@@ -26,10 +26,6 @@ $link .= $_SERVER['HTTP_HOST'];
 
 // Append the requested resource location to the URL
 // $link .= $_SERVER['REQUEST_URI'];
-$loggedIn = wp_get_current_user();
-echo "<pre>";
-print_r($loggedIn);
-echo "</pre>";
 
 if(isset($_POST['products-login'])){
     if (empty($_POST['products-name']))
@@ -45,16 +41,9 @@ if(isset($_POST['products-login'])){
         $user = wp_authenticate($name, $password);
         if(in_array('product_manager', $user->roles)){
             // Remove the product from the url
-            header("Location:" . $link . "/product/products?id=1");
+            header("Location:" . $link ./* "/product" .*/  "/products?id=1");
             exit;
         }
-    }
-}
-else if( is_user_logged_in() ){
-    $user = wp_get_current_user();
-    if(in_array("product_manager", $user->roles)){
-        header("Location:" . $link . "/product/products?id=1");
-        exit;
     }
 }
 
@@ -88,9 +77,12 @@ else if( is_user_logged_in() ){
 
 <style>
     :root {
-    --main-green: #9ecd16;
+    --main-green: #21759B;
+    --main-blue: #21759B;
+    --gradient: #21759B;
+    /* --main-green: #9ecd16;
     --main-blue: #051456;
-    --gradient: linear-gradient(90deg, rgba(158,205,22,1) 0%, rgba(5,20,86,1) 85%);
+    --gradient: linear-gradient(90deg, rgba(158,205,22,1) 0%, rgba(5,20,86,1) 85%); */
 }
 
 #login-form {

@@ -11,17 +11,24 @@ else $link = "http";
 $link .= "://" . $_SERVER['HTTP_HOST'];
 if(isset($_SERVER['HTTP_REFERER'])){
     $previous_page = $_SERVER['HTTP_REFERER'];
-    $from_products = preg_match("/products/", $previous_page);
+    $from_products = preg_match("/products\/\?id=[1-9]{1,5}/", $previous_page);
+    $from_self = preg_match("/addproduct/", $previous_page);
 
-    if(true){
+    if($from_products || $from_self){
         $categoriesData = json_decode($listCategories(), true);
         $categories = $categoriesData['data'];
 
     }
+    else {
+        // Add product to test on local
+        header("Location: " . $link . /*"/product" .*/ "/access");
+        exit;
+    }
 }
 else {
-    // header("Location: " . $link . "/product/secret/login.php");
-    // exit;
+    // Add product to test on local
+    header("Location: " . $link ./* "/product" . */ "/access");
+    exit;
 }
 
 ?>
@@ -87,7 +94,8 @@ else {
             $serverImagePath = $imageFolder . "/" . $_FILES['product-image']['name'];
         
             move_uploaded_file($_FILES['product-image']['tmp_name'], $serverImagePath);
-            $image = "http://" . $_SERVER['HTTP_HOST'] . "/product" . "/wp-content/plugins/private/templates/images/" . $_FILES['product-image']['name'];
+            // Add product to test on local
+            $image = "https://" . $_SERVER['HTTP_HOST'] . /* "/product" . */ "/wp-content/plugins/private/templates/images/" . $_FILES['product-image']['name'];
 
             $data['images'] = array(
                 array(
@@ -105,6 +113,8 @@ else {
                 unlink($file);
             }
         }
+        // Add product to test on local
+        header("Location: " . $link . /* "product/" . */ "/products?id=1");
     }
 
 ?>
@@ -120,7 +130,7 @@ else {
 </head>
 <body>
     <header>
-        <a href="products">Go back to products</a>
+        <a href="/products?id=1">Go back to products</a>
     </header>
     <form enctype="multipart/form-data" action="" method="post">
         <div id="title-price">
@@ -222,9 +232,12 @@ else {
 
 <style>
     :root {
-    --main-green: #04411c;
+    --main-green: #21759B;
+    --main-light-green: #21759B;
+    --gradient: #21759B;
+    /* --main-green: #04411c;
     --main-light-green: rgba(53,205,22,1);
-    --gradient: linear-gradient(90deg, rgba(53,205,22,1) 0%, rgba(4,65,28,1) 100%);
+    --gradient: linear-gradient(90deg, rgba(53,205,22,1) 0%, rgba(4,65,28,1) 100%); */
 }
 
 * {

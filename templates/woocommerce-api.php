@@ -2,11 +2,12 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use Automattic\WooCommerce\Client;
-
+$key = get_option('wp_smart_products_consumer_key');
+$secret = get_option('wp_smart_products_consumer_secret');
 $woocommerce = new Client(
-    'http://localhost/product', 
-    'ck_f080b780b60ceb0c57b979bc787a623ab1aa9acb', 
-    'cs_567fe8a081c27d16236154469f9d7cd703d09061',
+    'https://dev.tecnero.com', 
+    $key, 
+    $secret,
     [
         'version' => 'wc/v3',
     ]

@@ -25,38 +25,35 @@ global $categories;
 if(isset($_SERVER['HTTP_REFERER'])){
     
     $previous_page = $_SERVER['HTTP_REFERER'];
-    $from_login = preg_match("/login/", $previous_page);
-    $from_products = preg_match("/products.php\?page=[1-9]{1,5}/", $previous_page);
-    $from_edit = preg_match("/editproduct.php\?id=[1-9]{1,5}/", $previous_page);
-    $from_add = preg_match("/addproduct.php/", $previous_page);
+    $from_login = preg_match("/access/", $previous_page);
+    $from_self = preg_match("/products\/\?id=[1-9]{1,5}/", $previous_page);
+    $from_edit = preg_match("/editproduct\/\?id=[1-9]{1,5}/", $previous_page);
+    $from_add = preg_match("/addproduct/", $previous_page);
 
     $page = 1;
-    if(true){
+    if($from_login || $from_self || $from_edit || $from_add){
         if(isset($_GET['id'])){
             $page = intval($_GET['id']);
         }
+        
         $productsData = json_decode($listProducts($page), true);
         $categoriesData = json_decode($listCategories(), true);
+
         $products = $productsData['data'];
         $categories = $categoriesData['data'];
         $productsHeaders = $productsData['headers'];
 
     }
-    else if(true) {
-        if(isset($_GET['id'])){
-            $page = intval($_GET['id']);
-        }
-        $productsData = json_decode($listProducts($page), true);
-        $categoriesData = json_decode($listCategories(), true);
-        $products = $productsData['data'];
-        $categories = $categoriesData['data'];
-        $productsHeaders = $productsData['headers'];
+    else {
+            // Remove the product part
+        header("Location: " . $link . /* "/product" .*/ "/access");
+        exit;
     }
 }
 else {
     // Remove the product part
-    // header("Location: " . $link . "/product/secret/login.php");
-    // exit;
+    header("Location: " . $link . /* "/product" .*/ "/access");
+    exit;
 }
 
 ?>
@@ -82,7 +79,8 @@ else {
                 }
             ?>
         </select>
-        <a href="<?php echo $link . "/product" . "/addproduct"?>">Add New Product</a>
+        <!-- Add the product for testing on local -->
+        <a href="<?php echo $link . /*"/product" .*/ "/addproduct"?>">Add New Product</a>
     </header>
     <main id="product-grid">
         <?php
@@ -125,9 +123,12 @@ else {
 
 <style>
     :root {
-    --main-green: rgba(4,65,28,1);
+    --main-green: #21759B;
+    --main-light-green: #21759B;
+    --gradient: #21759B;
+    /* --main-green: rgba(4,65,28,1);
     --main-light-green: rgba(53,205,22,1);
-    --gradient: linear-gradient(90deg, rgba(53,205,22,1) 0%, rgba(4,65,28,1) 100%);
+    --gradient: linear-gradient(90deg, rgba(53,205,22,1) 0%, rgba(4,65,28,1) 100%); */
 }
 
 * {

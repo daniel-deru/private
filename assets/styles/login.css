@@ -1,0 +1,51 @@
+:root {
+    --main-green: #9ecd16;
+    --main-blue: #051456;
+    --gradient: linear-gradient(90deg, rgba(158,205,22,1) 0%, rgba(5,20,86,1) 85%);
+}
+
+#login-form {
+    margin: 10rem auto;
+    box-shadow: 0px 0px 5px 1px hsla(60, 0%, 0%, 0.5);
+    width: 50%;
+    font-size: 1.5em;
+    font-family: sans-serif;
+    padding: 1em 0em;
+    border-radius: 10px;
+}
+
+label {
+    display: block;
+    color: var(--main-blue);
+}
+
+#login-form div {
+    margin: 2rem auto;
+    width: 60%;
+}
+
+
+#login-form div > *:not(input[type="submit"]) {
+    font-size: 1.5em;
+    width: 100%;
+    border-radius: 5px;
+    outline-color: var(--main-green);
+    padding: 10px;
+    color: var(--main-blue);
+}
+
+#login-form div input:not(input[type="submit"]){
+    border: 2px solid var(--main-blue);
+}
+
+#login-form div input[type="submit"]{
+    border: 2px solid var(--gradient);
+    border-radius: 5px;
+    display: block;
+    font-size: 1.5em;
+    background: var(--gradient);
+    color: white;
+    width: 20rem;
+    margin: auto;
+    padding: 10px; 
+}

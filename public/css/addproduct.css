@@ -23,17 +23,17 @@ header a {
     color: white;
     text-decoration: none;
     font-family: sans-serif;
-    font-size: 1.2em;
-    padding: 1em;
+    font-size: 1em;
+    padding: 0.5em 1em;
     border: 2px solid white;
     border-radius: 5px;
     margin-left: 1em;
 }
 
 form {
-    max-width: 80%;
+    max-width: 60%;
     margin: auto;
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-family: sans-serif;
     margin-top: 2rem;
 }
@@ -70,6 +70,7 @@ form button {
     font-size: 1.2em;
     font-family: sans-serif;
     padding: 5px 15px;
+    cursor: pointer;
 }
 
 form textarea {
@@ -122,6 +123,8 @@ form > div:nth-child(6) {
     display: block;
     margin: auto;
     margin-bottom: 5rem;
+    cursor: pointer;
+    padding: 0.5em 2em;
 }
 
 input[type="file"] {
@@ -137,6 +140,7 @@ input[type="file"] {
     text-align: center;
     background: var(--gradient);
     color: white;
+    margin-bottom: 1rem;
 }
 
 ul {
@@ -145,12 +149,12 @@ ul {
 }
 
 ul li {
-    background: var(--gradient);
     border-radius: 5px;
     margin: 10px 0px;
     width: fit-content;
     padding: 5px;
-    color: white;
+    color: var(--main-green);
+    cursor: pointer;
 }
 
 img {

@@ -2,22 +2,26 @@
 
 /*
 
-Plugin Name: WP Product
-
+Plugin Name: WP Smart Products
+Plugin URI: https://smartmetatec.com/wpsmartproducts
+Description: Save your precious time by letting your clients add and edit their Woocommerce products easily and hassle free without your help.
+Version: 1.0.0
+Author: Smart Meta Technologies
+Author URI: https://smartmetatec.com
 
 */
 
 
 // This function creates a custom login page
 function add_login(){ 
-    $title_of_page = "access";
+    $title_of_page = "WP Smart Login";
     if( null == get_page_by_title( $title_of_page ) ) {
             $post_id = wp_insert_post(
                 array(
                     'comment_status'    =>  'closed',
                     'ping_status'       =>  'closed',
                     'post_author'       =>  '1',
-                    'post_name'         =>  'access',
+                    'post_name'         =>  'WP Smart Product Login',
                     'post_title'        =>  $title_of_page,
                     'post_status'       =>  'publish',
                     'post_type'         =>  'page'
@@ -31,14 +35,14 @@ function add_login(){
 
 // Create a products page to list all the products
 function add_products(){ 
-    $title_of_page = "products";
+    $title_of_page = "WP Smart Products";
     if( null == get_page_by_title( $title_of_page ) ) {
             $post_id = wp_insert_post(
                 array(
                     'comment_status'    =>  'closed',
                     'ping_status'       =>  'closed',
                     'post_author'       =>  '1',
-                    'post_name'         =>  'products',
+                    'post_name'         =>  'WP Smart Products',
                     'post_title'        =>  $title_of_page,
                     'post_status'       =>  'publish',
                     'post_type'         =>  'page'
@@ -51,14 +55,14 @@ function add_products(){
 
 // Create an add product page to add new products
 function add_addproduct(){ 
-    $title_of_page = "addproduct";
+    $title_of_page = "WP Smart Add Product";
     if( null == get_page_by_title( $title_of_page ) ) {
             $post_id = wp_insert_post(
                 array(
                     'comment_status'    =>  'closed',
                     'ping_status'       =>  'closed',
                     'post_author'       =>  '1',
-                    'post_name'         =>  'addproduct',
+                    'post_name'         =>  'WP Smart Add Product',
                     'post_title'        =>  $title_of_page,
                     'post_status'       =>  'publish',
                     'post_type'         =>  'page'
@@ -71,14 +75,14 @@ function add_addproduct(){
 
 // Create an edit product page to edit products
 function add_editproduct(){ 
-    $title_of_page = "editproduct";
+    $title_of_page = "WP Smart Edit Product";
     if( null == get_page_by_title( $title_of_page ) ) {
             $post_id = wp_insert_post(
                 array(
                     'comment_status'    =>  'closed',
                     'ping_status'       =>  'closed',
                     'post_author'       =>  '1',
-                    'post_name'         =>  'editproduct',
+                    'post_name'         =>  'WP Smart Edit Product',
                     'post_title'        =>  $title_of_page,
                     'post_status'       =>  'publish',
                     'post_type'         =>  'page'
@@ -91,7 +95,7 @@ function add_editproduct(){
 
 // Delete function for when the plugin is deleted to delete the login page
 function delete_login(){
-    $page = get_page_by_title("access");
+    $page = get_page_by_title("WP Smart Login");
 
     wp_delete_post($page->ID, true);
 };
@@ -99,21 +103,21 @@ function delete_login(){
 
 // delete the products page when the plugin is deleted
 function delete_products(){
-    $page = get_page_by_title("products");
+    $page = get_page_by_title("WP Smart Products");
 
     wp_delete_post($page->ID, true);
 };
 
 // delete the add product page when the plugin is deleted
 function delete_addproduct(){
-    $page = get_page_by_title("addproduct");
+    $page = get_page_by_title("WP Smart Add Product");
 
     wp_delete_post($page->ID, true);
 };
 
 // delete the edit product page when the plugin is deleted
 function delete_editproduct(){
-    $page = get_page_by_title("editproduct");
+    $page = get_page_by_title("WP Smart Edit Product");
 
     wp_delete_post($page->ID, true);
 };
@@ -206,7 +210,7 @@ add_action('admin_menu', 'SetupPage');
 add_action('admin_init', 'RegisterSettings');
 
 function SetupPage() {
-    add_menu_page(__("WPSmartProducts "), __("WP Smart Products"), "manage_options", __FILE__, 'PageContent', "");
+    add_menu_page(__("WPSmartProducts "), __("WP Smart Products"), "manage_options", __FILE__, 'PageContent', "assets/WPSP Menu Icon.svg");
 }
 
 function RegisterSettings() {

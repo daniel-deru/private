@@ -3,6 +3,20 @@
 /**
  * Template Name: Addproduct
  */
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.css"?>">
+    <!-- <script src="./js/addproduct.js" defer></script> -->
+    <title>Add Product</title>
+</head>
+
+<?php
 require __DIR__ . "/woocommerce-api.php";
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
@@ -118,16 +132,6 @@ else {
     }
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./styles/addproduct.css">
-    <script src="./js/addproduct.js" defer></script>
-    <title>Add Product</title>
-</head>
 <body>
     <header>
         <a href="/products?id=1">Go back to products</a>
@@ -229,168 +233,6 @@ else {
     <div id="errors"></div>
 </body>
 </html>
-
-<style>
-    :root {
-    --main-green: #21759B;
-    --main-light-green: #21759B;
-    --gradient: #21759B;
-    /* --main-green: #04411c;
-    --main-light-green: rgba(53,205,22,1);
-    --gradient: linear-gradient(90deg, rgba(53,205,22,1) 0%, rgba(4,65,28,1) 100%); */
-}
-
-* {
-    padding: 0;
-    margin: 0;
-}
-
-header {
-    height: 15vh;
-    background: var(--gradient);
-    display: flex;
-    align-items: center;
-}
-
-header a {
-    color: white;
-    text-decoration: none;
-    font-family: sans-serif;
-    font-size: 1.2em;
-    padding: 1em;
-    border: 2px solid white;
-    border-radius: 5px;
-    margin-left: 1em;
-}
-
-form {
-    max-width: 80%;
-    margin: auto;
-    font-size: 1.2em;
-    font-family: sans-serif;
-    margin-top: 2rem;
-}
-
-label {
-    color: black;
-    margin-bottom: 5px;
-}
-
-form label:not(.inline) {
-    display: block;
-}
-
-.inline {
-    display: inline;
-}
-
-form button, form input[type="submit"] {
-    background: var(--gradient);
-    border: none;
-    color: white;
-    border-radius: 5px;
-}
-
-form input {
-    font-size: 1.2em;
-    font-family: sans-serif;
-    padding: 5px 8px;
-    border-radius: 5px;
-    border: 2px solid var(--main-green);
-}
-
-form button {
-    font-size: 1.2em;
-    font-family: sans-serif;
-    padding: 5px 15px;
-}
-
-form textarea {
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid var(--main-green);
-    font-size: 1.2em;
-    font-family: sans-serif;
-    padding: 5px 15px;
-    outline: var(--main-light-green);
-}
-
-form select {
-    font-size: 1.2em;
-    font-family: sans-serif;
-    padding: 5px 8px;
-    border-radius: 5px;
-    border: 2px solid var(--main-green);
-    color: var(--main-green);
-
-}
-
-form > div {
-    margin-top: 2rem;
-}
-
-/* This is for the first row of the name, regular price and sale price */
-form > div:nth-child(1) {
-    display: flex;
-    justify-content: space-between;
-}
-
-/* This is for the second row that has the product type, virual and downloadable fields */
-form > div:nth-child(2) {
-    display: flex;
-    justify-content: space-between;
-}
-
-/* This is for the categories and the tags fields */
-form > div:nth-child(6) {
-    display: flex;
-    justify-content: space-between;
-}
-
-#sku input {
-    width: 100%;
-}
-
-#btn-save input{
-    display: block;
-    margin: auto;
-    margin-bottom: 5rem;
-}
-
-input[type="file"] {
-    display: none;
-}
-
-.custom-file-upload {
-    border-radius: 5px;
-    display: block;
-    padding: 6px 12px;
-    cursor: pointer;
-    max-width: 10rem;
-    text-align: center;
-    background: var(--gradient);
-    color: white;
-}
-
-ul {
-    list-style-type: none;
-    color: var(--main-green);
-}
-
-ul li {
-    background: var(--gradient);
-    border-radius: 5px;
-    margin: 10px 0px;
-    width: fit-content;
-    padding: 5px;
-    color: white;
-}
-
-img {
-    width: 300px;
-}
-
-</style>
 
 <script>
     

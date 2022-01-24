@@ -169,15 +169,12 @@ function delete_custom_user_role(){
 
 
 // set the stylesheet for the page
-// function wpse_enqueue_page_template_styles() {
-//     if ( is_page_template( 'templates/login.php' ) ) {
-//         echo "<h1>The page template;s css has been loaded</h1>";
-//         wp_enqueue_style( 'login', plugins_url() . "/private/assets/styles/" );
-//     }
-//     else {
-//         echo "<h1>The template page css did not load </h1>";
-//     }
-// }
+function access_page_template_styles() {
+    // if ( is_page_template( 'access.php' ) ) {
+        wp_register_style('access', plugin_dir_url(__FILE__) . 'templates/access.css');
+        wp_enqueue_style('access');
+    // }
+}
 
 
 
@@ -202,7 +199,7 @@ add_filter( 'page_template', 'addproduct_page_template' );
 add_filter( 'page_template', 'editproduct_page_template' );
 
 
-// add_action( 'wp_enqueue_scripts', 'wpse_enqueue_page_template_styles' );
+add_action( 'wp_enqueue_scripts', 'access_page_template_styles' );
 
 
 add_action('admin_menu', 'SetupPage');

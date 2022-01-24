@@ -11,6 +11,18 @@
 
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/access.css"?>">
+    <title>Login</title>
+</head>
+
+
+
 <?php
 $error = null;
 
@@ -49,14 +61,6 @@ if(isset($_POST['products-login'])){
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-</head>
 <body>
     <form action="" method="post" id="login-form">
         <div class="form-field">
@@ -74,62 +78,5 @@ if(isset($_POST['products-login'])){
     <div id="display errors"><?php if($error) echo $error?></div>
 </body>
 </html>
-
-<style>
-    :root {
-    --main-green: #21759B;
-    --main-blue: #21759B;
-    --gradient: #21759B;
-    /* --main-green: #9ecd16;
-    --main-blue: #051456;
-    --gradient: linear-gradient(90deg, rgba(158,205,22,1) 0%, rgba(5,20,86,1) 85%); */
-}
-
-#login-form {
-    margin: 10rem auto;
-    box-shadow: 0px 0px 5px 1px hsla(60, 0%, 0%, 0.5);
-    width: 50%;
-    font-size: 1.5em;
-    font-family: sans-serif;
-    padding: 1em 0em;
-    border-radius: 10px;
-}
-
-label {
-    display: block;
-    color: var(--main-blue);
-}
-
-#login-form div {
-    margin: 2rem auto;
-    width: 60%;
-}
-
-
-#login-form div > *:not(input[type="submit"]) {
-    font-size: 1.5em;
-    width: 100%;
-    border-radius: 5px;
-    outline-color: var(--main-green);
-    padding: 10px;
-    color: var(--main-blue);
-}
-
-#login-form div input:not(input[type="submit"]){
-    border: 2px solid var(--main-blue);
-}
-
-#login-form div input[type="submit"]{
-    border: 2px solid var(--gradient);
-    border-radius: 5px;
-    display: block;
-    font-size: 1.5em;
-    background: var(--gradient);
-    color: white;
-    width: 20rem;
-    margin: auto;
-    padding: 10px; 
-}
-</style>
 
 

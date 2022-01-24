@@ -1,7 +1,10 @@
 :root {
-    --main-green: #9ecd16;
+    --main-green: #21759B;
+    --main-blue: #21759B;
+    --gradient: #21759B;
+    /* --main-green: #9ecd16;
     --main-blue: #051456;
-    --gradient: linear-gradient(90deg, rgba(158,205,22,1) 0%, rgba(5,20,86,1) 85%);
+    --gradient: linear-gradient(90deg, rgba(158,205,22,1) 0%, rgba(5,20,86,1) 85%); */
 }
 
 #login-form {

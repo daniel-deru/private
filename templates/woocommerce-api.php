@@ -1,11 +1,17 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
+$host = "https";
+else $host = "http";
+
+$host .= "://" . $_SERVER['HTTP_HOST'];
+
 use Automattic\WooCommerce\Client;
 $key = get_option('wp_smart_products_consumer_key');
 $secret = get_option('wp_smart_products_consumer_secret');
 $woocommerce = new Client(
-    'https://dev.tecnero.com', 
+    $host, 
     $key, 
     $secret,
     [
@@ -37,7 +43,7 @@ $woocommerce = new Client(
  $listProducts = function ($page=1) use ($woocommerce, $getHeaders){
     $data = array(
         'data'=>$woocommerce->get("products", array(
-            "per_page" => 4,
+            "per_page" => 20,
             "page" => $page)),
         'headers' => $getHeaders());
 

@@ -98,22 +98,11 @@ form > div {
 }
 
 /* This is for the first row of the name, regular price and sale price */
-form > div:nth-child(1) {
+.inline-fields {
     display: flex;
     justify-content: space-between;
 }
 
-/* This is for the second row that has the product type, virual and downloadable fields */
-form > div:nth-child(2) {
-    display: flex;
-    justify-content: space-between;
-}
-
-/* This is for the categories and the tags fields */
-form > div:nth-child(6) {
-    display: flex;
-    justify-content: space-between;
-}
 
 #sku input {
     width: 100%;

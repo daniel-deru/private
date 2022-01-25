@@ -12,21 +12,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.css"?>">
-    <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/addproduct.js"?>" defer></script>
+    
     <title>Add Product</title>
 </head>
 
 <?php
+// Get the woocommerce api functions
 require __DIR__ . "/woocommerce-api.php";
+// get the correct protocol
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
 else $link = "http";
+$link .= "://" . $_SERVER['HTTP_HOST'];
 
+// Global variables for the pages
 $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
 $add_page = "wp-smart-add-product";
 
-$link .= "://" . $_SERVER['HTTP_HOST'];
+// Check where the request for the current page is coming from
 if(isset($_SERVER['HTTP_REFERER'])){
     $previous_page = $_SERVER['HTTP_REFERER'];
     $from_products = preg_match("/" . $products_page . "\/\?id=[1-9]{1,5}/", $previous_page);
@@ -35,6 +39,20 @@ if(isset($_SERVER['HTTP_REFERER'])){
     if($from_products || $from_self){
         $categoriesData = json_decode($listCategories(), true);
         $categories = $categoriesData['data'];
+
+        $unitData = json_decode($units(), true);
+
+        $weightUnit;
+        $dimensionsUnit;
+
+        foreach($unitData as $option){
+            if($option['id'] == "woocommerce_weight_unit"){
+                $weightUnit = $option['value'];
+            }
+            if($option['id'] == "woocommerce_dimension_unit"){
+                $dimensionsUnit = $option['value'];
+            }
+        }
 
     }
     else {
@@ -83,30 +101,21 @@ else {
             $data['sku'] = $_POST['product-sku'];
         }
 
-        // Add the product data checks here
+        // check if the dimensions are filled in and add them to the data object
+        if(isset($_POST['length']) && isset($_POST['width']) && isset($_POST['height'])){
+            $dimensions = array(
+                'length' => $_POST['length'],
+                'width' => $_POST['width'],
+                'height' => $_POST['height']
+            );
 
-        if($_POST['product-categories']){
-            $categoriesArray = [];
-            $categoriesSelected = explode("%", $_POST['product-categories']);
-            for($i = 0; $i < count($categoriesSelected); $i++){
-                $categoriesArray[$i] = array(
-                    'id' => $categoriesSelected[$i]
-                );
-            }
-            $data['categories'] = $categoriesArray;
+            $data['dimensions'] = $dimensions;
         }
 
-        if($_POST['product-tags']){
-            $tagsArray = [];
-            $tags = explode("%", $_POST['product-tags']);
-            for($i = 0; $i < count($tags); $i++){
-                $tagsArray[$i] = array(
-                    'name' => $tags[$i]
-                );
-            }
-            $data['tags'] = $tagsArray;
+        // Check if the weight is filled
+        if(isset($_POST['weigth'])){
+            $data["weight"] = $_POST["weight"];
         }
-
         
 
         $imageFolder = dirname(__FILE__) . "/images";
@@ -143,7 +152,7 @@ else {
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <form enctype="multipart/form-data" action="" method="post">
-        <div id="title-price">
+        <div id="title-price" class="inline-fields">
             <!-- This is the name field input -->
             <span>
                 <label for="product-name" >Name</label>
@@ -159,7 +168,7 @@ else {
             </span>
         </div>
 
-        <div id="product-settings">
+        <div id="product-settings" class="inline-fields">
             <span >
                 <label for="product-type" ></label>
                 <select name="product-type" id="product-type">
@@ -205,50 +214,63 @@ else {
             <input type="text" name="product-sku" id="sku-input">
         </div>
 
-        <div id=weight-dimensions>
+        <div id=weight-dimensions >
             <div>Product Data</div>
-            <span>
-                <label for="length">Length</label>
-                <input type="text" name="length">
-            </span>
-            <span>
-                <label for="length">Width</label>
-                <input type="text" name="width">
-            </span>
-            <span>
-                <label for="length">Height</label>
-                <input type="text" name="height">
-            </span>
-            <span>
-                <label for="length">Weight</label>
-                <input type="text" name="weight">
-            </span>
+            <div class="inline-fields">
+                <div>
+                    <label for="length">Length (<?= $dimensionsUnit?>)</label>
+                    <input type="text" name="length">
+                </div>
+                <div>
+                    <label for="length">Width (<?= $dimensionsUnit?>)</label>
+                    <input type="text" name="width">
+                </div>
+                <div>
+                    <label for="length">Height (<?= $dimensionsUnit?>)</label>
+                    <input type="text" name="height">
+                </div>
+                <div>
+                    <label for="length">Weight (<?= $weightUnit?>)</label>
+                    <input type="text" name="weight">
+                </div>
+            </div>
+
         </div>
 
-        <div id="categories-tags">
-            <div id="choose-category">
-                <label for="product-category">Choose Category</label>
-                <select name="product-category" id="category">
-                    <option value="" disabled selected>Select Category</option>
+       <div id="categories-tags-container" class="inline-fields">
+
+            <div id="categories">
+                <h4>Choose Categories</h4>
+                <div id="new-categories">
+                    <input type="text" name="category" placeholder="Make a new category for your product">
+                    <button type="button">Add</button>
+                </div>
+                <select name="parent-category" id="parent-categories">
+                    <option value="" selected disabled>None</option>
                     <?php
                         foreach($categories as $category){?>
-                            <option value="<?= $category['name'], $category['id']?>"><?= $category['name']?></option>
+                            <option value="<?= $category['name']?>" id="<?= $category['id']?>"><?= $category['name']?></option>
                        <?php }
+                    
                     ?>
                 </select>
-                <ul id="category-items"></ul>
-            </div>
-            <div id="tag-container">
-                <div id="tag-form">
-                    <label for="product-tags">Add Tags</label>
-                    <span>
-                        <input type="text" id="tag-input">
-                        <button type="button" id="tag-button">Add</button>
-                    </span>
+                <div id="categories-checkboxes">
+
                 </div>
-                <ul id="tag-items"></ul>
             </div>
-        </div>
+
+            <div id="tags">
+                <h4>Add Tags</h4>
+                <div id="new-tags">
+                    <input type="text" name="new-tag">
+                    <button type="button">Add</button>
+                </div>
+                <div id="tags-container">
+
+                </div>
+            </div>
+
+       </div>
 
        
 
@@ -259,5 +281,11 @@ else {
         <input type="hidden" name="product-tags" id="hidden-tags">
     </form>
     <div id="errors"></div>
+    <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/addproduct.js"?>" defer>
+            let categories = <?php echo json_encode($categories)?>
+            console.log(categories)
+            let unit = <?php echo json_encode($unitData)?>
+            console.log(unit)
+    </script>
 </body>
 </html>

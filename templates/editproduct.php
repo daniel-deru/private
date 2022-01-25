@@ -226,56 +226,6 @@ else {
             <textarea name="product-short-description" id="short-description" cols="30" rows="10" value="<?= $product['short_description']?>"><?php echo strip_tags($product['short_description'])?></textarea>
         </div>
 
-        <div id="categories-tags">
-
-            <div id="choose-category">
-                <label for="product-category">Choose Category</label>
-                <select name="product-category" id="category">
-                    <option value="" disabled selected>Select Category</option>
-                    <?php
-                        foreach($categories as $category){?>
-                            <option value="<?= $category['name'], $category['id']?>"><?= $category['name']?></option>
-                       <?php }
-                    ?>
-                </select>
-                <ul id="category-items">
-                <?php
-
-
-                    $categoriesFilled = $product['categories'];
-                        foreach($categoriesFilled as $category){?>
-                            <li id="<?= $category['id']?>"><?= $category['name']?></li>
-                     <?php   }
-
-                ?>
-                </ul>
-            </div>
-
-
-
-            <div id="tag-container">
-                <div id="tag-form">
-                    <label for="product-tags">Add Tags</label>
-                    <span>
-                        <input type="text" id="tag-input">
-                        <button type="button" id="tag-button">Add</button>
-                    </span>
-                </div>
-                <ul id="tag-items">
-                <?php
-
-                        $tags = $product['tags'];
-                        foreach($tags as $tag){?>
-                            <li id="<?= $tag['id']?>"><?= $tag['name']?></li>
-                        <?php   }
-                ?>
-
-                </ul>
-            </div>
-
-
-        </div>
-
         <div id="sku">
             <label for="product-sku">SKU</label>
             <input type="text" name="product-sku" id="sku-input" value="<?= $product['sku']?>">

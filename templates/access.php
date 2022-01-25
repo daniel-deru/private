@@ -52,8 +52,8 @@ if(isset($_POST['products-login'])){
         $password = $_POST['products-password'];
         $user = wp_authenticate($name, $password);
         if(in_array('product_manager', $user->roles)){
-            // Remove the product from the url
-            header("Location:" . $link ./* "/product" .*/  "/wp-smart-products?id=1");
+
+            header("Location:" . $link . "/wp-smart-products?id=1");
             exit;
         }
     }
@@ -72,7 +72,7 @@ if(isset($_POST['products-login'])){
             <input type="password" name="products-password">
         </div>
         <div class="form-field">
-            <input type="submit" name="products-login" value="login">
+            <input type="submit" name="products-login" value="login" id="login-btn">
         </div>
     </form>
     <div id="display errors"><?php if($error) echo $error?></div>

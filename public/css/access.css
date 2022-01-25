@@ -53,6 +53,6 @@ label {
     padding: 10px; 
 }
 
-#login-form input[type="submit"] {
+#login-btn{
     cursor: pointer;
 }

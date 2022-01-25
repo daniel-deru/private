@@ -73,6 +73,11 @@ $updateProduct = function($id, $data) use ($woocommerce){
         $data = $woocommerce->put('products/' . $id, $data);
         return json_encode($data);
     }
+};
+
+$units = function() use ($woocommerce){
+    $data = $woocommerce->get("settings/products");
+    return json_encode($data);
 }
 
  ?>

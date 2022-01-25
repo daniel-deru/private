@@ -22,11 +22,15 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
 else $link = "http";
 
+$products_page = "wp-smart-products";
+$login_page = "wp-smart-login";
+$edit_page = "wp-smart-edit-page";
+
 $link .= "://" . $_SERVER['HTTP_HOST'];
 if(isset($_SERVER['HTTP_REFERER'])){
     $previous_page = $_SERVER['HTTP_REFERER'];
-    $from_products = preg_match("/products(\/\?id=[0-9]{1,10})?/", $previous_page);
-    $from_self = preg_match("/editproduct\/\?id=[0-9]{1,10}/", $previous_page);
+    $from_products = preg_match("/" . $products_page . "(\/\?id=[0-9]{1,10})?/", $previous_page);
+    $from_self = preg_match("/" . $edit_page . "\/\?id=[0-9]{1,10}/", $previous_page);
 
     if($from_products || $from_self){
         $categoriesData = json_decode($listCategories(), true);
@@ -39,13 +43,13 @@ if(isset($_SERVER['HTTP_REFERER'])){
     }
     else {
         // Add product to test on local
-        header("Location: " . $link . /* "/product" . */ "/access");
+        header("Location: " . $link . "/" . $login_page);
         exit;
     }
 }
 else {
     // Add product to test on local
-    header("Location: " . $link . /*"/product" .*/ "/access");
+    header("Location: " . $link . "/" . $login_page);
     exit;
 }
 
@@ -163,7 +167,7 @@ else {
 ?>
 <body>
     <header>
-        <a href="products?id=1">Go back to products</a>
+        <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <form enctype="multipart/form-data" action="?id=<?= $product['id']?>" method="post">
         <div id="title-price">

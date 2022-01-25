@@ -21,7 +21,7 @@ function add_login(){
                     'comment_status'    =>  'closed',
                     'ping_status'       =>  'closed',
                     'post_author'       =>  '1',
-                    'post_name'         =>  'WP Smart Product Login',
+                    'post_name'         =>  'WP Smart Login',
                     'post_title'        =>  $title_of_page,
                     'post_status'       =>  'publish',
                     'post_type'         =>  'page'
@@ -127,7 +127,7 @@ function delete_editproduct(){
 // This will create a custom template
 function login_page_template( $page_template )
 {
-    if ( is_page( 'access' ) ) {
+    if ( is_page( 'WP Smart Login' ) ) {
         $page_template = dirname( __FILE__ ) . '/templates/access.php';
     }
     return $page_template;
@@ -136,7 +136,7 @@ function login_page_template( $page_template )
 // This will create a custom template
 function products_page_template( $page_template )
 {
-    if ( is_page( 'products' ) ) {
+    if ( is_page( 'WP Smart Products' ) ) {
         $page_template = dirname( __FILE__ ) . '/templates/products.php';
     }
     return $page_template;
@@ -145,7 +145,7 @@ function products_page_template( $page_template )
 // create a custom page template for the addproduct page
 function addproduct_page_template( $page_template )
 {
-    if ( is_page( 'addproduct' ) ) {
+    if ( is_page( 'WP Smart Add Product' ) ) {
         $page_template = dirname( __FILE__ ) . '/templates/addproduct.php';
     }
     return $page_template;
@@ -154,31 +154,23 @@ function addproduct_page_template( $page_template )
 // create a custom page template for the editproduct page
 function editproduct_page_template( $page_template )
 {
-    if ( is_page( 'editproduct' ) ) {
+    if ( is_page( 'WP Smart Edit Product' ) ) {
         $page_template = dirname( __FILE__ ) . '/templates/editproduct.php';
     }
     return $page_template;
 }
 
+
+// Add the custom user role to the wordpress users
 function add_custom_user_role(){
-    // if(!$GLOBALS['wp_roles']->is_role("product_manager")){
         add_role("product_manager", "Product Manager", array());
-    // }
 }
 
+// delete the custom user from the wordpress users
 function delete_custom_user_role(){
     remove_role("product_manager");
 }
 
-
-
-// set the stylesheet for the page
-function access_page_template_styles() {
-    // if ( is_page_template( 'access.php' ) ) {
-        wp_register_style('access', plugin_dir_url(__FILE__) . 'templates/access.css');
-        wp_enqueue_style('access');
-    // }
-}
 
 
 
@@ -203,14 +195,11 @@ add_filter( 'page_template', 'addproduct_page_template' );
 add_filter( 'page_template', 'editproduct_page_template' );
 
 
-add_action( 'wp_enqueue_scripts', 'access_page_template_styles' );
-
-
 add_action('admin_menu', 'SetupPage');
 add_action('admin_init', 'RegisterSettings');
 
 function SetupPage() {
-    add_menu_page(__("WPSmartProducts "), __("WP Smart Products"), "manage_options", __FILE__, 'PageContent', "assets/WPSP Menu Icon.svg");
+    add_menu_page(__("WPSmartProducts "), __("Smart Products"), "manage_options", __FILE__, 'PageContent', plugin_dir_url(__FILE__) . "assets/WPSP Menu Icon.svg");
 }
 
 function RegisterSettings() {

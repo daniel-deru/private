@@ -53,7 +53,7 @@ if(isset($_POST['products-login'])){
         $user = wp_authenticate($name, $password);
         if(in_array('product_manager', $user->roles)){
             // Remove the product from the url
-            header("Location:" . $link ./* "/product" .*/  "/products?id=1");
+            header("Location:" . $link ./* "/product" .*/  "/wp-smart-products?id=1");
             exit;
         }
     }

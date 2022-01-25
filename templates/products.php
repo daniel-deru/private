@@ -19,6 +19,12 @@
 <?php
 
 require __DIR__ . "/woocommerce-api.php";
+
+$login_page = "wp-smart-login";
+$products_page = "wp-smart-products";
+$edit_page = "wp-smart-edit-product";
+$add_page = "wp-smart-add-product";
+
 function displayData($data){
     if($data){
         return $data;
@@ -39,10 +45,10 @@ global $categories;
 if(isset($_SERVER['HTTP_REFERER'])){
     
     $previous_page = $_SERVER['HTTP_REFERER'];
-    $from_login = preg_match("/access/", $previous_page);
-    $from_self = preg_match("/products\/\?id=[1-9]{1,5}/", $previous_page);
-    $from_edit = preg_match("/editproduct\/\?id=[1-9]{1,5}/", $previous_page);
-    $from_add = preg_match("/addproduct/", $previous_page);
+    $from_login = preg_match("/" . $login_page . "/", $previous_page);
+    $from_self = preg_match("/" . $products_page ."\/\?id=[1-9]{1,5}/", $previous_page);
+    $from_edit = preg_match("/" . $edit_page . "\/\?id=[1-9]{1,5}/", $previous_page);
+    $from_add = preg_match("/" . $add_page . "/", $previous_page);
 
     $page = 1;
     if($from_login || $from_self || $from_edit || $from_add){
@@ -60,13 +66,13 @@ if(isset($_SERVER['HTTP_REFERER'])){
     }
     else {
             // Remove the product part
-        header("Location: " . $link . /* "/product" .*/ "/access");
+        header("Location: " . $link . "/" . $login_page);
         exit;
     }
 }
 else {
     // Remove the product part
-    header("Location: " . $link . /* "/product" .*/ "/access");
+    header("Location: " . $link . "/" . $login_page);
     exit;
 }
 
@@ -84,23 +90,25 @@ else {
             ?>
         </select>
         <!-- Add the product for testing on local -->
-        <a href="<?php echo $link . /*"/product" .*/ "/addproduct"?>">Add New Product</a>
+        <a href="<?php echo $link . "/" . $add_page?>">Add New Product</a>
     </header>
     <main id="product-grid">
         <?php
         
                 if(isset($products)){
-                    foreach($products as $product){?>
-
-                        <div class="product-container">
+                    foreach($products as $product){
+                        $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
+                        ?>
+                         
+                        <div class="product-container <?= $categoryList?>">
                             <img src="<?php echo $product['images'][0]['src']?>" alt="" class="product-image">
                             <div class="title"><?php echo $product['name']?></div>
                             <div class="price">R <?php echo $product['regular_price']?></div>
                             <div class="SKU-categories">
                                 <span class="SKU"><b>SKU: </b><?php echo displayData($product['sku'])?></span>
-                                <span class="Categories"><b>Categories: </b><?php echo $product['categories'][0]['name']?></span>
+                                <span class="Categories"><b>Categories: </b><?php echo $product["categories"][0]['name']?></span>
                             </div>
-                            <a href="editproduct?id=<?= $product['id']?>" class="edit-product">Edit Product</a>
+                            <a href="<?= $edit_page?>?id=<?= $product['id']?>" class="edit-product">Edit Product</a>
                         </div>
                    <?php }
                 }
@@ -115,7 +123,7 @@ else {
                 <?php 
                     for($i = 1; $i <= $productsHeaders['x-wp-totalpages']; $i++){?>
                         <li class="page">
-                            <a href="products?id=<?= $i ?>"><?php echo $i ?></a>
+                            <a href="<?= $products_page?>?id=<?= $i ?>"><?php echo $i ?></a>
                         </li>
                 <?php
                     }

@@ -22,11 +22,15 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
 else $link = "http";
 
+$login_page = "wp-smart-login";
+$products_page = "wp-smart-products";
+$add_page = "wp-smart-add-product";
+
 $link .= "://" . $_SERVER['HTTP_HOST'];
 if(isset($_SERVER['HTTP_REFERER'])){
     $previous_page = $_SERVER['HTTP_REFERER'];
-    $from_products = preg_match("/products\/\?id=[1-9]{1,5}/", $previous_page);
-    $from_self = preg_match("/addproduct/", $previous_page);
+    $from_products = preg_match("/" . $products_page . "\/\?id=[1-9]{1,5}/", $previous_page);
+    $from_self = preg_match("/" . $add_page ."/", $previous_page);
 
     if($from_products || $from_self){
         $categoriesData = json_decode($listCategories(), true);
@@ -35,19 +39,20 @@ if(isset($_SERVER['HTTP_REFERER'])){
     }
     else {
         // Add product to test on local
-        header("Location: " . $link . /*"/product" .*/ "/access");
+        header("Location: " . $link . "/" . $login_page);
         exit;
     }
 }
 else {
     // Add product to test on local
-    header("Location: " . $link ./* "/product" . */ "/access");
+    header("Location: " . $link . "/" . $login_page);
     exit;
 }
 
 ?>
 
 <?php
+    // This will happen when the form is submitted
     if(isset($_POST['product-name'])){
 
         $data = [];
@@ -77,6 +82,8 @@ else {
         if(isset($_POST['product-sku'])){
             $data['sku'] = $_POST['product-sku'];
         }
+
+        // Add the product data checks here
 
         if($_POST['product-categories']){
             $categoriesArray = [];
@@ -108,8 +115,8 @@ else {
             $serverImagePath = $imageFolder . "/" . $_FILES['product-image']['name'];
         
             move_uploaded_file($_FILES['product-image']['tmp_name'], $serverImagePath);
-            // Add product to test on local
-            $image = "https://" . $_SERVER['HTTP_HOST'] . /* "/product" . */ "/wp-content/plugins/private/templates/images/" . $_FILES['product-image']['name'];
+
+            $image = "https://" . $_SERVER['HTTP_HOST'] .  "/wp-content/plugins/private/templates/images/" . $_FILES['product-image']['name'];
 
             $data['images'] = array(
                 array(
@@ -127,14 +134,13 @@ else {
                 unlink($file);
             }
         }
-        // Add product to test on local
-        header("Location: " . $link . /* "product/" . */ "/products?id=1");
+        header("Location: " . $link . "/" . $products_page . "?id=1");
     }
 
 ?>
 <body>
     <header>
-        <a href="/products?id=1">Go back to products</a>
+        <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <form enctype="multipart/form-data" action="" method="post">
         <div id="title-price">
@@ -194,6 +200,31 @@ else {
             <textarea name="product-short-description" id="short-description" cols="30" rows="10"></textarea>
         </div>
 
+        <div id="sku">
+            <label for="product-sku">SKU</label>
+            <input type="text" name="product-sku" id="sku-input">
+        </div>
+
+        <div id=weight-dimensions>
+            <div>Product Data</div>
+            <span>
+                <label for="length">Length</label>
+                <input type="text" name="length">
+            </span>
+            <span>
+                <label for="length">Width</label>
+                <input type="text" name="width">
+            </span>
+            <span>
+                <label for="length">Height</label>
+                <input type="text" name="height">
+            </span>
+            <span>
+                <label for="length">Weight</label>
+                <input type="text" name="weight">
+            </span>
+        </div>
+
         <div id="categories-tags">
             <div id="choose-category">
                 <label for="product-category">Choose Category</label>
@@ -219,10 +250,7 @@ else {
             </div>
         </div>
 
-        <div id="sku">
-            <label for="product-sku">SKU</label>
-            <input type="text" name="product-sku" id="sku-input">
-        </div>
+       
 
         <div id="btn-save">
             <input type="submit" id="save-btn" value="Save">

@@ -4,19 +4,7 @@
  * Template Name: Addproduct
  */
 
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.css"?>">
-    
-    <title>Add Product</title>
-</head>
 
-<?php
 // Get the woocommerce api functions
 require __DIR__ . "/woocommerce-api.php";
 // get the correct protocol
@@ -147,6 +135,16 @@ else {
     }
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.css"?>">
+    <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/addproduct.js"?>" defer></script>
+    <title>Add Product</title>
+</head>
 <body>
     <header>
         <a href="<?= $products_page?>?id=1">Go back to products</a>
@@ -279,13 +277,9 @@ else {
         </div>
         <input type="hidden" name="product-categories" id="hidden-categories">
         <input type="hidden" name="product-tags" id="hidden-tags">
+        <input type="hidden" id="php-categories-data" value='<?php echo json_encode($categories)?>'>
     </form>
     <div id="errors"></div>
-    <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/addproduct.js"?>" defer>
-            let categories = <?php echo json_encode($categories)?>
-            console.log(categories)
-            let unit = <?php echo json_encode($unitData)?>
-            console.log(unit)
-    </script>
+
 </body>
 </html>

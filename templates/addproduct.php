@@ -153,15 +153,15 @@ else {
         <div id="title-price" class="inline-fields">
             <!-- This is the name field input -->
             <span>
-                <label for="product-name" >Name</label>
+                <label for="product-name" ><h4>Name</h4></label>
                 <input type="text" name="product-name" id="name" required>
             </span>
             <span>
-                <label for="product-regular-price">Regular Price</label>
+                <label for="product-regular-price"><h4>Regular Price</h4></label>
                 <input type="text" name="product-regular-price" id="regular-price">
             </span>
             <span>
-                <label for="product-sale-price">Sale Price</label>
+                <label for="product-sale-price"><h4>Sale Price</h4></label>
                 <input type="text" name="product-sale-price" id="sale-price">
             </span>
         </div>
@@ -178,11 +178,11 @@ else {
                 </select>
             </span>
             <span >
-                <label for="product-virtual" class="inline">Virtual</label>
+                <label for="product-virtual" class="inline"><h4>Virtual</h4></label>
                 <input type="checkbox" name="product-virtual" id="virtual">
             </span>
             <span>
-                <label for="product-downloadable" class="inline">Downloadable</label>
+                <label for="product-downloadable" class="inline"><h4>Downloadable</h4></label>
                 <input type="checkbox" name="product-downloadable" id="downloadable">
             </span>
         </div>
@@ -198,37 +198,44 @@ else {
         </div>
 
         <div id="product-description">
-            <label for="product-description">Description</label>
+            <label for="product-description"><h4>Description</h4></label>
             <textarea name="product-description" cols="30" rows="10" id="description"></textarea>
         </div>
 
         <div id="product-short-description">
-            <label for="product-short-description"> Short Description</label>
+            <label for="product-short-description"><h4>Short Description</h4></label>
             <textarea name="product-short-description" id="short-description" cols="30" rows="10"></textarea>
         </div>
 
         <div id="sku">
-            <label for="product-sku">SKU</label>
+            <label for="product-sku"><h4>SKU</h4></label>
             <input type="text" name="product-sku" id="sku-input">
         </div>
 
         <div id=weight-dimensions >
-            <div>Product Data</div>
             <div class="inline-fields">
                 <div>
-                    <label for="length">Length (<?= $dimensionsUnit?>)</label>
+                    <label for="length">
+                        <h4>Length (<?= $dimensionsUnit?>)</h4>
+                    </label>
                     <input type="text" name="length">
                 </div>
                 <div>
-                    <label for="length">Width (<?= $dimensionsUnit?>)</label>
+                    <label for="length">
+                        <h4>Width (<?= $dimensionsUnit?>)</h4>
+                    </label>
                     <input type="text" name="width">
                 </div>
                 <div>
-                    <label for="length">Height (<?= $dimensionsUnit?>)</label>
+                    <label for="length">
+                        <h4>Height (<?= $dimensionsUnit?>)</h4>
+                    </label>
                     <input type="text" name="height">
                 </div>
                 <div>
-                    <label for="length">Weight (<?= $weightUnit?>)</label>
+                    <label for="length">
+                        <h4>Weight (<?= $weightUnit?>)</h4>
+                    </label>
                     <input type="text" name="weight">
                 </div>
             </div>
@@ -275,8 +282,10 @@ else {
         <div id="btn-save">
             <input type="submit" id="save-btn" value="Save">
         </div>
+        <?php //This will get the data from the form to submit to the api?>
         <input type="hidden" name="product-categories" id="hidden-categories">
         <input type="hidden" name="product-tags" id="hidden-tags">
+        <?php // This will pass the data to javascript to handle the displaying of the categories?>
         <input type="hidden" id="php-categories-data" value='<?php echo json_encode($categories)?>'>
     </form>
     <div id="errors"></div>

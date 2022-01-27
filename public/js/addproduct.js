@@ -18,48 +18,98 @@ function displayCategories(){
     const categoryContainer = document.getElementById("categories-checkboxes")
     let categories = JSON.parse(categoryHiddenData.value)
 
-    sortCategories(categories)
+    let sortedCategories = sortCategories(categories)
+
+    for(let i = 0; i < sortedCategories.length; i++){
+
+        let checkboxContainer = document.createElement("div")
+        checkboxContainer.classList.add("checkbox-container")
+
+        let categoryCheckbox = document.createElement('input')
+        categoryCheckbox.type = "checkbox"
+        categoryCheckbox.id = sortedCategories[i].id
+        categoryCheckbox.classList.add("category-checkbox")
+        categoryCheckbox.classList.add("checkbox")
+
+        checkboxContainer.appendChild(categoryCheckbox)
+
+        let checkboxLabel = document.createElement("label")
+        checkboxLabel.setAttribute("for", sortedCategories[i].name)
+        checkboxLabel.innerText = sortedCategories[i].name
+        checkboxLabel.classList.add("checkbox-label")
+        checkboxLabel.classList.add("inline")
+
+        checkboxContainer.appendChild(checkboxLabel)
+
+        categoryContainer.appendChild(checkboxContainer)
+
+        
+
+        if(sortedCategories[i].children.length > 0){
+
+            let subcategories = sortedCategories[i].children
+
+            for(let j = 0; j < subcategories.length; j++){
+
+                let subCheckboxContainer = document.createElement("div")
+                subCheckboxContainer.classList.add("checkbox-container")
+
+                let subcategoryCheckbox = document.createElement("input")
+                subcategoryCheckbox.type = "checkbox"
+                subcategoryCheckbox.id = subcategories[j].id
+                subcategoryCheckbox.classList.add("subcategory-checkbox")
+                categoryCheckbox.classList.add("checkbox")
+
+                subCheckboxContainer.appendChild(subcategoryCheckbox)
+
+                let subcategoryLabel = document.createElement("label")
+                subcategoryLabel.innerText = subcategories[j].name
+                subcategoryLabel.id = subcategories[j].id
+                subcategoryLabel.classList.add("checkbox-label")
+                subcategoryLabel.classList.add("inline")
+
+                subCheckboxContainer.appendChild(subcategoryLabel)
+
+                categoryContainer.appendChild(subCheckboxContainer)
+            }
+        }
+    }
 }
 
-
+// Sort the categories according to parent and child relationships. subcategories cannot have children
 function sortCategories(categories){
     categoriesList = []
     for(let i = 0; i < categories.length; i++){
-        console.log(categories[i].name, categories[i].parent, categories[i].parent == 0)
-        // if(categories[i].parent === 0 || categories[i].name == "Uncategorized"){
-        //     let parent = {
-        //         name: categories[i].name,
-        //         id: categories[i].id,
-        //         children: [],
-        //         parent: categories[i].parent
-        //     }
-        //     console.log("This is a top level category", categories[i])
-        //     categoriesList.push(parent)
-        //     categories.splice(i, 1)
-        // }
+        if(categories[i].parent == 0){
+            let parent = {
+                name: categories[i].name,
+                id: categories[i].id,
+                children: [],
+                parent: categories[i].parent
+            }
+            categoriesList.push(parent)
+            categories.splice(i, 1)
+            i--
+        }
     }
 
-    // for(let i = 0; i < categories.length; i++){
-    //     console.log(categories[i])
-    //     categoriesList.filter((category, index) => {
-    //         if(category.id == categories[i].parent){
-    //             let child = {
-    //                 name: categories[i].name,
-    //                 id: categories[i].id,
-    //                 children: [],
-    //                 parent: categories[i].parent
-    //             }
-    //             categoriesList[index].children.push(child)
-    //             categories.splice(i, 1)
-    //             // return category.id == categories[i].parent
-    //         }
-            
-    //     })
+    for(let i = 0; i < categories.length; i++){
+        categoriesList.filter((category, index) => {
+            if( categories[i].parent && category.id == categories[i].parent){
+                let child = {
+                    name: categories[i].name,
+                    id: categories[i].id,
+                    children: [],
+                    parent: categories[i].parent
+                }
+                categoriesList[index].children.push(child)
+            }
+        })
 
-    // }
+    }
+    console.log(categoriesList)
 
-    // console.log("This is the subcategories", categories)
-    // console.log("This is the parent categories", categoriesList)
+    return categoriesList
     
 }
 

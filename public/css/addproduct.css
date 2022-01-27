@@ -97,10 +97,31 @@ form > div {
     margin-top: 2rem;
 }
 
+#parent-categories {
+    width: 100%;
+}
+
+form .checkbox-label {
+    padding-left: 10px;
+}
+
+form .checkbox-container {
+    padding: 10px 0px;
+}
+
+form .subcategory-checkbox{
+    margin-left: 20px;
+}
+
+
 /* This is for the first row of the name, regular price and sale price */
 .inline-fields {
     display: flex;
     justify-content: space-between;
+}
+
+.inline-fields > div {
+    margin: 0px 2rem;
 }
 
 

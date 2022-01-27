@@ -1,15 +1,48 @@
 // Global variable to check if the image is set
 let imageSet = false
-
-
-const saveBtn = document.getElementById("save-btn")
-saveBtn.addEventListener("click", () => saveClicked())
+let tagsArray = []
 
 const imageUpload = document.getElementById("image")
+const saveBtn = document.getElementById("save-btn")
+const tagBtn = document.getElementById("tag-btn")
+
+
+saveBtn.addEventListener("click", () => saveClicked())
 imageUpload.addEventListener("change", (event) => showImage(event))
+tagBtn.addEventListener("click", () => addTags())
 
 
 displayCategories()
+
+function addTags(){
+    const tagInput = document.getElementById("")
+    let tag = tagInput.value
+    tagsArray.push(tag)
+
+    displayTags()
+}
+
+function deleteTags(event){
+    tagsArray = tagsArray.filter(tag => tag == event.innerText)
+    displayTags()
+}
+
+function displayTags(){
+    const tagContainer = document.getElementById("tags-container")
+    
+    tagContainer.innerHTML = ""
+
+    if(tagsArray.length > 0){
+        
+        for(let i = 0; i < tagsArray.length; i++){
+            let tagElement = document.createElement("div")
+            tagElement.addEventListener("click", (event) => deleteTags(event))
+            tagElement.innerText = tagsArray[i]
+
+            tagContainer.push(tagElement)
+        }
+    }
+}
 
 
 // This function will display the categories

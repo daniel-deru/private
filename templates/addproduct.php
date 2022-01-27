@@ -150,25 +150,28 @@ else {
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <form enctype="multipart/form-data" action="" method="post">
-        <div id="title-price" class="inline-fields">
+
+        <div id="title-price" class="flex-fields">
             <!-- This is the name field input -->
-            <span>
-                <label for="product-name" ><h4>Name</h4></label>
+            <div>
+                <label for="product-name" class="label-block">Name</label>
                 <input type="text" name="product-name" id="name" required>
-            </span>
-            <span>
-                <label for="product-regular-price"><h4>Regular Price</h4></label>
+            </div>
+
+            <div>
+                <label for="product-regular-price" class="label-block">Regular Price</label>
                 <input type="text" name="product-regular-price" id="regular-price">
-            </span>
-            <span>
-                <label for="product-sale-price"><h4>Sale Price</h4></label>
+            </div>
+
+            <div>
+                <label for="product-sale-price" class="label-block">Sale Price</label>
                 <input type="text" name="product-sale-price" id="sale-price">
-            </span>
+            </div>
+
         </div>
 
-        <div id="product-settings" class="inline-fields">
-            <span >
-                <label for="product-type" ></label>
+        <div id="product-settings" class="flex-fields">
+            <div >
                 <select name="product-type" id="product-type">
                     <option value="" selected disabled>Product Type</option>
                     <option value="simple">Simple Product</option>
@@ -176,86 +179,78 @@ else {
                     <option value="external">External/Affiliate Product</option>
                     <option value="variable">Variable Product</option>
                 </select>
-            </span>
-            <span >
-                <label for="product-virtual" class="inline"><h4>Virtual</h4></label>
+            </div>
+
+            <div>
                 <input type="checkbox" name="product-virtual" id="virtual">
-            </span>
-            <span>
-                <label for="product-downloadable" class="inline"><h4>Downloadable</h4></label>
+                <label for="product-virtual" class="inline">Virtual</label>
+            </div>
+
+            <div>
                 <input type="checkbox" name="product-downloadable" id="downloadable">
-            </span>
+                <label for="product-downloadable" class="inline">Downloadable</label>
+            </div>
         </div>
 
         <div id="product-image">
-        <label class="custom-file-upload">
-            <input type="file" id="image" name="product-image"/>
-            Custom Upload
-        </label>
+            <label class="custom-file-upload">
+                <input type="file" id="image" name="product-image"/>
+                Upload Image
+            </label>
             <div id="image-preview">
                 <img src="" alt="" id="img">
             </div>
         </div>
 
         <div id="product-description">
-            <label for="product-description"><h4>Description</h4></label>
+            <label for="product-description" class="label-block">Description</label>
             <textarea name="product-description" cols="30" rows="10" id="description"></textarea>
         </div>
 
         <div id="product-short-description">
-            <label for="product-short-description"><h4>Short Description</h4></label>
+            <label for="product-short-description" class="label-block">Short Description</label>
             <textarea name="product-short-description" id="short-description" cols="30" rows="10"></textarea>
         </div>
 
         <div id="sku">
-            <label for="product-sku"><h4>SKU</h4></label>
+            <label for="product-sku" class="label-block">SKU</label>
             <input type="text" name="product-sku" id="sku-input">
         </div>
 
-        <div id=weight-dimensions >
-            <div class="inline-fields">
-                <div>
-                    <label for="length">
-                        <h4>Length (<?= $dimensionsUnit?>)</h4>
-                    </label>
-                    <input type="text" name="length">
-                </div>
-                <div>
-                    <label for="length">
-                        <h4>Width (<?= $dimensionsUnit?>)</h4>
-                    </label>
-                    <input type="text" name="width">
-                </div>
-                <div>
-                    <label for="length">
-                        <h4>Height (<?= $dimensionsUnit?>)</h4>
-                    </label>
-                    <input type="text" name="height">
-                </div>
-                <div>
-                    <label for="length">
-                        <h4>Weight (<?= $weightUnit?>)</h4>
-                    </label>
-                    <input type="text" name="weight">
-                </div>
+        <div id=weight-dimensions class="flex-fields">
+            <div>
+                <label for="length" class="label-block">Length (<?= $dimensionsUnit?>)</label>
+                <input type="text" name="length">
             </div>
-
+            <div>
+                <label for="width" class="label-block">Width (<?= $dimensionsUnit?>)</label>
+                <input type="text" name="width">
+            </div>
+            <div>
+                <label for="height" class="label-block">Height (<?= $dimensionsUnit?>)</label>
+                <input type="text" name="height">
+            </div>
+            <div>
+                <label for="weight" class="label-block">Weight (<?= $weightUnit?>)</label>
+                <input type="text" name="weight">
+            </div>
         </div>
 
-       <div id="categories-tags-container" class="inline-fields">
+       <div id="categories-tags-container" class="flex-fields">
 
             <div id="categories">
-                <h4>Choose Categories</h4>
+                <label>Choose Categories</label>
                 <div id="new-categories">
                     <input type="text" name="category" placeholder="Make a new category for your product">
                     <button type="button">Add</button>
                 </div>
                 <select name="parent-category" id="parent-categories">
-                    <option value="" selected disabled>None</option>
+                    <option value="" selected >None</option>
                     <?php
-                        foreach($categories as $category){?>
+                        foreach($categories as $category){
+                            if($category['parent'] == 0){?>
                             <option value="<?= $category['name']?>" id="<?= $category['id']?>"><?= $category['name']?></option>
-                       <?php }
+                       <?php }}
                     
                     ?>
                 </select>
@@ -265,10 +260,10 @@ else {
             </div>
 
             <div id="tags">
-                <h4>Add Tags</h4>
+                <label>Add Tags</label>
                 <div id="new-tags">
-                    <input type="text" name="new-tag">
-                    <button type="button">Add</button>
+                    <input type="text" name="new-tag" id="new-tag">
+                    <button type="button" id="tag-btn">Add</button>
                 </div>
                 <div id="tags-container">
 

@@ -1,10 +1,5 @@
 :root {
-    --main-green: #21759B;
-    --main-light-green: #21759B;
-    --gradient: #21759B;
-    /* --main-green: #04411c;
-    --main-light-green: rgba(53,205,22,1);
-    --gradient: linear-gradient(90deg, rgba(53,205,22,1) 0%, rgba(4,65,28,1) 100%); */
+    --main-blue: #21759B;
 }
 
 * {
@@ -14,7 +9,7 @@
 
 header {
     height: 15vh;
-    background: var(--gradient);
+    background: var(--main-blue);
     display: flex;
     align-items: center;
 }
@@ -31,142 +26,98 @@ header a {
 }
 
 form {
-    max-width: 60%;
+    font-size: 1.25em;
+    border-radius: 10px;
+    color: var(--main-blue);
+    font-family: sans-serif;
+    width: 70%;
     margin: auto;
-    font-size: 1.1em;
+}
+
+input, textarea, select {
+    font-size: 1em;
+    border-radius: 5px;
+    color: var(--main-blue);
     font-family: sans-serif;
-    margin-top: 2rem;
+    border: 2px solid var(--main-blue);
+    padding: 5px;
+    margin: 10px 0px;
 }
 
-label {
-    color: black;
-    margin-bottom: 5px;
+textarea {
+    width: calc(100% - 20px);
+    border-radius: 10px;
 }
 
-form label:not(.inline) {
-    display: block;
+select {
+    width: 100%;
 }
 
-.inline {
-    display: inline;
-}
 
-form button, form input[type="submit"] {
-    background: var(--gradient);
-    border: none;
+
+button, input[type="submit"] {
+    background-color: var(--main-blue);
     color: white;
-    border-radius: 5px;
-}
-
-form input {
-    font-size: 1.2em;
+    font-size: 1em;
+    border-radius: 10px;
     font-family: sans-serif;
-    padding: 5px 8px;
-    border-radius: 5px;
-    border: 2px solid var(--main-green);
-}
-
-form button {
-    font-size: 1.2em;
-    font-family: sans-serif;
-    padding: 5px 15px;
+    border: 2px solid var(--main-blue);
+    padding: 10px 25px;
     cursor: pointer;
 }
 
-form textarea {
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid var(--main-green);
-    font-size: 1.2em;
-    font-family: sans-serif;
-    padding: 5px 15px;
-    outline: var(--main-light-green);
-}
-
-form select {
-    font-size: 1.2em;
-    font-family: sans-serif;
-    padding: 5px 8px;
-    border-radius: 5px;
-    border: 2px solid var(--main-green);
-    color: var(--main-green);
-
-}
-
 form > div {
-    margin-top: 2rem;
+    margin: 2rem 0rem;
 }
 
-#parent-categories {
-    width: 100%;
-}
-
-form .checkbox-label {
-    padding-left: 10px;
-}
-
-form .checkbox-container {
-    padding: 10px 0px;
-}
-
-form .subcategory-checkbox{
-    margin-left: 20px;
-}
-
-
-/* This is for the first row of the name, regular price and sale price */
-.inline-fields {
+form .flex-fields {
     display: flex;
     justify-content: space-between;
 }
 
-.inline-fields > div {
-    margin: 0px 2rem;
-}
-
-
-#sku input {
-    width: 100%;
-}
-
-#btn-save input{
+.label-block {
     display: block;
-    margin: auto;
-    margin-bottom: 5rem;
-    cursor: pointer;
-    padding: 0.5em 2em;
 }
 
+label {
+    margin: 5px;
+}
+
+/* Hide the input field of file */
 input[type="file"] {
     display: none;
 }
 
+/* make a custom file upload button */
 .custom-file-upload {
     border-radius: 5px;
     display: block;
-    padding: 6px 12px;
+    padding: 1rem 2rem;
     cursor: pointer;
-    max-width: 10rem;
     text-align: center;
-    background: var(--gradient);
+    background: var(--main-blue);
     color: white;
     margin-bottom: 1rem;
-}
-
-ul {
-    list-style-type: none;
-    color: var(--main-green);
-}
-
-ul li {
-    border-radius: 5px;
-    margin: 10px 0px;
     width: fit-content;
-    padding: 5px;
-    color: var(--main-green);
-    cursor: pointer;
 }
 
-img {
-    width: 300px;
+#sku-input {
+    width: calc(100% - 20px);
+}
+
+#categories-tags-container > div {
+    width: 40%;
+}
+
+#categories-tags-container input[type="text"] {
+    width: 70%;
+}
+#categories-tags-container button {
+    width: calc(26%);
+    padding: 5px 20px;
+    border-radius: 5px;
+}
+
+.subcategory-checkbox {
+    margin-left: 20px;
 }

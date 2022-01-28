@@ -19,26 +19,23 @@ setCheckboxes()
 function setCheckboxes(){
     const downloadableCheck = document.getElementById("downloadable")
     const virtualCheck = document.getElementById("virtual")
-    const categories = document.querySelectorAll(".checkboxes")
+    const categories = document.querySelectorAll(".checkbox")
     const hiddenProduct = document.getElementById("product-data")
     let productData = JSON.parse(hiddenProduct.value)
 
-    if(productData['downloable']){
+    if(productData.downloadable){
         downloadableCheck.checked = true
     }
-    if(productData['virtual']){
+    if(productData.virtual){
         virtualCheck.checked = true
     }
-
     for(let i = 0; i < categories.length; i++){
-        for(let j = 0; j < productData['categories'].length; j++){
-            if(productData['categories'][j]['name'] == categories[i].dataset.name){
+        for(let j = 0; j < productData.categories.length; j++){
+            if(productData.categories[j].name == categories[i].dataset.name){
                 categories[i].checked = true
             }
         }
     }
-
-
 }
 
 

@@ -55,7 +55,7 @@ select {
 
 
 
-button, input[type="submit"] {
+button {
     background-color: var(--main-blue);
     color: white;
     font-size: 1em;
@@ -65,7 +65,23 @@ button, input[type="submit"] {
     padding: 5px 20px;
     cursor: pointer;
     width: 26%;
+    text-align: center;
 }
+
+input[type="submit"]{
+    display: block;
+    background-color: var(--main-blue);
+    color: white;
+    font-size: 1em;
+    border-radius: 5px;
+    font-family: sans-serif;
+    border: 2px solid var(--main-blue);
+    padding: 5px 50px;
+    cursor: pointer;
+    text-align: center;
+    margin: auto;
+}
+
 
 form > div {
     margin: 2rem 0rem;
@@ -115,9 +131,24 @@ input[type="file"] {
     width: 40%;
 }
 
-#categories-tags-container input[type="text"] {
-    width: 100%;
+#categories-tags-container input[type="text"]:not(#new-tag) {
+    width: calc(100% - 20px);
 }
+#categories-checkboxes {
+    max-height: 200px;
+    overflow: auto;
+}
+
+#tags-container {
+    max-height: 200px;
+    overflow: auto;
+    display: grid;
+}
+
+#new-tag {
+    width: 70%;
+}
+
 #categories-tags-container button {
     width: calc(26%);
     padding: 5px 20px;

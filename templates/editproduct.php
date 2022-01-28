@@ -8,6 +8,8 @@
 // Get the woocommerce api functions
 require __DIR__ . "/woocommerce-api.php";
 // get the correct protocol
+
+// Everything in this php tag happens when the page is loaded
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
 else $link = "http";
@@ -28,14 +30,18 @@ if(isset($_SERVER['HTTP_REFERER'])){
     if($from_products || $from_self){
         $categoriesData = json_decode($listCategories(), true);
         $categories = $categoriesData['data'];
-
+        $id = $_GET['id'];
         if(isset($_GET['id'])){
             $product = json_decode($getProduct($_GET['id']), true);
         }
 
-        echo "<pre>";
-        print_r($product);
-        echo "</pre>";
+
+        //  Make an array to send to javascript to handle the display of the categories
+        $javascriptProductData = array(
+            'downloadable' => $product['downloadable'],
+            'virtual' => $product['virtual'],
+            'categories' => $product['categories']
+        );
 
         $unitData = json_decode($units(), true);
 
@@ -83,42 +89,46 @@ else {
 
             $newCategory = json_decode($createCategory($categortArray), true);
         }
-        
-        
 
 
         $data = [];
         $data['name'] = $_POST['product-name'];
 
-        if(isset($_POST['product-regular-price'])){
+        if(isset($_POST['product-regular-price']) && $_POST['product-regular-price'] != $product['regular_price']){
             $data['regular_price'] = $_POST['product-regular-price'];
         }
 
-        if(isset($_POST['product-sale-price'])){
+        if(isset($_POST['product-sale-price']) && $_POST['product-sale-price'] != $product['sale_price']){
             $data['sale_price'] = $_POST['product-sale-price'];
         }
 
-        if(isset($_POST['product-type'])){
+        if(isset($_POST['product-type']) && $_POST['product-type'] != $product['type']){
             $data['type'] = $_POST['product-type'];
         }
 
         if(isset($_POST['product-virtual'])){
             $data['virtual'] = true;
         }
+        else {
+            $data['virtual'] = false;
+        }
 
         if(isset($_POST['product-downloadable'])){
             $data['downloadable'] = true;
         }
+        else {
+            $data['downloadable'] = false;
+        }
 
-        if(isset($_POST['product-description'])){
+        if(isset($_POST['product-description']) && $_POST['product-description'] != strip_tags($product['description'])){
             $data['description'] = $_POST['product-description'];
         }
 
-        if(isset($_POST['product-short-description'])){
+        if(isset($_POST['product-short-description']) && $_POST['product-short-description'] != strip_tags($product['short_description'])){
             $data['short_description'] = $_POST['product-short-description'];
         }
 
-        if(isset($_POST['product-sku'])){
+        if(isset($_POST['product-sku']) && $_POST['product-sku'] != $product['sku']){
             $data['sku'] = $_POST['product-sku'];
         }
 
@@ -134,7 +144,7 @@ else {
         }
 
         // Check if the weight is filled
-        if(isset($_POST['weigth'])){
+        if(isset($_POST['weight'])){
             $data["weight"] = $_POST["weight"];
         }
         
@@ -156,14 +166,17 @@ else {
 
         }
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
+            
             $productCategories = explode("%", $_POST['product-categories']);
-            if($newCategory){
+            if(isset($newCategory)){
                 array_push($productCategories, $newCategory['id']);
             }
             $productCategories = array_map(function($c){
                 return array('id' => $c);
             }, $productCategories);
             $data['categories'] = $productCategories;
+        } else if(!$_POST['product-categories']) {
+            $data['categories'] = array();
         }
 
         if(isset($_POST['product-tags']) && $_POST['product-tags']){
@@ -172,9 +185,11 @@ else {
                 return array('name' => $t);
             }, $productTags);
             $data['tags'] = $productTags;
+        } else if(!$_POST['product-tags']){
+            $data['tags'] = array();
         }
         
-        $saveProduct = json_decode($addProduct($data), true);
+        $saveProduct = json_decode($updateProduct($id, $data), true);
 
         $files = glob($imageFolder . "/*");
         foreach($files as $file){
@@ -255,12 +270,12 @@ else {
 
         <div id="product-description">
             <label for="product-description" class="label-block">Description</label>
-            <textarea name="product-description" cols="30" rows="10" id="description"><?= $product['description']?></textarea>
+            <textarea name="product-description" cols="30" rows="10" id="description"><?php echo strip_tags($product['description']) ?></textarea>
         </div>
 
         <div id="product-short-description">
             <label for="product-short-description" class="label-block">Short Description</label>
-            <textarea name="product-short-description" id="short-description" cols="30" rows="10"><?= $product['short_description']?></textarea>
+            <textarea name="product-short-description" id="short-description" cols="30" rows="10"><?php echo strip_tags($product['short_description']) ?></textarea>
         </div>
 
         <div id="sku">
@@ -339,7 +354,7 @@ else {
         <input type="hidden" name="product-tags" id="hidden-tags">
         <?php // This will pass the data to javascript to handle the displaying of the categories?>
         <input type="hidden" id="php-categories-data" value='<?php echo json_encode($categories)?>'>
-        <input type="hidden" id="product-data" value="<?php echo json_encode($product)?>">
+        <input type="hidden" id="product-data" value='<?php echo json_encode($javascriptProductData)?>'>
     </form>
     <div id="errors"></div>
 

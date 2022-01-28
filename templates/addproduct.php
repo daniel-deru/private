@@ -125,7 +125,7 @@ else {
         }
 
         // Check if the weight is filled
-        if(isset($_POST['weigth'])){
+        if(isset($_POST['weight'])){
             $data["weight"] = $_POST["weight"];
         }
         

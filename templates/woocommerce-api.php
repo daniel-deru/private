@@ -78,6 +78,11 @@ $updateProduct = function($id, $data) use ($woocommerce){
 $units = function() use ($woocommerce){
     $data = $woocommerce->get("settings/products");
     return json_encode($data);
+};
+
+$createCategory = function($data) use ($woocommerce) {
+    $data = $woocommerce->post('products/categories', $data);
+    return json_encode($data);
 }
 
  ?>

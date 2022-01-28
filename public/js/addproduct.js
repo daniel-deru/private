@@ -1,29 +1,35 @@
 // Global variable to check if the image is set
 let imageSet = false
 let tagsArray = []
+let sortedCategories = []
 
 const imageUpload = document.getElementById("image")
 const saveBtn = document.getElementById("save-btn")
 const tagBtn = document.getElementById("tag-btn")
 
 
-saveBtn.addEventListener("click", () => saveClicked())
+saveBtn.addEventListener("click", (event) => saveClicked(event))
 imageUpload.addEventListener("change", (event) => showImage(event))
 tagBtn.addEventListener("click", () => addTags())
+// categoryBtn.addEventListener("click", () => addCategory())
 
-
-displayCategories()
+parseCategories()
 
 function addTags(){
-    const tagInput = document.getElementById("")
+    const tagInput = document.getElementById("new-tag")
     let tag = tagInput.value
-    tagsArray.push(tag)
 
-    displayTags()
+    if(!tagsArray.includes(tag)){
+        tagsArray.push(tag)
+        displayTags()
+    }
+    tagInput.value = ''
+
 }
 
 function deleteTags(event){
-    tagsArray = tagsArray.filter(tag => tag == event.innerText)
+    console.log(event.target.innerText)
+    tagsArray = tagsArray.filter(tag => tag !== event.target.innerText)
     displayTags()
 }
 
@@ -39,19 +45,46 @@ function displayTags(){
             tagElement.addEventListener("click", (event) => deleteTags(event))
             tagElement.innerText = tagsArray[i]
 
-            tagContainer.push(tagElement)
+            tagContainer.appendChild(tagElement)
         }
     }
+    console.log(tagsArray)
+}
+
+
+function addCategory(){
+    const categoryInput = document.getElementById("category-input")
+    const parentCategory = document.getElementById("parent-categories")
+
+    if(!parentCategory.value){
+        let parent = {
+            name: categoryInput.value,
+            children: [],
+            parent: 0
+        }
+        sortedCategories.push(parent)
+    }
+    else {
+        parentIndex = sortedCategories.findIndex(category => category.name == parentCategory.value)
+        let child = {
+            name: categoryInput.value,
+            parent: sortedCategories[parentIndex].id,
+            children: []
+        }
+        
+        console.log(parentIndex)
+        sortedCategories[parentIndex].children.push(child)
+        console.log(sortedCategories)
+    }
+    categoryInput.value = ""
+    displayCategories()
 }
 
 
 // This function will display the categories
 function displayCategories(){
-    const categoryHiddenData = document.getElementById("php-categories-data")
     const categoryContainer = document.getElementById("categories-checkboxes")
-    let categories = JSON.parse(categoryHiddenData.value)
-
-    let sortedCategories = sortCategories(categories)
+    categoryContainer.innerHTML = ""
 
     for(let i = 0; i < sortedCategories.length; i++){
 
@@ -63,6 +96,9 @@ function displayCategories(){
         categoryCheckbox.id = sortedCategories[i].id
         categoryCheckbox.classList.add("category-checkbox")
         categoryCheckbox.classList.add("checkbox")
+        categoryCheckbox.dataset.parent = 0
+        categoryCheckbox.dataset.name = sortedCategories[i].name
+        categoryCheckbox.dataset.id = sortedCategories[i].id
 
         checkboxContainer.appendChild(categoryCheckbox)
 
@@ -91,7 +127,10 @@ function displayCategories(){
                 subcategoryCheckbox.type = "checkbox"
                 subcategoryCheckbox.id = subcategories[j].id
                 subcategoryCheckbox.classList.add("subcategory-checkbox")
-                categoryCheckbox.classList.add("checkbox")
+                subcategoryCheckbox.classList.add("checkbox")
+                subcategoryCheckbox.dataset.parent = sortedCategories[i].id
+                categoryCheckbox.dataset.name = sortedCategories[j].name
+                categoryCheckbox.dataset.id = sortedCategories[j].id
 
                 subCheckboxContainer.appendChild(subcategoryCheckbox)
 
@@ -107,6 +146,14 @@ function displayCategories(){
             }
         }
     }
+}
+
+// Parse the data from the hidden input and put it in the sortedCategories array
+function parseCategories(){
+    const categoryHiddenData = document.getElementById("php-categories-data")
+    let categories = JSON.parse(categoryHiddenData.value)
+    sortedCategories = sortCategories(categories)
+    displayCategories()
 }
 
 // Sort the categories according to parent and child relationships. subcategories cannot have children
@@ -152,17 +199,39 @@ function showImage(event){
     imageSet = true
 }
 
-function saveClicked(){
-
+function saveClicked(event){
+    event.preventDefault()
     const errors = document.getElementById("errors")
 
-    while(errors.firstChild){
-        errors.removeChild(errors.firstChild)
-    }
+    errors.innerHTML = ""
 
     if(!imageSet){
         let error = document.createElement("div")
         error.appendChild(document.createTextNode("Please set an image."))
         errors.appendChild(error)
     }
+
+    let categories = document.querySelectorAll(".checkbox")
+    let categoryList = []
+
+    for(let i = 0; i < categories.length; i++){
+        if(categories[i].checked){
+
+            let category = {
+                name: categories[i].dataset.name,
+                id: categories[i].dataset.id,
+                parent: categories[i].parent
+            }
+
+            categoryList.push(category)
+        }
+    }
+
+    const hiddenCategories = document.getElementById("hidden-categories")
+    const hiddenTags = document.getElementById("hidden-tags")
+
+    hiddenCategories.value = JSON.stringify(categoryList)
+    hiddenTags.value = JSON.stringify(tagsArray)
+
+    return true
 }

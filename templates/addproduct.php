@@ -59,7 +59,24 @@ else {
 
 <?php
     // This will happen when the form is submitted
-    if(isset($_POST['product-name'])){
+    if(isset($_POST['save'])){
+
+        if(isset($_POST['category'])){
+            $newCategory = array(
+                'name' => $_POST['category']
+            );
+
+            $data['name'] = $_POST['category'];
+
+            if(isset($_POST['parent-category']) && $_POST['parent-category']){
+                $newCategory['parent'] = $_POST['parent-category'];
+            }
+
+            $makeProduct = json_decode($createCategory($newCategory), true);
+        }
+        
+        
+
 
         $data = [];
         $data['name'] = $_POST['product-name'];
@@ -67,24 +84,31 @@ else {
         if(isset($_POST['product-regular-price'])){
             $data['regular_price'] = $_POST['product-regular-price'];
         }
+
         if(isset($_POST['product-sale-price'])){
             $data['sale_price'] = $_POST['product-sale-price'];
         }
+
         if(isset($_POST['product-type'])){
             $data['type'] = $_POST['product-type'];
         }
+
         if(isset($_POST['product-virtual'])){
             $data['virtual'] = true;
         }
+
         if(isset($_POST['product-downloadable'])){
             $data['downloadable'] = true;
         }
+
         if(isset($_POST['product-description'])){
             $data['description'] = $_POST['product-description'];
         }
+
         if(isset($_POST['product-short-description'])){
             $data['short_description'] = $_POST['product-short-description'];
         }
+
         if(isset($_POST['product-sku'])){
             $data['sku'] = $_POST['product-sku'];
         }
@@ -122,8 +146,12 @@ else {
             );
 
         }
+
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
         
-        $saveProduct = json_decode($addProduct($data), true);
+        // $saveProduct = json_decode($addProduct($data), true);
 
         $files = glob($imageFolder . "/*");
         foreach($files as $file){
@@ -131,8 +159,8 @@ else {
                 unlink($file);
             }
         }
-        header("Location: " . $link . "/" . $products_page . "?id=1");
-    }
+        // header("Location: " . $link . "/" . $products_page . "?id=1");
+    } 
 
 ?>
 <!DOCTYPE html>
@@ -155,7 +183,7 @@ else {
             <!-- This is the name field input -->
             <div>
                 <label for="product-name" class="label-block">Name</label>
-                <input type="text" name="product-name" id="name" required>
+                <input type="text" name="product-name" id="name">
             </div>
 
             <div>
@@ -241,15 +269,14 @@ else {
             <div id="categories">
                 <label>Choose Categories</label>
                 <div id="new-categories">
-                    <input type="text" name="category" placeholder="Make a new category for your product">
-                    <button type="button">Add</button>
+                    <input type="text" name="category" placeholder="Make a new category for your product" id="category-input">
                 </div>
                 <select name="parent-category" id="parent-categories">
                     <option value="" selected >None</option>
                     <?php
                         foreach($categories as $category){
                             if($category['parent'] == 0){?>
-                            <option value="<?= $category['name']?>" id="<?= $category['id']?>"><?= $category['name']?></option>
+                            <option value="<?= $category['id']?>" id="<?= $category['id']?>"><?= $category['name']?></option>
                        <?php }}
                     
                     ?>
@@ -275,7 +302,7 @@ else {
        
 
         <div id="btn-save">
-            <input type="submit" id="save-btn" value="Save">
+            <input type="submit" id="save-btn" value="Save" name="save">
         </div>
         <?php //This will get the data from the form to submit to the api?>
         <input type="hidden" name="product-categories" id="hidden-categories">

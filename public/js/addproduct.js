@@ -11,7 +11,6 @@ const tagBtn = document.getElementById("tag-btn")
 saveBtn.addEventListener("click", (event) => saveClicked(event))
 imageUpload.addEventListener("change", (event) => showImage(event))
 tagBtn.addEventListener("click", () => addTags())
-// categoryBtn.addEventListener("click", () => addCategory())
 
 parseCategories()
 
@@ -48,36 +47,6 @@ function displayTags(){
             tagContainer.appendChild(tagElement)
         }
     }
-    console.log(tagsArray)
-}
-
-
-function addCategory(){
-    const categoryInput = document.getElementById("category-input")
-    const parentCategory = document.getElementById("parent-categories")
-
-    if(!parentCategory.value){
-        let parent = {
-            name: categoryInput.value,
-            children: [],
-            parent: 0
-        }
-        sortedCategories.push(parent)
-    }
-    else {
-        parentIndex = sortedCategories.findIndex(category => category.name == parentCategory.value)
-        let child = {
-            name: categoryInput.value,
-            parent: sortedCategories[parentIndex].id,
-            children: []
-        }
-        
-        console.log(parentIndex)
-        sortedCategories[parentIndex].children.push(child)
-        console.log(sortedCategories)
-    }
-    categoryInput.value = ""
-    displayCategories()
 }
 
 
@@ -85,7 +54,6 @@ function addCategory(){
 function displayCategories(){
     const categoryContainer = document.getElementById("categories-checkboxes")
     categoryContainer.innerHTML = ""
-
     for(let i = 0; i < sortedCategories.length; i++){
 
         let checkboxContainer = document.createElement("div")
@@ -128,9 +96,9 @@ function displayCategories(){
                 subcategoryCheckbox.id = subcategories[j].id
                 subcategoryCheckbox.classList.add("subcategory-checkbox")
                 subcategoryCheckbox.classList.add("checkbox")
-                subcategoryCheckbox.dataset.parent = sortedCategories[i].id
-                categoryCheckbox.dataset.name = sortedCategories[j].name
-                categoryCheckbox.dataset.id = sortedCategories[j].id
+                subcategoryCheckbox.dataset.parent = subcategories[j].parent
+                subcategoryCheckbox.dataset.name = subcategories[j].name
+                subcategoryCheckbox.dataset.id = subcategories[j].id
 
                 subCheckboxContainer.appendChild(subcategoryCheckbox)
 
@@ -187,7 +155,6 @@ function sortCategories(categories){
         })
 
     }
-    console.log(categoriesList)
 
     return categoriesList
     
@@ -200,7 +167,7 @@ function showImage(event){
 }
 
 function saveClicked(event){
-    event.preventDefault()
+    // event.preventDefault()
     const errors = document.getElementById("errors")
 
     errors.innerHTML = ""
@@ -213,25 +180,15 @@ function saveClicked(event){
 
     let categories = document.querySelectorAll(".checkbox")
     let categoryList = []
-
     for(let i = 0; i < categories.length; i++){
         if(categories[i].checked){
-
-            let category = {
-                name: categories[i].dataset.name,
-                id: categories[i].dataset.id,
-                parent: categories[i].parent
-            }
-
-            categoryList.push(category)
+             categoryList.push(categories[i].dataset.id)
         }
     }
 
     const hiddenCategories = document.getElementById("hidden-categories")
     const hiddenTags = document.getElementById("hidden-tags")
 
-    hiddenCategories.value = JSON.stringify(categoryList)
-    hiddenTags.value = JSON.stringify(tagsArray)
-
-    return true
+    hiddenCategories.value = categoryList.join("%")
+    hiddenTags.value = tagsArray.join("%")
 }

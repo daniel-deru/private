@@ -102,6 +102,11 @@ input[type="file"] {
     width: fit-content;
 }
 
+#img {
+    max-width: 400px;
+    max-height: 400px;
+}
+
 #sku-input {
     width: calc(100% - 20px);
 }
@@ -111,7 +116,7 @@ input[type="file"] {
 }
 
 #categories-tags-container input[type="text"] {
-    width: 70%;
+    width: 100%;
 }
 #categories-tags-container button {
     width: calc(26%);

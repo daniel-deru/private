@@ -61,18 +61,18 @@ else {
     // This will happen when the form is submitted
     if(isset($_POST['save'])){
 
-        if(isset($_POST['category'])){
-            $newCategory = array(
+        if(isset($_POST['category']) && $_POST['category']){
+            $categortArray = array(
                 'name' => $_POST['category']
             );
 
             $data['name'] = $_POST['category'];
 
             if(isset($_POST['parent-category']) && $_POST['parent-category']){
-                $newCategory['parent'] = $_POST['parent-category'];
+                $categortArray['parent'] = $_POST['parent-category'];
             }
 
-            $makeProduct = json_decode($createCategory($newCategory), true);
+            $newCategory = json_decode($createCategory($categortArray), true);
         }
         
         
@@ -146,12 +146,26 @@ else {
             );
 
         }
+        if(isset($_POST['product-categories']) && $_POST['product-categories']){
+            $productCategories = explode("%", $_POST['product-categories']);
+            if($newCategory){
+                array_push($productCategories, $newCategory['id']);
+            }
+            $productCategories = array_map(function($c){
+                return array('id' => $c);
+            }, $productCategories);
+            $data['categories'] = $productCategories;
+        }
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+        if(isset($_POST['product-tags']) && $_POST['product-tags']){
+            $productTags = explode("%", $_POST['product-tags']);
+            $productTags = array_map(function($t){
+                return array('name' => $t);
+            }, $productTags);
+            $data['tags'] = $productTags;
+        }
         
-        // $saveProduct = json_decode($addProduct($data), true);
+        $saveProduct = json_decode($addProduct($data), true);
 
         $files = glob($imageFolder . "/*");
         foreach($files as $file){
@@ -159,7 +173,7 @@ else {
                 unlink($file);
             }
         }
-        // header("Location: " . $link . "/" . $products_page . "?id=1");
+        header("Location: " . $link . "/" . $products_page . "?id=1");
     } 
 
 ?>

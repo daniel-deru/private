@@ -13,6 +13,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.css"?>">
+    <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script>
     <title>Products</title>
 </head>
 
@@ -79,19 +80,29 @@ else {
 ?>
 <body>
     <header>
-        <select name="categories" id="category-select">
-            <?php
-                if(isset($categories)){
-                    foreach($categories as $category){?>
-
-                        <option value="<?php echo $category['slug']?>"><?php echo $category['name']?></option>
-                    <?php }
-                }
-            ?>
-        </select>
-        <!-- Add the product for testing on local -->
+        <div id="filter-container">
+            <div>
+                <input type="text" name="name" placeholder="Product Name" id="filter-name">
+            </div>
+            <div>
+                <select name="more-less" id="filter-range">
+                    <option value="more" selected>More Than</option>
+                    <option value="less">Less Than</option>
+                </select>
+                <input type="text" placeholder="Price" id="filter-price">
+            </div>
+            <div>
+                <button id="filter">Run Filter</button>
+            </div>
+            <div>
+                <button id="reset">Reset Filter</button>
+            </div>
+        </div>
         <a href="<?php echo $link . "/" . $add_page?>">Add New Product</a>
     </header>
+    <section>
+
+    </section>
     <main id="product-grid">
         <?php
         
@@ -100,7 +111,7 @@ else {
                         $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
                         ?>
                          
-                        <div class="product-container <?= $categoryList?>">
+                        <div class="product-container <?= $categoryList?>" data-name="<?= $product['name']?>" data-price="<?= $product['regular_price']?>">
                             <img src="<?php echo $product['images'][0]['src']?>" alt="" class="product-image">
                             <div class="title"><?php echo $product['name']?></div>
                             <div class="price">R <?php echo $product['regular_price']?></div>

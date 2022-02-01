@@ -55,6 +55,8 @@ if(isset($_POST['products-login'])){
 
             header("Location:" . $link . "/wp-smart-products?id=1");
             exit;
+        } else {
+            $error = "The password is wrong or the user doesn't exist";
         }
     }
 }

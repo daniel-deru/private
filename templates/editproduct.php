@@ -33,6 +33,10 @@ if(isset($_SERVER['HTTP_REFERER'])){
         $id = $_GET['id'];
         if(isset($_GET['id'])){
             $product = json_decode($getProduct($_GET['id']), true);
+
+            echo "<pre>";
+            print_r($product);
+            echo "</pre>";
         }
 
 

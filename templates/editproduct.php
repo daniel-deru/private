@@ -283,23 +283,27 @@ else {
             <input type="text" name="product-sku" id="sku-input" value="<?= $product['sku']?>">
         </div>
 
-        <div id=weight-dimensions class="flex-fields">
-            <div>
-                <label for="length" class="label-block">Length (<?= $dimensionsUnit?>)</label>
-                <input type="text" name="length" value="<?= $product['dimensions']['length']?>">
+        <div id=weight-dimensions >
+            <label>Shipping Details</label>
+            <div class="flex-fields">
+                <div>
+                    <label for="length" class="label-block">Length (<?= $dimensionsUnit?>)</label>
+                    <input type="text" name="length" value="<?= $product['dimensions']['length']?>">
+                </div>
+                <div>
+                    <label for="width" class="label-block">Width (<?= $dimensionsUnit?>)</label>
+                    <input type="text" name="width" value="<?= $product['dimensions']['width']?>">
+                </div>
+                <div>
+                    <label for="height" class="label-block">Height (<?= $dimensionsUnit?>)</label>
+                    <input type="text" name="height" value="<?= $product['dimensions']['height']?>">
+                </div>
+                <div>
+                    <label for="weight" class="label-block">Weight (<?= $weightUnit?>)</label>
+                    <input type="text" name="weight" value="<?= $product['weight']?>">
+                </div>
             </div>
-            <div>
-                <label for="width" class="label-block">Width (<?= $dimensionsUnit?>)</label>
-                <input type="text" name="width" value="<?= $product['dimensions']['width']?>">
-            </div>
-            <div>
-                <label for="height" class="label-block">Height (<?= $dimensionsUnit?>)</label>
-                <input type="text" name="height" value="<?= $product['dimensions']['height']?>">
-            </div>
-            <div>
-                <label for="weight" class="label-block">Weight (<?= $weightUnit?>)</label>
-                <input type="text" name="weight" value="<?= $product['weight']?>">
-            </div>
+            
         </div>
 
        <div id="categories-tags-container" class="flex-fields">

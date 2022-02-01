@@ -2,8 +2,8 @@
 
 /*
 
-Plugin Name: WP Smart Products
-Plugin URI: https://smartmetatec.com/wpsmartproducts
+Plugin Name: WP Smart Commerce
+Plugin URI: https://smartmetatec.com/wpsmartcommerce
 Description: Save your precious time by letting your clients add and edit their Woocommerce products easily and hassle free without your help.
 Version: 1.0.0
 Author: Smart Meta Technologies
@@ -199,7 +199,7 @@ add_action('admin_menu', 'SetupPage');
 add_action('admin_init', 'RegisterSettings');
 
 function SetupPage() {
-    add_menu_page(__("WPSmartProducts "), __("Smart Products"), "manage_options", __FILE__, 'PageContent', plugin_dir_url(__FILE__) . "assets/WPSP Menu Icon.svg");
+    add_menu_page(__("WPSmartCommerce "), __("Smart Commerce"), "manage_options", __FILE__, 'PageContent', plugin_dir_url(__FILE__) . "assets/WPSC.svg");
 }
 
 function RegisterSettings() {

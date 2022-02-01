@@ -114,10 +114,18 @@ else {
                         <div class="product-container <?= $categoryList?>" data-name="<?= $product['name']?>" data-price="<?= $product['regular_price']?>">
                             <img src="<?php echo $product['images'][0]['src']?>" alt="" class="product-image">
                             <div class="title"><?php echo $product['name']?></div>
-                            <div class="price">R <?php echo $product['regular_price']?></div>
+                            <?php 
+                                if($product['regular_price']){
+                                    ?>
+                                    <div class="price">R <?php echo $product['regular_price']?></div>
+                                    <?php
+                                }
+                            
+                            ?>
+                            
                             <div class="SKU-categories">
-                                <span class="SKU"><b>SKU: </b><?php echo displayData($product['sku'])?></span>
-                                <span class="Categories"><b>Categories: </b><?php echo $product["categories"][0]['name']?></span>
+                                <div class="SKU"><b>SKU: </b><?php echo displayData($product['sku'])?></div>
+                                <div class="Categories"><b>Categories: </b><?php echo $categoryList?></div>
                             </div>
                             <a href="<?= $edit_page?>?id=<?= $product['id']?>" class="edit-product">Edit Product</a>
                         </div>

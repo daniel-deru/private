@@ -113,6 +113,14 @@ else {
             $data['sku'] = $_POST['product-sku'];
         }
 
+        if(isset($_POST['manage-stock'])){
+            $data['manage_stock'] = true;
+        }
+
+        if(isset($_POST['stock-quantity'])){
+            $data['stock-quantity'] = $_POST['stock-quantity'];
+        }
+
         // check if the dimensions are filled in and add them to the data object
         if(isset($_POST['length']) && isset($_POST['width']) && isset($_POST['height'])){
             $dimensions = array(
@@ -272,13 +280,13 @@ else {
                 <div id="stock" class="flex-container">
                     <label for="enable-stock">Enable Stock</label>
                     <span>
-                        <input type="checkbox" name="enable-stock" id="enable-stock">
+                        <input type="checkbox" name="manage-stock" id="manage-stock">
                         This will keep count of the stock in the store
                     </span>
                 </div>
                 <div id="stock-quantity" class="flex-container">
                     <label for="stock-quantity">Stock Quantity</label>
-                    <input type="number" value="0">
+                    <input type="number" value="0" name="stock-quantity">
                 </div>
             </div>
 

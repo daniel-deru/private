@@ -136,6 +136,17 @@ else {
             $data['sku'] = $_POST['product-sku'];
         }
 
+        if(isset($_POST['manage-stock'])){
+            $data['manage_stock'] = true;
+        } else {
+            $data['manage_stock'] = false;
+        }
+
+        if(isset($_POST['stock-quantity'])){
+            $data['stock-quantity'] = $_POST['stock-quantity'];
+        }
+
+
         // check if the dimensions are filled in and add them to the data object
         if(isset($_POST['length']) && isset($_POST['width']) && isset($_POST['height'])){
             $dimensions = array(
@@ -227,17 +238,22 @@ else {
                 <label for="product-name" class="label-block">Name</label>
                 <input type="text" name="product-name" id="name" value="<?= $product['name']?>">
             </div>
+        </div>
 
-            <div>
-                <label for="product-regular-price" class="label-block">Regular Price</label>
-                <input type="text" name="product-regular-price" id="regular-price" value="<?= $product['regular_price']?>">
+        
+        <div id="product-image">
+            <label class="custom-file-upload">
+                <input type="file" id="image" name="product-image"/>
+                Upload Image
+            </label>
+            <div id="image-preview">
+                <img src="<?= $product['images'][0]['src']?>" alt="" id="img">
             </div>
+        </div>
 
-            <div>
-                <label for="product-sale-price" class="label-block">Sale Price</label>
-                <input type="text" name="product-sale-price" id="sale-price" value="<?= $product['sale_price']?>">
-            </div>
-
+        <div id="product-description">
+            <label for="product-description" class="label-block">Description</label>
+            <textarea name="product-description" cols="30" rows="10" id="description"><?php echo strip_tags($product['description']) ?></textarea>
         </div>
 
         <div id="product-settings" class="flex-fields">
@@ -262,58 +278,73 @@ else {
             </div>
         </div>
 
-        <div id="product-image">
-            <label class="custom-file-upload">
-                <input type="file" id="image" name="product-image"/>
-                Upload Image
-            </label>
-            <div id="image-preview">
-                <img src="<?= $product['images'][0]['src']?>" alt="" id="img">
+
+        <div id="general">
+            <label class="label-block">General</label>
+            <div class="flex-container">
+                <div class="flex-container">
+                    <label for="product-regular-price" class="">Regular Price</label>
+                    <input type="text" name="product-regular-price" id="regular-price" value="<?= $product['regular_price']?>">
+                </div>
+
+                <div class="flex-container">
+                    <label for="product-sale-price" class="">Sale Price</label>
+                    <input type="text" name="product-sale-price" id="sale-price" value="<?= $product['sale_price']?>">
+                </div>
             </div>
         </div>
 
-        <div id="product-description">
-            <label for="product-description" class="label-block">Description</label>
-            <textarea name="product-description" cols="30" rows="10" id="description"><?php echo strip_tags($product['description']) ?></textarea>
+
+        <div id="inventory">
+            <div class="inventory-container">
+                <div id="sku" class="flex-container">
+                    <label for="product-sku" class="label-block">SKU</label>
+                    <input type="text" name="product-sku" id="sku-input" value="<?= $product['sku']?>">
+                </div>
+                <div id="stock" class="flex-container">
+                    <label for="enable-stock">Enable Stock</label>
+                    <span>
+                        <input type="checkbox" name="manage-stock" id="manage-stock">
+                        This will keep count of the stock in the store
+                    </span>
+                </div>
+                <div id="stock-quantity" class="flex-container">
+                    <label for="stock-quantity">Stock Quantity</label>
+                    <input type="number" value="0" name="stock-quantity" value="<?= $product['stock-quantity'] ?>">
+                </div>
+            </div>
         </div>
+
+                <!-- Shipping -->
+                <div id="shipping">
+            <label class="label-block">Shipping</label>
+            <div>
+                <div id="weight" class="flex-container between">
+                    <label for="weight" class="">Weight (<?= $dimensionsUnit?>)</label>
+                    <input type="text" name="weight" value="<?= $product['weight'] ?>">
+                </div>
+                <div id="dimensions" class="flex-container">
+                    <label for="">Dimensions (<?= $dimensionsUnit?>)</label>
+                    <input type="text" name="length" placeholder="Length" value="<?= $product["dimensions"]["length"]?>">
+                    <input type="text" name="width" placeholder="Width"  value="<?= $product["dimensions"]["width"]?>">
+                    <input type="text" name="height" placeholder="Height"  value="<?= $product["dimensions"]["height"]?>">
+                </div>
+            </div>
+        </div>
+
+
 
         <div id="product-short-description">
             <label for="product-short-description" class="label-block">Short Description</label>
             <textarea name="product-short-description" id="short-description" cols="30" rows="10"><?php echo strip_tags($product['short_description']) ?></textarea>
         </div>
 
-        <div id="sku">
-            <label for="product-sku" class="label-block">SKU</label>
-            <input type="text" name="product-sku" id="sku-input" value="<?= $product['sku']?>">
-        </div>
+        
 
-        <div id=weight-dimensions >
-            <label>Shipping Details</label>
-            <div class="flex-fields">
-                <div>
-                    <label for="length" class="label-block">Length (<?= $dimensionsUnit?>)</label>
-                    <input type="text" name="length" value="<?= $product['dimensions']['length']?>">
-                </div>
-                <div>
-                    <label for="width" class="label-block">Width (<?= $dimensionsUnit?>)</label>
-                    <input type="text" name="width" value="<?= $product['dimensions']['width']?>">
-                </div>
-                <div>
-                    <label for="height" class="label-block">Height (<?= $dimensionsUnit?>)</label>
-                    <input type="text" name="height" value="<?= $product['dimensions']['height']?>">
-                </div>
-                <div>
-                    <label for="weight" class="label-block">Weight (<?= $weightUnit?>)</label>
-                    <input type="text" name="weight" value="<?= $product['weight']?>">
-                </div>
-            </div>
-            
-        </div>
-
-       <div id="categories-tags-container" class="flex-fields">
+       <div id="categories-tags-container" class="flex-container around">
 
             <div id="categories">
-                <label>Choose Categories</label>
+                <label class="label-block">Choose Categories</label>
                 <div id="new-categories">
                     <input type="text" name="category" placeholder="Make a new category for your product" id="category-input">
                 </div>
@@ -332,8 +363,8 @@ else {
             </div>
 
             <div id="tags">
-                <label>Add Tags</label>
-                <div id="new-tags">
+                <label class="label-block">Add Tags</label>
+                <div id="new-tags" class="flex-container">
                     <input type="text" name="new-tag" id="new-tag">
                     <button type="button" id="tag-btn">Add</button>
                 </div>

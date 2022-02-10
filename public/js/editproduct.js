@@ -19,6 +19,7 @@ setCheckboxes()
 function setCheckboxes(){
     const downloadableCheck = document.getElementById("downloadable")
     const virtualCheck = document.getElementById("virtual")
+    const manageStockCheck = document.getElementById("manage-stock")
     const categories = document.querySelectorAll(".checkbox")
     const hiddenProduct = document.getElementById("product-data")
     let productData = JSON.parse(hiddenProduct.value)
@@ -29,6 +30,11 @@ function setCheckboxes(){
     if(productData.virtual){
         virtualCheck.checked = true
     }
+
+    if(productData["manage_stock"]){
+        manageStockCheck.checked = true
+    }
+    
     for(let i = 0; i < categories.length; i++){
         for(let j = 0; j < productData.categories.length; j++){
             if(productData.categories[j].name == categories[i].dataset.name){

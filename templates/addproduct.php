@@ -193,47 +193,15 @@ else {
     </header>
     <form enctype="multipart/form-data" action="" method="post">
 
+        <!-- Name Input field -->
         <div id="title-price" class="flex-fields">
-            <!-- This is the name field input -->
             <div>
                 <label for="product-name" class="label-block">Name</label>
                 <input type="text" name="product-name" id="name">
             </div>
-
-            <div>
-                <label for="product-regular-price" class="label-block">Regular Price</label>
-                <input type="text" name="product-regular-price" id="regular-price">
-            </div>
-
-            <div>
-                <label for="product-sale-price" class="label-block">Sale Price</label>
-                <input type="text" name="product-sale-price" id="sale-price">
-            </div>
-
         </div>
 
-        <div id="product-settings" class="flex-fields">
-            <div >
-                <select name="product-type" id="product-type">
-                    <option value="" selected disabled>Product Type</option>
-                    <option value="simple">Simple Product</option>
-                    <option value="grouped">Grouped Product</option>
-                    <option value="external">External/Affiliate Product</option>
-                    <option value="variable">Variable Product</option>
-                </select>
-            </div>
-
-            <div>
-                <input type="checkbox" name="product-virtual" id="virtual">
-                <label for="product-virtual" class="inline">Virtual</label>
-            </div>
-
-            <div>
-                <input type="checkbox" name="product-downloadable" id="downloadable">
-                <label for="product-downloadable" class="inline">Downloadable</label>
-            </div>
-        </div>
-
+        <!-- Image Input Field -->
         <div id="product-image">
             <label class="custom-file-upload">
                 <input type="file" id="image" name="product-image"/>
@@ -244,9 +212,93 @@ else {
             </div>
         </div>
 
+        <!-- Product Long Description -->
         <div id="product-description">
-            <label for="product-description" class="label-block">Description</label>
+            <label for="product-description" class="label-block">Long Description</label>
             <textarea name="product-description" cols="30" rows="10" id="description"></textarea>
+        </div>
+
+        <!-- Product Data -->
+        <div id="product-settings" class="flex-fields">
+            <label class="label-block">Product Data</label>
+            <div class="flex-container">
+                <div >
+                    <select name="product-type" id="product-type">
+                        <option value="" selected disabled>Product Type</option>
+                        <option value="simple">Simple Product</option>
+                        <option value="grouped">Grouped Product</option>
+                        <option value="external">External/Affiliate Product</option>
+                        <option value="variable">Variable Product</option>
+                    </select>
+                </div>
+    
+                <div>
+                    <input type="checkbox" name="product-virtual" id="virtual">
+                    <label for="product-virtual" class="inline">Virtual</label>
+                </div>
+    
+                <div>
+                    <input type="checkbox" name="product-downloadable" id="downloadable">
+                    <label for="product-downloadable" class="inline">Downloadable</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- General -->
+        <div id="general">
+            <label class="label-block">General</label>
+            <div class="flex-container">
+                <div class="flex-container">
+                    <label for="product-regular-price" class="">Regular Price</label>
+                    <input type="text" name="product-regular-price" id="regular-price">
+                </div>
+
+                <div class="flex-container">
+                    <label for="product-sale-price" class="padding-left">Sale Price</label>
+                    <input type="text" name="product-sale-price" id="sale-price">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Inventory -->
+        <div id="inventory">
+            <label class="label-block">Inventory</label>
+            <div class="inventory-container">
+                <div id="sku" class="flex-container">
+                    <label for="product-sku" class="">SKU</label>
+                    <input type="text" name="product-sku" id="sku-input">
+                </div>
+                <div id="stock" class="flex-container">
+                    <label for="enable-stock">Enable Stock</label>
+                    <span>
+                        <input type="checkbox" name="enable-stock" id="enable-stock">
+                        This will keep count of the stock in the store
+                    </span>
+                </div>
+                <div id="stock-quantity" class="flex-container">
+                    <label for="stock-quantity">Stock Quantity</label>
+                    <input type="number" value="0">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Shipping -->
+        <div id="shipping">
+            <label class="label-block">Shipping</label>
+            <div>
+                <div id="weight" class="flex-container between">
+                    <label for="weight" class="">Weight</label>
+                    <input type="text" name="weight">
+                </div>
+                <div id="dimensions" class="flex-container">
+                    <label for="">Dimensions</label>
+                    <input type="text" name="length" placeholder="Length">
+                    <input type="text" name="width" placeholder="Width">
+                    <input type="text" name="height" placeholder="Height">
+                </div>
+            </div>
         </div>
 
         <div id="product-short-description">
@@ -254,40 +306,12 @@ else {
             <textarea name="product-short-description" id="short-description" cols="30" rows="10"></textarea>
         </div>
 
-        <div id="sku">
-            <label for="product-sku" class="label-block">SKU</label>
-            <input type="text" name="product-sku" id="sku-input">
-        </div>
-
-        <div id=weight-dimensions >
-            <label>Shipping Details</label>
-            <div class="flex-fields">
-                <div>
-                    <label for="length" class="label-block">Length (<?= $dimensionsUnit?>)</label>
-                    <input type="text" name="length">
-                </div>
-                <div>
-                    <label for="width" class="label-block">Width (<?= $dimensionsUnit?>)</label>
-                    <input type="text" name="width">
-                </div>
-                <div>
-                    <label for="height" class="label-block">Height (<?= $dimensionsUnit?>)</label>
-                    <input type="text" name="height">
-                </div>
-                <div>
-                    <label for="weight" class="label-block">Weight (<?= $weightUnit?>)</label>
-                    <input type="text" name="weight">
-                </div>
-            </div>
-           
-        </div>
-
-       <div id="categories-tags-container" class="flex-fields">
+       <div id="categories-tags-container" class="flex-container around">
 
             <div id="categories">
-                <label>Choose Categories</label>
+                <label class="label-block">Choose Categories</label>
                 <div id="new-categories">
-                    <input type="text" name="category" placeholder="Make a new category for your product" id="category-input">
+                    <input type="text" name="category" placeholder="Make a new category" id="category-input">
                 </div>
                 <select name="parent-category" id="parent-categories">
                     <option value="" selected >None</option>
@@ -305,7 +329,7 @@ else {
             </div>
 
             <div id="tags">
-                <label>Add Tags</label>
+            <label class="label-block">Add Tags</label>
                 <div id="new-tags">
                     <input type="text" name="new-tag" id="new-tag">
                     <button type="button" id="tag-btn">Add</button>

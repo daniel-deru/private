@@ -119,6 +119,9 @@ else {
 
         if(isset($_POST['stock-quantity'])){
             $data['stock-quantity'] = $_POST['stock-quantity'];
+            if(!$_POST['stock-quantity']){
+                $data['stock-quantity'] = 0;
+            }
         }
 
         // check if the dimensions are filled in and add them to the data object

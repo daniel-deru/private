@@ -276,6 +276,10 @@ input[type="file"] {
     max-height: 400px;
 }
 
+#product-settings  {
+    padding: 20px;
+}
+
 .inventory-container > div {
     margin: 20px 0px;
 }
@@ -332,3 +336,32 @@ input[type="submit"] {
     margin-left: 10px;
 }
 
+.help {
+    position: relative;
+    cursor: pointer;
+}
+
+.help div {
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    width: 300px;
+    background-color: black;
+    color: white;
+    opacity: 0;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 0.75em;
+    transition: all 0.3s ease-in-out;
+    display: none;
+}
+
+.help:hover div {
+    opacity: 1;
+    display: block;
+}
+
+#general .flex-container:nth-child(2) label {
+    display: inline-block;
+    margin-left: 20px;
+}

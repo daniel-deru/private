@@ -35,7 +35,9 @@ if(isset($_SERVER['HTTP_REFERER'])){
             $product = json_decode($getProduct($_GET['id']), true);
 
             echo "<pre>";
-            print_r($product);
+            echo "This is the product fetched";
+            print_r($product['manage_stock']);
+            echo "end\n";
             echo "</pre>";
         }
 
@@ -44,7 +46,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
         $javascriptProductData = array(
             'downloadable' => $product['downloadable'],
             'virtual' => $product['virtual'],
-            'categories' => $product['categories']
+            'categories' => $product['categories'],
+            'manage_stock' => $product['manage_stock']
         );
 
         $unitData = json_decode($units(), true);
@@ -143,7 +146,11 @@ else {
         }
 
         if(isset($_POST['stock-quantity'])){
-            $data['stock-quantity'] = $_POST['stock-quantity'];
+            
+            $data['stock_quantity'] = $_POST['stock-quantity'];
+            if(!$_POST['stock-quantity']){
+                $data['stock_quantity'] = 0;
+            }
         }
 
 
@@ -203,8 +210,21 @@ else {
         } else if(!$_POST['product-tags']){
             $data['tags'] = array();
         }
+
+        echo "<pre>";
+        echo "This is the data submited from the form";
+        print_r($_POST['manage-stock']);
+        echo "end\n";
+        echo "</pre>";
+
+        
         
         $saveProduct = json_decode($updateProduct($id, $data), true);
+        echo "<pre>";
+        echo "This is the return data after updating the product";
+        print_r($saveProduct['manage_stock']);
+        echo "end\n";
+        echo "</pre>";
 
         $files = glob($imageFolder . "/*");
         foreach($files as $file){
@@ -212,7 +232,7 @@ else {
                 unlink($file);
             }
         }
-        header("Location: " . $link . "/" . $products_page . "?id=1");
+        // header("Location: " . $link . "/" . $products_page . "?id=1");
     } 
 
 ?>
@@ -222,6 +242,8 @@ else {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.css"?>">
     <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/editproduct.js"?>" defer></script>
     <title>Add Product</title>
@@ -252,29 +274,38 @@ else {
         </div>
 
         <div id="product-description">
-            <label for="product-description" class="label-block">Description</label>
+            <label for="product-description" class="label-block">Long Description</label>
             <textarea name="product-description" cols="30" rows="10" id="description"><?php echo strip_tags($product['description']) ?></textarea>
         </div>
 
-        <div id="product-settings" class="flex-fields">
-            <div >
-                <select name="product-type" id="product-type">
-                    <option value="" selected disabled>Product Type</option>
-                    <option value="simple">Simple Product</option>
-                    <option value="grouped">Grouped Product</option>
-                    <option value="external">External/Affiliate Product</option>
-                    <option value="variable">Variable Product</option>
-                </select>
-            </div>
+        <div id="product-settings">
+            <label class="label-block">
+                Product Settings 
+                <span class="help">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <div>Set the product type, if the product is downloadable or virtual (i.e. Not a physical product)</div>
+                </span> 
+            </label>
+            <div class="flex-container">
+                <div >
+                    <select name="product-type" id="product-type">
+                        <option value="" selected disabled>Product Type</option>
+                        <option value="simple">Simple Product</option>
+                        <option value="grouped">Grouped Product</option>
+                        <option value="external">External/Affiliate Product</option>
+                        <option value="variable">Variable Product</option>
+                    </select>
+                </div>
 
-            <div>
-                <input type="checkbox" name="product-virtual" id="virtual">
-                <label for="product-virtual" class="inline">Virtual</label>
-            </div>
+                <div>
+                    <input type="checkbox" name="product-virtual" id="virtual">
+                    <label for="product-virtual" class="inline">Virtual</label>
+                </div>
 
-            <div>
-                <input type="checkbox" name="product-downloadable" id="downloadable">
-                <label for="product-downloadable" class="inline">Downloadable</label>
+                <div>
+                    <input type="checkbox" name="product-downloadable" id="downloadable">
+                    <label for="product-downloadable" class="inline">Downloadable</label>
+                </div>
             </div>
         </div>
 
@@ -296,28 +327,41 @@ else {
 
 
         <div id="inventory">
+            <label class="label-block">
+                Inventory 
+                <span class="help">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <div>Set stock data like the SKU, whether you want to keep count of stock and if so, how much stock you have.</div>
+                </span> 
+            </label>
             <div class="inventory-container">
                 <div id="sku" class="flex-container">
-                    <label for="product-sku" class="label-block">SKU</label>
+                    <label for="product-sku">SKU </label>
                     <input type="text" name="product-sku" id="sku-input" value="<?= $product['sku']?>">
                 </div>
                 <div id="stock" class="flex-container">
-                    <label for="enable-stock">Enable Stock</label>
+                    <label for="enable-stock">Enable Stock </label>
                     <span>
                         <input type="checkbox" name="manage-stock" id="manage-stock">
                         This will keep count of the stock in the store
                     </span>
                 </div>
                 <div id="stock-quantity" class="flex-container">
-                    <label for="stock-quantity">Stock Quantity</label>
-                    <input type="number" value="0" name="stock-quantity" value="<?= $product['stock-quantity'] ?>">
+                    <label for="stock-quantity">Stock Quantity </label>
+                    <input type="number" name="stock-quantity" value="<?= $product['stock_quantity'] ?>">
                 </div>
             </div>
         </div>
 
                 <!-- Shipping -->
                 <div id="shipping">
-            <label class="label-block">Shipping</label>
+            <label class="label-block">
+                Shipping 
+                <span class="help">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <div>Set shipping information such as the weight and dimensions of the product. (keep in mind the unit these values are measured in)</div>
+                </span> 
+            </label>
             <div>
                 <div id="weight" class="flex-container between">
                     <label for="weight" class="">Weight (<?= $dimensionsUnit?>)</label>
@@ -344,9 +388,14 @@ else {
        <div id="categories-tags-container" class="flex-container around">
 
             <div id="categories">
-                <label class="label-block">Choose Categories</label>
+                <label class="label-block">
+                    Choose Categories 
+                    <span class="help">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <div>Set the categories for the product. You can set more that  one category for a product or create a new category. You can also create sub-categories but selecting the parent category for your new category</div>
+                    </span> </label>
                 <div id="new-categories">
-                    <input type="text" name="category" placeholder="Make a new category for your product" id="category-input">
+                    <input type="text" name="category" placeholder="Make a new category" id="category-input">
                 </div>
                 <select name="parent-category" id="parent-categories">
                     <option value="" selected >None</option>
@@ -363,7 +412,13 @@ else {
             </div>
 
             <div id="tags">
-                <label class="label-block">Add Tags</label>
+                <label class="label-block">
+                    Add Tags 
+                    <span class="help">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <div>Set the tag for the product to track the product and reference it in other places as well.</div>
+                    </span> 
+                </label>
                 <div id="new-tags" class="flex-container">
                     <input type="text" name="new-tag" id="new-tag">
                     <button type="button" id="tag-btn">Add</button>

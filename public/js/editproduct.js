@@ -23,7 +23,8 @@ function setCheckboxes(){
     const categories = document.querySelectorAll(".checkbox")
     const hiddenProduct = document.getElementById("product-data")
     let productData = JSON.parse(hiddenProduct.value)
-
+    console.log(manageStockCheck)
+    console.log(productData)
     if(productData.downloadable){
         downloadableCheck.checked = true
     }

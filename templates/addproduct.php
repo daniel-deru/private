@@ -194,6 +194,8 @@ else {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.css"?>">
     <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/addproduct.js"?>" defer></script>
     <title>Add Product</title>
@@ -231,7 +233,13 @@ else {
 
         <!-- Product Data -->
         <div id="product-settings" class="flex-fields">
-            <label class="label-block">Product Data</label>
+            <label class="label-block">
+                Product Data
+                <span class="help">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <div>Set the product type, if the product is downloadable or virtual (i.e. Not a physical product)</div>
+                </span>
+            </label>
             <div class="flex-container">
                 <div >
                     <select name="product-type" id="product-type">
@@ -274,7 +282,13 @@ else {
 
         <!-- Inventory -->
         <div id="inventory">
-            <label class="label-block">Inventory</label>
+            <label class="label-block">
+                Inventory
+                <span class="help">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <div>Set stock data like the SKU, whether you want to keep count of stock and if so, how much stock you have.</div>
+                </span> 
+            </label>
             <div class="inventory-container">
                 <div id="sku" class="flex-container">
                     <label for="product-sku" class="">SKU</label>
@@ -297,7 +311,13 @@ else {
 
         <!-- Shipping -->
         <div id="shipping">
-            <label class="label-block">Shipping</label>
+            <label class="label-block">
+                Shipping
+                <span class="help">
+                    <i class="fa-regular fa-circle-question"></i>
+                    <div>Set shipping information such as the weight and dimensions of the product. (keep in mind the unit these values are measured in)</div>
+                </span>
+            </label>
             <div>
                 <div id="weight" class="flex-container between">
                     <label for="weight" class="">Weight</label>
@@ -320,12 +340,18 @@ else {
        <div id="categories-tags-container" class="flex-container around">
 
             <div id="categories">
-                <label class="label-block">Choose Categories</label>
+                <label class="label-block">
+                    Choose Categories
+                    <span class="help">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <div>Set the categories for the product. You can set more that  one category for a product or create a new category. You can also create sub-categories but selecting the parent category for your new category</div>
+                    </span> 
+                </label>
                 <div id="new-categories">
                     <input type="text" name="category" placeholder="Make a new category" id="category-input">
                 </div>
                 <select name="parent-category" id="parent-categories">
-                    <option value="" selected >None</option>
+                    <option value="" selected >Set Parent</option>
                     <?php
                         foreach($categories as $category){
                             if($category['parent'] == 0){?>
@@ -340,7 +366,13 @@ else {
             </div>
 
             <div id="tags">
-            <label class="label-block">Add Tags</label>
+            <label class="label-block">
+                Add Tags
+                <span class="help">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <div>Set the tag for the product to track the product and reference it in other places as well.</div>
+                </span> 
+            </label>
                 <div id="new-tags">
                     <input type="text" name="new-tag" id="new-tag">
                     <button type="button" id="tag-btn">Add</button>

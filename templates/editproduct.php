@@ -33,12 +33,6 @@ if(isset($_SERVER['HTTP_REFERER'])){
         $id = $_GET['id'];
         if(isset($_GET['id'])){
             $product = json_decode($getProduct($_GET['id']), true);
-
-            echo "<pre>";
-            echo "This is the product fetched";
-            print_r($product['manage_stock']);
-            echo "end\n";
-            echo "</pre>";
         }
 
 
@@ -209,22 +203,9 @@ else {
             $data['tags'] = $productTags;
         } else if(!$_POST['product-tags']){
             $data['tags'] = array();
-        }
-
-        echo "<pre>";
-        echo "This is the data submited from the form";
-        print_r($_POST['manage-stock']);
-        echo "end\n";
-        echo "</pre>";
-
-        
+        }   
         
         $saveProduct = json_decode($updateProduct($id, $data), true);
-        echo "<pre>";
-        echo "This is the return data after updating the product";
-        print_r($saveProduct['manage_stock']);
-        echo "end\n";
-        echo "</pre>";
 
         $files = glob($imageFolder . "/*");
         foreach($files as $file){
@@ -232,7 +213,7 @@ else {
                 unlink($file);
             }
         }
-        // header("Location: " . $link . "/" . $products_page . "?id=1");
+        header("Location: " . $link . "/" . $products_page . "?id=1");
     } 
 
 ?>
@@ -393,12 +374,13 @@ else {
                     <span class="help">
                         <i class="fa-regular fa-circle-question"></i>
                         <div>Set the categories for the product. You can set more that  one category for a product or create a new category. You can also create sub-categories but selecting the parent category for your new category</div>
-                    </span> </label>
+                    </span> 
+                </label>
                 <div id="new-categories">
                     <input type="text" name="category" placeholder="Make a new category" id="category-input">
                 </div>
                 <select name="parent-category" id="parent-categories">
-                    <option value="" selected >None</option>
+                    <option value="" selected >Set Parent</option>
                     <?php
                         foreach($categories as $category){
                             if($category['parent'] == 0){?>

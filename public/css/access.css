@@ -15,6 +15,7 @@
     font-family: sans-serif;
     padding: 1em 0em;
     border-radius: 10px;
+    box-sizing: border-box;
 }
 
 label {
@@ -22,26 +23,34 @@ label {
     color: var(--main-blue);
 }
 
-#login-form div {
+#login-form > div {
     margin: 2rem auto;
     width: 60%;
 }
 
+#login-form input {
+    padding: 10px;
+}
 
-#login-form div > *:not(input[type="submit"]) {
+#login-form label {
+    margin-bottom: 20px;
+}
+
+
+#login-form > div > *:not(input[type="submit"], button) {
     font-size: 1.2em;
     width: 100%;
     border-radius: 5px;
     outline-color: var(--main-green);
-    padding: 10px;
+    /* padding: 10px; */
     color: var(--main-blue);
 }
 
-#login-form div input:not(input[type="submit"]){
+#login-form > div input:not(input[type="submit"]){
     border: 2px solid var(--main-blue);
 }
 
-#login-form div input[type="submit"]{
+#login-form > div input[type="submit"]{
     border: 2px solid var(--gradient);
     border-radius: 5px;
     display: block;
@@ -55,4 +64,44 @@ label {
 
 #login-btn{
     cursor: pointer;
+}
+
+#display_errors {
+    color: red;
+    font-size: 2em;
+    text-align: center;
+    font-family: sans-serif;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    font-size: 1.2em;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: block;
+}
+
+#icon-button {
+    font-size: 1em;
+    width: fit-content;
+    height: fit-content;
+    cursor: pointer;
+    position: absolute;
+    cursor: pointer;
+    top: 0px;
+    right: 0;
+    z-index: 5;
+    background-color: transparent;
+    border: none;
+    transform: translateY(calc(50% + 5px));
 }

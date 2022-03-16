@@ -7,7 +7,7 @@
 
 // Get the woocommerce api functions
 require __DIR__ . "/woocommerce-api.php";
-require_once dirname(__FILE__, 1) . "/includes/helpers.php";
+require  __DIR__ . "/../includes/helpers.php";
 
 // get the correct protocol
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')

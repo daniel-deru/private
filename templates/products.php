@@ -20,7 +20,8 @@
 <?php
 
 require __DIR__ . "/woocommerce-api.php";
-require_once dirname(__FILE__, 1) . "/includes/helpers.php";
+require  __DIR__ . "/../includes/helpers.php";
+// require dirname(plugin_dir_url(__FILE__), 1) . "/includes/helpers.php";
 
 $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
@@ -58,6 +59,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
         if(isset($_GET['id'])){
             $page = intval($_GET['id']);
         }
+        
         if($validCodes){
             $productsData = json_decode($listProducts($page), true);
             $categoriesData = json_decode($listCategories(), true);

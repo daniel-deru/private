@@ -3,7 +3,7 @@
     $wp_load = $absolute_path[0] . 'wp-load.php';
     require_once($wp_load);
 
-    $color = get_option("wp_smart_products_brand_color");
+    $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
 
 
     header('Content-Type: text/css');

@@ -197,6 +197,7 @@ add_filter( 'page_template', 'editproduct_page_template' );
 
 add_action('admin_menu', 'SetupPage');
 add_action('admin_init', 'RegisterSettings');
+add_action("admin_head", "admin_styles");
 
 function SetupPage() {
     add_menu_page(__("WPSmartCommerce "), __("Smart Commerce"), "manage_options", __FILE__, 'PageContent', plugin_dir_url(__FILE__) . "assets/WPSC.svg");
@@ -214,6 +215,11 @@ function RegisterSettings() {
 function PageContent() {
     if (!current_user_can('manage_options'))
         wp_die(__("You don't have access to this page"));
-    require_once dirname( __FILE__ ) . "/templates/adminPage.php";
+    require_once dirname( __FILE__ ) . "/adminPage.php";
 
+}
+
+function admin_styles(){
+    echo '<link rel="stylesheet" href="' . dirname(plugin_dir_url(__FILE__)) .'/private/public/css/admin.css">';
+    // echo  '<script src="' . dirname(plugin_dir_url(__FILE__)) . '/lk_supplier/public/js/wp_smart_feeds_help.js" defer></script>';
 }

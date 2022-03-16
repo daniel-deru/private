@@ -1,0 +1,29 @@
+#smt-admin-page {
+    font-size: 1.5em;
+}
+
+#smt-admin-page form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+#smt-admin-page form > div {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+#smt-admin-page form div label {
+    margin-bottom: 10px;
+}
+
+#smt-admin-page form div div img {
+    width: 20px;
+}
+
+#smt-admin-page form div input[type="submit"]{
+    width: fit-content;
+    padding: 0px 40px;
+    margin: auto;
+} 

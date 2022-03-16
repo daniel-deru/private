@@ -20,6 +20,7 @@
 <?php
 
 require __DIR__ . "/woocommerce-api.php";
+require_once dirname(__FILE__, 1) . "/includes/helpers.php";
 
 $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
@@ -52,17 +53,21 @@ if(isset($_SERVER['HTTP_REFERER'])){
     $from_add = preg_match("/" . $add_page . "/", $previous_page);
 
     $page = 1;
+    $validCodes = checkCode();
     if($from_login || $from_self || $from_edit || $from_add){
         if(isset($_GET['id'])){
             $page = intval($_GET['id']);
         }
-        
-        $productsData = json_decode($listProducts($page), true);
-        $categoriesData = json_decode($listCategories(), true);
+        if($validCodes){
+            $productsData = json_decode($listProducts($page), true);
+            $categoriesData = json_decode($listCategories(), true);
+    
+            $products = $productsData['data'];
+            $categories = $categoriesData['data'];
+            $productsHeaders = $productsData['headers'];
+        }
 
-        $products = $productsData['data'];
-        $categories = $categoriesData['data'];
-        $productsHeaders = $productsData['headers'];
+
 
     }
     else {
@@ -110,51 +115,56 @@ else {
     <section>
 
     </section>
-    <main id="product-grid">
-        <?php
-        
-                if(isset($products)){
-                    foreach($products as $product){
-                        $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
-                        ?>
-                         
-                        <div class="product-container <?= $categoryList?>" data-name="<?= $product['name']?>" data-price="<?= $product['regular_price']?>">
-                            <img src="<?php echo $product['images'][0]['src']?>" alt="" class="product-image">
-                            <div class="title"><?php echo $product['name']?></div>
-                            <?php 
-                                if($product['regular_price']){
-                                    ?>
-                                    <div class="price">R <?php echo $product['regular_price']?></div>
-                                    <?php
-                                }
-                            
+    <?php if($validCodes): ?>
+        <main id="product-grid">
+            <?php
+            
+                    if(isset($products)){
+                        foreach($products as $product){
+                            $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
                             ?>
                             
-                            <div class="SKU-categories">
-                                <div class="SKU"><b>SKU: </b><?php echo displayData($product['sku'])?></div>
-                                <div class="Categories"><b>Categories: </b><?php echo $categoryList?></div>
+                            <div class="product-container <?= $categoryList?>" data-name="<?= $product['name']?>" data-price="<?= $product['regular_price']?>">
+                                <img src="<?php echo $product['images'][0]['src']?>" alt="" class="product-image">
+                                <div class="title"><?php echo $product['name']?></div>
+                                <?php 
+                                    if($product['regular_price']){
+                                        ?>
+                                        <div class="price">R <?php echo $product['regular_price']?></div>
+                                        <?php
+                                    }
+                                
+                                ?>
+                                
+                                <div class="SKU-categories">
+                                    <div class="SKU"><b>SKU: </b><?php echo displayData($product['sku'])?></div>
+                                    <div class="Categories"><b>Categories: </b><?php echo $categoryList?></div>
+                                </div>
+                                <a href="<?= $edit_page?>?id=<?= $product['id']?>" class="edit-product">Edit Product</a>
                             </div>
-                            <a href="<?= $edit_page?>?id=<?= $product['id']?>" class="edit-product">Edit Product</a>
-                        </div>
-                   <?php }
-                }
-        
-        ?>
-    </main>
-    <div id="pagination">
-        <div>Showing page <?=$page?> of 
-            <?= $productsHeaders['x-wp-totalpages']?>
-        </div>
-            <ul id="page-list">
-                <?php 
-                    for($i = 1; $i <= $productsHeaders['x-wp-totalpages']; $i++){?>
-                        <li class="page">
-                            <a href="<?= $products_page?>?id=<?= $i ?>"><?php echo $i ?></a>
-                        </li>
-                <?php
+                    <?php }
                     }
-                ?>
-            </ul>
-    </div>
+            
+            ?>
+        </main>
+        <div id="pagination">
+            <div>Showing page <?=$page?> of 
+                <?= $productsHeaders['x-wp-totalpages']?>
+            </div>
+                <ul id="page-list">
+                    <?php 
+                        for($i = 1; $i <= $productsHeaders['x-wp-totalpages']; $i++){?>
+                            <li class="page">
+                                <a href="<?= $products_page?>?id=<?= $i ?>"><?php echo $i ?></a>
+                            </li>
+                    <?php
+                        }
+                    ?>
+                </ul>
+        </div>
+    <?php else: ?>
+        <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
+
+    <?php endif;?>
 </body>
 </html>

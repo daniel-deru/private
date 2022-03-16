@@ -7,6 +7,8 @@
 
 // Get the woocommerce api functions
 require __DIR__ . "/woocommerce-api.php";
+require_once dirname(__FILE__, 1) . "/includes/helpers.php";
+
 // get the correct protocol
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
@@ -17,6 +19,7 @@ $link .= "://" . $_SERVER['HTTP_HOST'];
 $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
 $add_page = "wp-smart-add-product";
+$validCode = checkCode();
 
 // Check where the request for the current page is coming from
 if(isset($_SERVER['HTTP_REFERER'])){
@@ -25,22 +28,25 @@ if(isset($_SERVER['HTTP_REFERER'])){
     $from_self = preg_match("/" . $add_page ."/", $previous_page);
 
     if($from_products || $from_self){
-        $categoriesData = json_decode($listCategories(), true);
-        $categories = $categoriesData['data'];
+        if($validCode){
+            $categoriesData = json_decode($listCategories(), true);
+            $categories = $categoriesData['data'];
 
-        $unitData = json_decode($units(), true);
+            $unitData = json_decode($units(), true);
 
-        $weightUnit;
-        $dimensionsUnit;
+            $weightUnit;
+            $dimensionsUnit;
 
-        foreach($unitData as $option){
-            if($option['id'] == "woocommerce_weight_unit"){
-                $weightUnit = $option['value'];
-            }
-            if($option['id'] == "woocommerce_dimension_unit"){
-                $dimensionsUnit = $option['value'];
+            foreach($unitData as $option){
+                if($option['id'] == "woocommerce_weight_unit"){
+                    $weightUnit = $option['value'];
+                }
+                if($option['id'] == "woocommerce_dimension_unit"){
+                    $dimensionsUnit = $option['value'];
+                }
             }
         }
+        
 
     }
     else {
@@ -72,7 +78,7 @@ else {
                 $categortArray['parent'] = $_POST['parent-category'];
             }
 
-            $newCategory = json_decode($createCategory($categortArray), true);
+          if($validCode) $newCategory = json_decode($createCategory($categortArray), true);
         }
         
         
@@ -81,41 +87,23 @@ else {
         $data = [];
         $data['name'] = $_POST['product-name'];
 
-        if(isset($_POST['product-regular-price'])){
-            $data['regular_price'] = $_POST['product-regular-price'];
-        }
+        if(isset($_POST['product-regular-price'])) $data['regular_price'] = $_POST['product-regular-price'];
 
-        if(isset($_POST['product-sale-price'])){
-            $data['sale_price'] = $_POST['product-sale-price'];
-        }
+        if(isset($_POST['product-sale-price'])) $data['sale_price'] = $_POST['product-sale-price'];
 
-        if(isset($_POST['product-type'])){
-            $data['type'] = $_POST['product-type'];
-        }
+        if(isset($_POST['product-type'])) $data['type'] = $_POST['product-type'];
 
-        if(isset($_POST['product-virtual'])){
-            $data['virtual'] = true;
-        }
+        if(isset($_POST['product-virtual'])) $data['virtual'] = true;
 
-        if(isset($_POST['product-downloadable'])){
-            $data['downloadable'] = true;
-        }
+        if(isset($_POST['product-downloadable'])) $data['downloadable'] = true;
 
-        if(isset($_POST['product-description'])){
-            $data['description'] = $_POST['product-description'];
-        }
+        if(isset($_POST['product-description'])) $data['description'] = $_POST['product-description'];
 
-        if(isset($_POST['product-short-description'])){
-            $data['short_description'] = $_POST['product-short-description'];
-        }
+        if(isset($_POST['product-short-description'])) $data['short_description'] = $_POST['product-short-description'];
 
-        if(isset($_POST['product-sku'])){
-            $data['sku'] = $_POST['product-sku'];
-        }
+        if(isset($_POST['product-sku'])) $data['sku'] = $_POST['product-sku'];
 
-        if(isset($_POST['manage-stock'])){
-            $data['manage_stock'] = true;
-        }
+        if(isset($_POST['manage-stock'])) $data['manage_stock'] = true;
 
         if(isset($_POST['stock-quantity'])){
             $data['stock-quantity'] = $_POST['stock-quantity'];
@@ -136,9 +124,7 @@ else {
         }
 
         // Check if the weight is filled
-        if(isset($_POST['weight'])){
-            $data["weight"] = $_POST["weight"];
-        }
+        if(isset($_POST['weight'])) $data["weight"] = $_POST["weight"];
         
 
         $imageFolder = dirname(__FILE__) . "/images";
@@ -176,7 +162,7 @@ else {
             $data['tags'] = $productTags;
         }
         
-        $saveProduct = json_decode($addProduct($data), true);
+       if($validCode) $saveProduct = json_decode($addProduct($data), true);
 
         $files = glob($imageFolder . "/*");
         foreach($files as $file){
@@ -209,197 +195,201 @@ else {
         <?php endif;?>
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
-    <form enctype="multipart/form-data" action="" method="post">
+    <?php if($validCode): ?>
+        <form enctype="multipart/form-data" action="" method="post">
 
-        <!-- Name Input field -->
-        <div id="title-price" class="flex-fields">
-            <div>
-                <label for="product-name" class="label-block">Name</label>
-                <input type="text" name="product-name" id="name">
-            </div>
-        </div>
-
-        <!-- Image Input Field -->
-        <div id="product-image">
-            <label class="custom-file-upload">
-                <input type="file" id="image" name="product-image"/>
-                Upload Image
-            </label>
-            <div id="image-preview">
-                <img src="" alt="" id="img">
-            </div>
-        </div>
-
-        <!-- Product Long Description -->
-        <div id="product-description">
-            <label for="product-description" class="label-block">Long Description</label>
-            <textarea name="product-description" cols="30" rows="10" id="description"></textarea>
-        </div>
-
-        <!-- Product Data -->
-        <div id="product-settings" class="flex-fields">
-            <label class="label-block">
-                Product Data
-                <span class="help">
-                    <i class="fa-regular fa-circle-question"></i>
-                    <div>Set the product type, if the product is downloadable or virtual (i.e. Not a physical product)</div>
-                </span>
-            </label>
-            <div class="flex-container">
-                <div >
-                    <select name="product-type" id="product-type">
-                        <option value="" selected disabled>Product Type</option>
-                        <option value="simple">Simple Product</option>
-                        <option value="grouped">Grouped Product</option>
-                        <option value="external">External/Affiliate Product</option>
-                        <option value="variable">Variable Product</option>
-                    </select>
-                </div>
-    
+            <!-- Name Input field -->
+            <div id="title-price" class="flex-fields">
                 <div>
-                    <input type="checkbox" name="product-virtual" id="virtual">
-                    <label for="product-virtual" class="inline">Virtual</label>
-                </div>
-    
-                <div>
-                    <input type="checkbox" name="product-downloadable" id="downloadable">
-                    <label for="product-downloadable" class="inline">Downloadable</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- General -->
-        <div id="general">
-            <label class="label-block">General</label>
-            <div class="flex-container">
-                <div class="flex-container">
-                    <label for="product-regular-price" class="">Regular Price</label>
-                    <input type="text" name="product-regular-price" id="regular-price">
-                </div>
-
-                <div class="flex-container">
-                    <label for="product-sale-price" class="padding-left">Sale Price</label>
-                    <input type="text" name="product-sale-price" id="sale-price">
+                    <label for="product-name" class="label-block">Name</label>
+                    <input type="text" name="product-name" id="name">
                 </div>
             </div>
 
-        </div>
-
-        <!-- Inventory -->
-        <div id="inventory">
-            <label class="label-block">
-                Inventory
-                <span class="help">
-                    <i class="fa-regular fa-circle-question"></i>
-                    <div>Set stock data like the SKU, whether you want to keep count of stock and if so, how much stock you have.</div>
-                </span> 
-            </label>
-            <div class="inventory-container">
-                <div id="sku" class="flex-container">
-                    <label for="product-sku" class="">SKU</label>
-                    <input type="text" name="product-sku" id="sku-input">
-                </div>
-                <div id="stock" class="flex-container">
-                    <label for="enable-stock">Enable Stock</label>
-                    <span>
-                        <input type="checkbox" name="manage-stock" id="manage-stock">
-                        This will keep count of the stock in the store
-                    </span>
-                </div>
-                <div id="stock-quantity" class="flex-container">
-                    <label for="stock-quantity">Stock Quantity</label>
-                    <input type="number" value="0" name="stock-quantity">
+            <!-- Image Input Field -->
+            <div id="product-image">
+                <label class="custom-file-upload">
+                    <input type="file" id="image" name="product-image"/>
+                    Upload Image
+                </label>
+                <div id="image-preview">
+                    <img src="" alt="" id="img">
                 </div>
             </div>
 
-        </div>
-
-        <!-- Shipping -->
-        <div id="shipping">
-            <label class="label-block">
-                Shipping
-                <span class="help">
-                    <i class="fa-regular fa-circle-question"></i>
-                    <div>Set shipping information such as the weight and dimensions of the product. (keep in mind the unit these values are measured in)</div>
-                </span>
-            </label>
-            <div>
-                <div id="weight" class="flex-container between">
-                    <label for="weight" class="">Weight</label>
-                    <input type="text" name="weight">
-                </div>
-                <div id="dimensions" class="flex-container">
-                    <label for="">Dimensions</label>
-                    <input type="text" name="length" placeholder="Length">
-                    <input type="text" name="width" placeholder="Width">
-                    <input type="text" name="height" placeholder="Height">
-                </div>
+            <!-- Product Long Description -->
+            <div id="product-description">
+                <label for="product-description" class="label-block">Long Description</label>
+                <textarea name="product-description" cols="30" rows="10" id="description"></textarea>
             </div>
-        </div>
 
-        <div id="product-short-description">
-            <label for="product-short-description" class="label-block">Short Description</label>
-            <textarea name="product-short-description" id="short-description" cols="30" rows="10"></textarea>
-        </div>
-
-       <div id="categories-tags-container" class="flex-container around">
-
-            <div id="categories">
+            <!-- Product Data -->
+            <div id="product-settings" class="flex-fields">
                 <label class="label-block">
-                    Choose Categories
+                    Product Data
                     <span class="help">
                         <i class="fa-regular fa-circle-question"></i>
-                        <div>Set the categories for the product. You can set more that  one category for a product or create a new category. You can also create sub-categories but selecting the parent category for your new category</div>
+                        <div>Set the product type, if the product is downloadable or virtual (i.e. Not a physical product)</div>
+                    </span>
+                </label>
+                <div class="flex-container">
+                    <div >
+                        <select name="product-type" id="product-type">
+                            <option value="" selected disabled>Product Type</option>
+                            <option value="simple">Simple Product</option>
+                            <option value="grouped">Grouped Product</option>
+                            <option value="external">External/Affiliate Product</option>
+                            <option value="variable">Variable Product</option>
+                        </select>
+                    </div>
+        
+                    <div>
+                        <input type="checkbox" name="product-virtual" id="virtual">
+                        <label for="product-virtual" class="inline">Virtual</label>
+                    </div>
+        
+                    <div>
+                        <input type="checkbox" name="product-downloadable" id="downloadable">
+                        <label for="product-downloadable" class="inline">Downloadable</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- General -->
+            <div id="general">
+                <label class="label-block">General</label>
+                <div class="flex-container">
+                    <div class="flex-container">
+                        <label for="product-regular-price" class="">Regular Price</label>
+                        <input type="text" name="product-regular-price" id="regular-price">
+                    </div>
+
+                    <div class="flex-container">
+                        <label for="product-sale-price" class="padding-left">Sale Price</label>
+                        <input type="text" name="product-sale-price" id="sale-price">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Inventory -->
+            <div id="inventory">
+                <label class="label-block">
+                    Inventory
+                    <span class="help">
+                        <i class="fa-regular fa-circle-question"></i>
+                        <div>Set stock data like the SKU, whether you want to keep count of stock and if so, how much stock you have.</div>
                     </span> 
                 </label>
-                <div id="new-categories">
-                    <input type="text" name="category" placeholder="Make a new category" id="category-input">
+                <div class="inventory-container">
+                    <div id="sku" class="flex-container">
+                        <label for="product-sku" class="">SKU</label>
+                        <input type="text" name="product-sku" id="sku-input">
+                    </div>
+                    <div id="stock" class="flex-container">
+                        <label for="enable-stock">Enable Stock</label>
+                        <span>
+                            <input type="checkbox" name="manage-stock" id="manage-stock">
+                            This will keep count of the stock in the store
+                        </span>
+                    </div>
+                    <div id="stock-quantity" class="flex-container">
+                        <label for="stock-quantity">Stock Quantity</label>
+                        <input type="number" value="0" name="stock-quantity">
+                    </div>
                 </div>
-                <select name="parent-category" id="parent-categories">
-                    <option value="" selected >Set Parent</option>
-                    <?php
-                        foreach($categories as $category){
-                            if($category['parent'] == 0){?>
-                            <option value="<?= $category['id']?>" id="<?= $category['id']?>"><?= $category['name']?></option>
-                       <?php }}
-                    
-                    ?>
-                </select>
-                <div id="categories-checkboxes">
 
-                </div>
             </div>
 
-            <div id="tags">
-            <label class="label-block">
-                Add Tags
-                <span class="help">
+            <!-- Shipping -->
+            <div id="shipping">
+                <label class="label-block">
+                    Shipping
+                    <span class="help">
                         <i class="fa-regular fa-circle-question"></i>
-                        <div>Set the tag for the product to track the product and reference it in other places as well.</div>
-                </span> 
-            </label>
-                <div id="new-tags">
-                    <input type="text" name="new-tag" id="new-tag">
-                    <button type="button" id="tag-btn">Add</button>
-                </div>
-                <div id="tags-container">
-
+                        <div>Set shipping information such as the weight and dimensions of the product. (keep in mind the unit these values are measured in)</div>
+                    </span>
+                </label>
+                <div>
+                    <div id="weight" class="flex-container between">
+                        <label for="weight" class="">Weight</label>
+                        <input type="text" name="weight">
+                    </div>
+                    <div id="dimensions" class="flex-container">
+                        <label for="">Dimensions</label>
+                        <input type="text" name="length" placeholder="Length">
+                        <input type="text" name="width" placeholder="Width">
+                        <input type="text" name="height" placeholder="Height">
+                    </div>
                 </div>
             </div>
 
-       </div>
+            <div id="product-short-description">
+                <label for="product-short-description" class="label-block">Short Description</label>
+                <textarea name="product-short-description" id="short-description" cols="30" rows="10"></textarea>
+            </div>
 
-       
+        <div id="categories-tags-container" class="flex-container around">
 
-        <div id="btn-save">
-            <input type="submit" id="save-btn" value="Save" name="save">
+                <div id="categories">
+                    <label class="label-block">
+                        Choose Categories
+                        <span class="help">
+                            <i class="fa-regular fa-circle-question"></i>
+                            <div>Set the categories for the product. You can set more that  one category for a product or create a new category. You can also create sub-categories but selecting the parent category for your new category</div>
+                        </span> 
+                    </label>
+                    <div id="new-categories">
+                        <input type="text" name="category" placeholder="Make a new category" id="category-input">
+                    </div>
+                    <select name="parent-category" id="parent-categories">
+                        <option value="" selected >Set Parent</option>
+                        <?php
+                            foreach($categories as $category){
+                                if($category['parent'] == 0){?>
+                                <option value="<?= $category['id']?>" id="<?= $category['id']?>"><?= $category['name']?></option>
+                        <?php }}
+                        
+                        ?>
+                    </select>
+                    <div id="categories-checkboxes">
+
+                    </div>
+                </div>
+
+                <div id="tags">
+                <label class="label-block">
+                    Add Tags
+                    <span class="help">
+                            <i class="fa-regular fa-circle-question"></i>
+                            <div>Set the tag for the product to track the product and reference it in other places as well.</div>
+                    </span> 
+                </label>
+                    <div id="new-tags">
+                        <input type="text" name="new-tag" id="new-tag">
+                        <button type="button" id="tag-btn">Add</button>
+                    </div>
+                    <div id="tags-container">
+
+                    </div>
+                </div>
+
         </div>
-        <?php //This will get the data from the form to submit to the api?>
-        <input type="hidden" name="product-categories" id="hidden-categories">
-        <input type="hidden" name="product-tags" id="hidden-tags">
-        <?php // This will pass the data to javascript to handle the displaying of the categories?>
-        <input type="hidden" id="php-categories-data" value='<?php echo json_encode($categories)?>'>
-    </form>
+
+        
+
+            <div id="btn-save">
+                <input type="submit" id="save-btn" value="Save" name="save">
+            </div>
+            <?php //This will get the data from the form to submit to the api?>
+            <input type="hidden" name="product-categories" id="hidden-categories">
+            <input type="hidden" name="product-tags" id="hidden-tags">
+            <?php // This will pass the data to javascript to handle the displaying of the categories?>
+            <input type="hidden" id="php-categories-data" value='<?php echo json_encode($categories)?>'>
+        </form>
+    <?php else: ?>
+        <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
+    <?php endif; ?>
     <div id="errors"></div>
 
 </body>

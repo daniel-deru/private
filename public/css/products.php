@@ -1,7 +1,19 @@
+<?php
+    $absolute_path = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
+    $wp_load = $absolute_path[0] . 'wp-load.php';
+    require_once($wp_load);
+
+    $color = get_option("wp_smart_products_brand_color");
+
+
+    header('Content-Type: text/css');
+    header("Cache-control: must-revalidate");
+?>
+
 :root {
-    --main-green: #21759B;
-    --main-light-green: #21759B;
-    --gradient: #21759B;
+    --main-green: <?php echo $color ?>;
+    --main-light-green: <?php echo $color ?>;
+    --gradient: <?php echo $color ?>;
 }
 
 * {
@@ -19,6 +31,10 @@ header {
 
 header > * {
     margin: 1em;
+}
+
+header img {
+    height: 100px;
 }
 
 header select {
@@ -156,3 +172,4 @@ header a {
     color: var(--main-green);
     border: 2px solid var(--main-green);
 }
+

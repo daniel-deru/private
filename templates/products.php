@@ -12,7 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.css"?>">
+    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>">
     <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script>
     <title>Products</title>
 </head>
@@ -80,6 +80,13 @@ else {
 ?>
 <body>
     <header>
+        
+        <?php if(get_option("wp_smart_products_logo_url") !== null): ?>
+            <div>
+                <img src="<?= get_option("wp_smart_products_logo_url")?>"/>
+            </div>
+        <?php endif;?>
+        
         <div id="filter-container">
             <div>
                 <input type="text" name="name" placeholder="Product Name" id="filter-name">

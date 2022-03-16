@@ -206,37 +206,14 @@ function RegisterSettings() {
     // Add options to database if they don't already exist
     add_option("wp_smart_products_consumer_key", "", "", "yes");
     add_option("wp_smart_products_consumer_secret", "", "", "yes");
+    add_option("wp_smart_products_logo_url", "", "", "yes");
+    add_option("wp_smart_products_brand_color", "", "", "yes");
 
-    // Register settings that this form is allowed to update
-    register_setting('wp_smart_products_settings', 'wp_smart_products_consumer_key');
-    register_setting('wp_smart_products_settings', 'wp_smart_products_consumer_secret');
 }
 
 function PageContent() {
     if (!current_user_can('manage_options'))
         wp_die(__("You don't have access to this page"));
-    ?><div class="wrap">
-        <h1>Enter the WooCommerce API Credentials below</h1>
-        <form method="post" action="options.php">
+    require_once dirname( __FILE__ ) . "/templates/adminPage.php";
 
-            <?php settings_fields('wp_smart_products_settings'); ?>
-
-            <table class="form-table">
-                <tr valign="top">
-                    <th scope="row">Consumer Key</th>
-                    <td><input type="text" name="wp_smart_products_consumer_key" value="<?php echo get_option('wp_smart_products_consumer_key'); ?>" /></td>
-                </tr>
-
-                <tr valign="top">
-                    <th scope="row">Consumer Secret</th>
-                    <td><input type="text" name="wp_smart_products_consumer_secret" value="<?php echo get_option('wp_smart_products_consumer_secret'); ?>" /></td>
-                </tr>
-            </table>
-
-            <p class="submit">
-                <input type="submit" class="button-primary" value="Save" />
-            </p>
-
-        </form>
-    </div>
-    <?php }
+}

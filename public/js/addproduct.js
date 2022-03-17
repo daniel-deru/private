@@ -238,7 +238,7 @@ function displayImages(){
                                     <i class="fa fa-times"></i>
                                 </div>`
 
-            const featuredRadio = `<input type="radio" name="featured" id="${image}" ${image == imageArray[0] ? "checked" : ""}>`
+            const featuredRadio = `<input type="radio" name="featured" value="${image}" id="${image}" ${image == imageArray[0] ? "checked" : ""}>`
 
             // Put the image in the container
             imageItem.innerHTML = featuredRadio + imgElement + deleteIcon

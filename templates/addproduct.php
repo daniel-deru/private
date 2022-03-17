@@ -134,21 +134,18 @@ else {
         $imageFolder = dirname(__FILE__) . "/images";
 
         // Handle the image uploads
-        if($_FILES){
-            echo "<pre>";
-            print_r($_FILES);
-            echo "</pre>";
-            // $serverImagePath = $imageFolder . "/" . $_FILES['product-image']['name'];
-        
-            // move_uploaded_file($_FILES['product-image']['tmp_name'], $serverImagePath);
+        if($_POST['image-urls']){
+            
+            $imageArray = explode(";", $_POST['image-urls']);
+            $featuredImage = $_POST['featured'];
+            if($featuredImage !== $imageArray[0]){
+                $featuredIndex = array_search($featuredImage, $imageArray);
+                array_splice($imageArray, $featuredIndex, 1);
+                array_unshift($imageArray, $featuredImage);
+            };
 
-            // $image = "https://" . $_SERVER['HTTP_HOST'] .  "/wp-content/plugins/private/templates/images/" . $_FILES['product-image']['name'];
-
-            // $data['images'] = array(
-            //     array(
-            //         'src' => $image
-            //     )
-            // );
+            $imageArray = array_map(function($item){return array('src' => $item);}, $imageArray);
+            $data['images'] = $imageArray;
 
         }
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
@@ -170,13 +167,13 @@ else {
             $data['tags'] = $productTags;
         }
         
-    //    if($validCode) $saveProduct = json_decode($addProduct($data), true);
+       if($validCode) $saveProduct = json_decode($addProduct($data), true);
 
         $files = glob($imageFolder . "/*");
         foreach($files as $file){
             if(is_file($file)) unlink($file);
         }
-        // header("Location: " . $link . "/" . $products_page . "?id=1");
+        header("Location: " . $link . "/" . $products_page . "?id=1");
     }
 
 ?>
@@ -217,7 +214,7 @@ else {
             <div id="product-image">
                 <button type="button" id="image-selector">Select Image</button>
                 <div id="image-viewer"></div>
-                <input type="hidden" id="image-urls">
+                <input type="hidden" id="image-urls" name="image-urls">
             </div>
             
 

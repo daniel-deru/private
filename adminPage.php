@@ -2,7 +2,7 @@
 
     if(isset($_POST["save-settings"])){
         if(isset($_POST["wp_smart_products_consumer_key"])) update_option("wp_smart_products_consumer_key", $_POST["wp_smart_products_consumer_key"]);
-        if(isset($_POST["wp_smart_products_consumer_secret"])) update_option("wp_smart_products_consumer_key", $_POST["wp_smart_products_consumer_key"]);
+        if(isset($_POST["wp_smart_products_consumer_secret"])) update_option("wp_smart_products_consumer_secret", $_POST["wp_smart_products_consumer_secret"]);
         if(isset($_POST["wp_smart_products_logo_url"])) update_option("wp_smart_products_logo_url", $_POST["wp_smart_products_logo_url"]);
         if(isset($_POST["wp_smart_products_brand_color"])) update_option("wp_smart_products_brand_color", $_POST["wp_smart_products_brand_color"]);
     }
@@ -32,7 +32,7 @@
                 <label for="wp_smart_products_color">Enter Brand Color</label>
                 <?php // This input is placed in a div because of the color pick eye dropper chrome extension?>
                 <div>
-                    <input type="color" name="wp_smart_products_brand_color" id="" value="<?php echo get_option("wp_smart_products_brand_color");?>">
+                    <input type="color" name="wp_smart_products_brand_color" id="" value="<?php echo get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color"): "#21759b";?>">
                 </div>
                 
             </div>

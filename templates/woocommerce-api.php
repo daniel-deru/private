@@ -47,7 +47,6 @@ $woocommerce = new Client(
             "page" => $page)),
         'headers' => $getHeaders());
 
-    
     return json_encode($data);
  };
 

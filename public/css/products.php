@@ -9,7 +9,7 @@
     header('Content-Type: text/css');
     header("Cache-control: must-revalidate");
 ?>
-
+/*<style>*/
 :root {
     --main-green: <?php echo $color ?>;
     --main-light-green: <?php echo $color ?>;

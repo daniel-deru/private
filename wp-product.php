@@ -56,6 +56,7 @@ function add_products(){
 // Create an add product page to add new products
 function add_addproduct(){ 
     $title_of_page = "WP Smart Add Product";
+    wp_enqueue_media();
     if( null == get_page_by_title( $title_of_page ) ) {
             $post_id = wp_insert_post(
                 array(
@@ -70,7 +71,7 @@ function add_addproduct(){
                 )
             );
             update_post_meta($post_id, '_wp_page_template', 'Addproduct');
-        }  
+    }  
 }
 
 // Create an edit product page to edit products
@@ -146,6 +147,7 @@ function products_page_template( $page_template )
 function addproduct_page_template( $page_template )
 {
     if ( is_page( 'WP Smart Add Product' ) ) {
+        wp_enqueue_media();
         $page_template = dirname( __FILE__ ) . '/templates/addproduct.php';
     }
     return $page_template;
@@ -194,10 +196,39 @@ add_filter( 'page_template', 'products_page_template' );
 add_filter( 'page_template', 'addproduct_page_template' );
 add_filter( 'page_template', 'editproduct_page_template' );
 
+add_filter("show_admin_bar", "hide_admin_bar");
+
+function hide_admin_bar(){
+    if(is_page("wp-smart-add-product")){
+        return false;
+    }
+}
+
 
 add_action('admin_menu', 'SetupPage');
 add_action('admin_init', 'RegisterSettings');
 add_action("admin_head", "admin_styles");
+add_action("wp_enqueue_scripts", "wp_enqueue_media");
+
+add_action("admin_enqueue_scripts", "load_media");
+function load_media(){
+    wp_enqueue_media();
+}
+
+
+
+// add_action("wp_enqueue_scripts", "enqueue_addproduct_script");
+
+// function enqueue_addproduct_script(){
+//     // echo "<h1>This is a page template and the script functions is loading</h1>";
+//     // if(is_page("wp-smart-add-product")){
+//     //     echo "<h1>This is a page template and the script functions is loading</h1>";
+//         wp_enqueue_media();
+//         wp_register_script("addproduct", plugins_url("public/js/addproduct.js", __FILE__), "", "", true);
+//         wp_enqueue_script("addproduct", plugins_url("public/js/addproduct.js", __FILE__), "", "", true);
+//     // }
+
+// }
 
 function SetupPage() {
     add_menu_page(__("WPSmartCommerce "), __("Smart Commerce"), "manage_options", __FILE__, 'PageContent', plugin_dir_url(__FILE__) . "assets/WPSC.svg");
@@ -213,8 +244,8 @@ function RegisterSettings() {
 }
 
 function PageContent() {
-    if (!current_user_can('manage_options'))
-        wp_die(__("You don't have access to this page"));
+    // if (!current_user_can('manage_options'))
+    //     wp_die(__("You don't have access to this page"));
     require_once dirname( __FILE__ ) . "/adminPage.php";
 
 }

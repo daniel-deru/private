@@ -2,15 +2,20 @@
 let imageSet = false
 let tagsArray = []
 let sortedCategories = []
+let imageArray = []
 
-const imageUpload = document.getElementById("image")
+
+// const imageUpload = document.getElementById("image")
 const saveBtn = document.getElementById("save-btn")
 const tagBtn = document.getElementById("tag-btn")
-
+const chooseBtn = document.getElementById("image-selector")
+const imageContainer = document.getElementById("image-viewer")
+const imageInput = document.getElementById("image-urls")
 
 saveBtn.addEventListener("click", (event) => saveClicked(event))
-imageUpload.addEventListener("change", (event) => showImage(event))
+// imageUpload.addEventListener("change", (event) => showImage(event))
 tagBtn.addEventListener("click", () => addTags())
+chooseBtn.addEventListener("click", (e) => openMedia(e))
 
 parseCategories()
 
@@ -162,6 +167,7 @@ function sortCategories(categories){
 
 function showImage(event){
     let output = document.getElementById("img")
+    console.log("This is the event and files from the image upload event listener", event.target.files)
     output.src = URL.createObjectURL(event.target.files[0])
     imageSet = true
 }
@@ -192,3 +198,56 @@ function saveClicked(event){
     hiddenCategories.value = categoryList.join("%")
     hiddenTags.value = tagsArray.join("%")
 }
+
+function openMedia(e){
+    e.preventDefault()
+    const frame = wp.media({ 
+        title: 'Upload Image',
+        button: {
+            text: "Select"
+        },
+        multiple: false
+    }).open()
+
+    frame.on('select', function(){
+        // This will return the selected image from the Media Uploader, the result is an object
+        let attachment = frame.state().get('selection').first().toJSON()
+        if(!imageArray.includes(attachment.url)){
+            imageArray.push(attachment.url)
+        }
+        displayImages()
+       
+    })
+}
+
+function displayImages(){
+    console.log("The display images function fired properly")
+    imageContainer.innerHTML = ""
+    if(imageArray){
+        for(let image of imageArray){
+
+            // create image container
+            const imageItem = document.createElement("div")
+
+            // create image
+            const imgElement = document.createElement('img')
+            imgElement.src = image
+
+            // Create the delete icon
+            const deleteIcon = document.createElement("i")
+            deleteIcon.classList.add("fa fa-times")
+
+            // Put the image in the container
+            imageItem.appendChild(imgElement)
+
+            // Put delete icon in container
+            imageItem.appendChild(deleteIcon)
+
+            // Put the container in the DOM
+            imageContainer.appendChild(imageItem)
+        }
+    }
+
+    // Set the hidden input data to the image urls to process on server
+    imageInput.value = imageArray.join(";")
+}   

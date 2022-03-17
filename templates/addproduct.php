@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Template Name: Addproduct
+ * Template Name: addproduct
  */
 
 
@@ -20,6 +20,10 @@ $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
 $add_page = "wp-smart-add-product";
 $validCode = checkCode();
+wp_enqueue_media();
+
+
+
 
 // Check where the request for the current page is coming from
 if(isset($_SERVER['HTTP_REFERER'])){
@@ -129,18 +133,22 @@ else {
 
         $imageFolder = dirname(__FILE__) . "/images";
 
-        if($_FILES['product-image']['name']){
-            $serverImagePath = $imageFolder . "/" . $_FILES['product-image']['name'];
+        // Handle the image uploads
+        if($_FILES){
+            echo "<pre>";
+            print_r($_FILES);
+            echo "</pre>";
+            // $serverImagePath = $imageFolder . "/" . $_FILES['product-image']['name'];
         
-            move_uploaded_file($_FILES['product-image']['tmp_name'], $serverImagePath);
+            // move_uploaded_file($_FILES['product-image']['tmp_name'], $serverImagePath);
 
-            $image = "https://" . $_SERVER['HTTP_HOST'] .  "/wp-content/plugins/private/templates/images/" . $_FILES['product-image']['name'];
+            // $image = "https://" . $_SERVER['HTTP_HOST'] .  "/wp-content/plugins/private/templates/images/" . $_FILES['product-image']['name'];
 
-            $data['images'] = array(
-                array(
-                    'src' => $image
-                )
-            );
+            // $data['images'] = array(
+            //     array(
+            //         'src' => $image
+            //     )
+            // );
 
         }
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
@@ -162,16 +170,14 @@ else {
             $data['tags'] = $productTags;
         }
         
-       if($validCode) $saveProduct = json_decode($addProduct($data), true);
+    //    if($validCode) $saveProduct = json_decode($addProduct($data), true);
 
         $files = glob($imageFolder . "/*");
         foreach($files as $file){
-            if(is_file($file)){
-                unlink($file);
-            }
+            if(is_file($file)) unlink($file);
         }
-        header("Location: " . $link . "/" . $products_page . "?id=1");
-    } 
+        // header("Location: " . $link . "/" . $products_page . "?id=1");
+    }
 
 ?>
 <!DOCTYPE html>
@@ -196,7 +202,7 @@ else {
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <?php if($validCode): ?>
-        <form enctype="multipart/form-data" action="" method="post">
+        <form enctype="multipart/form-data" action="" method="post" enctype='multipart/form-data' id="addproduct-form">
 
             <!-- Name Input field -->
             <div id="title-price" class="flex-fields">
@@ -206,16 +212,14 @@ else {
                 </div>
             </div>
 
+
             <!-- Image Input Field -->
             <div id="product-image">
-                <label class="custom-file-upload">
-                    <input type="file" id="image" name="product-image"/>
-                    Upload Image
-                </label>
-                <div id="image-preview">
-                    <img src="" alt="" id="img">
-                </div>
+                <button type="button" id="image-selector">Select Image</button>
+                <div id="image-viewer"></div>
+                <input type="hidden" id="image-urls">
             </div>
+            
 
             <!-- Product Long Description -->
             <div id="product-description">
@@ -393,4 +397,5 @@ else {
     <div id="errors"></div>
 
 </body>
+<?php wp_footer(); ?>
 </html>

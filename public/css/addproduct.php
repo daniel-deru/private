@@ -9,7 +9,7 @@
     header('Content-Type: text/css');
     header("Cache-control: must-revalidate");
 ?>
-
+/*<style>*/
 :root {
     --main-blue: <?php echo $color ?>;
 }
@@ -113,26 +113,26 @@ textarea:focus {
     outline: 1px solid var(--main-blue);
 }
 
-input[type="file"] {
-    display: none;
+
+#addproduct-form #image-viewer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 1rem;
 }
 
-
-.custom-file-upload {
-    border-radius: 5px;
-    display: block;
-    padding: 0.5rem 2rem;
-    cursor: pointer;
-    text-align: center;
-    background: var(--main-blue);
-    color: white;
-    margin-bottom: 1rem;
-    width: fit-content;
+#addproduct-form #image-viewer > div {
+    position: relative;
 }
 
-#img {
-    max-width: 400px;
-    max-height: 400px;
+#addproduct-form #image-viewer svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#addproduct-form img {
+    max-width: 200px;
+    max-height: 200px;
 }
 
 #product-settings  {
@@ -167,16 +167,17 @@ input[type="file"] {
     width: auto;
 }
 
-button {
+#addproduct-form button {
     margin: 0px 10px;
     padding: 5px 30px;
     color: white;
     background-color: var(--main-blue);
     border: none;
     border-radius: 3px;
+    cursor: pointer;
 }
 
-input[type="submit"] {
+#addproduct-form input[type="submit"] {
     display: block;
     margin: auto;
     padding: 10px 40px;
@@ -193,6 +194,11 @@ input[type="submit"] {
 .checkbox-label {
     display: inline-block;
     margin-left: 10px;
+}
+
+#categories-checkboxes {
+    height: 300px;
+    overflow: auto;
 }
 
 .help {
@@ -224,168 +230,3 @@ input[type="submit"] {
     display: inline-block;
     margin-left: 20px;
 }
-
-/* :root {
-    --main-blue: <?php echo $color ?>;
-}
-
-* {
-    padding: 0;
-    margin: 0;
-}
-
-header {
-    height: 15vh;
-    background: var(--main-blue);
-    display: flex;
-    align-items: center;
-}
-
-header a {
-    color: white;
-    text-decoration: none;
-    font-family: sans-serif;
-    font-size: 1em;
-    padding: 0.5em 1em;
-    border: 2px solid white;
-    border-radius: 5px;
-    margin-left: 1em;
-}
-
-form {
-    font-size: 1.25em;
-    border-radius: 10px;
-    color: var(--main-blue);
-    font-family: sans-serif;
-    width: 70%;
-    margin: auto;
-}
-
-input, textarea, select {
-    font-size: 1em;
-    border-radius: 5px;
-    color: var(--main-blue);
-    font-family: sans-serif;
-    border: 2px solid var(--main-blue);
-    padding: 5px;
-    margin: 10px 0px;
-}
-
-textarea {
-    width: calc(100% - 20px);
-    border-radius: 10px;
-}
-
-select {
-    width: 100%;
-}
-
-
-
-button {
-    background-color: var(--main-blue);
-    color: white;
-    font-size: 1em;
-    border-radius: 10px;
-    font-family: sans-serif;
-    border: 2px solid var(--main-blue);
-    padding: 5px 20px;
-    cursor: pointer;
-    width: 26%;
-    text-align: center;
-}
-
-input[type="submit"]{
-    display: block;
-    background-color: var(--main-blue);
-    color: white;
-    font-size: 1em;
-    border-radius: 5px;
-    font-family: sans-serif;
-    border: 2px solid var(--main-blue);
-    padding: 5px 50px;
-    cursor: pointer;
-    text-align: center;
-    margin: auto;
-}
-
-
-form > div {
-    margin: 2rem 0rem;
-}
-
-form .flex-fields {
-    display: flex;
-    justify-content: space-between;
-}
-
-.label-block {
-    display: block;
-}
-
-label {
-    margin: 5px;
-}
-
-
-input[type="file"] {
-    display: none;
-}
-
-
-.custom-file-upload {
-    border-radius: 5px;
-    display: block;
-    padding: 1rem 2rem;
-    cursor: pointer;
-    text-align: center;
-    background: var(--main-blue);
-    color: white;
-    margin-bottom: 1rem;
-    width: fit-content;
-}
-
-#img {
-    max-width: 400px;
-    max-height: 400px;
-}
-
-#sku-input {
-    width: calc(100% - 20px);
-}
-
-#categories-tags-container > div {
-    width: 40%;
-}
-
-#categories-tags-container input[type="text"]:not(#new-tag) {
-    width: calc(100% - 20px);
-}
-#categories-checkboxes {
-    max-height: 200px;
-    overflow: auto;
-}
-
-#tags-container {
-    max-height: 200px;
-    overflow: auto;
-    display: grid;
-}
-
-#new-tag {
-    width: 70%;
-}
-
-#categories-tags-container button {
-    width: calc(26%);
-    padding: 5px 20px;
-    border-radius: 5px;
-}
-
-.subcategory-checkbox {
-    margin-left: 20px;
-}
-
-#weight-dimensions:first-child {
-    margin-bottom: 20px;
-} */

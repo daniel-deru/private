@@ -113,8 +113,9 @@ textarea:focus {
     outline: 1px solid var(--main-blue);
 }
 
-
+/* The box where the divs with product images will be in */
 #addproduct-form #image-viewer {
+    margin-top: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 1rem;
@@ -122,17 +123,52 @@ textarea:focus {
 
 #addproduct-form #image-viewer > div {
     position: relative;
+    width: 90%;
 }
 
 #addproduct-form #image-viewer svg {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -10px;
+    right: -10px;
+    background-color: var(--main-blue);
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    z-index: 5;
+    cursor: pointer;
+    user-select: none;
 }
 
+#addproduct-form #image-viewer div input[type="radio"]{
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--main-blue);
+    display: grid;
+    place-content: center;
+}
+
+#addproduct-form #image-viewer div input[type="radio"]::before{
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform: scale(0);
+    transform: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--main-blue);
+}
+#addproduct-form #image-viewer div input[type="radio"]:checked::before {
+    transform: scale(1);
+}
+
+
 #addproduct-form img {
-    max-width: 200px;
-    max-height: 200px;
+    width: 100%;
 }
 
 #product-settings  {

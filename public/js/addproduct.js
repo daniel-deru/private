@@ -11,6 +11,7 @@ const tagBtn = document.getElementById("tag-btn")
 const chooseBtn = document.getElementById("image-selector")
 const imageContainer = document.getElementById("image-viewer")
 const imageInput = document.getElementById("image-urls")
+const deleteBtns = document.getElementsByClassName("delete-icon")
 
 saveBtn.addEventListener("click", (event) => saveClicked(event))
 // imageUpload.addEventListener("change", (event) => showImage(event))
@@ -18,6 +19,7 @@ tagBtn.addEventListener("click", () => addTags())
 chooseBtn.addEventListener("click", (e) => openMedia(e))
 
 parseCategories()
+addDeleteListener()
 
 function addTags(){
     const tagInput = document.getElementById("new-tag")
@@ -221,7 +223,6 @@ function openMedia(e){
 }
 
 function displayImages(){
-    console.log("The display images function fired properly")
     imageContainer.innerHTML = ""
     if(imageArray){
         for(let image of imageArray){
@@ -230,18 +231,17 @@ function displayImages(){
             const imageItem = document.createElement("div")
 
             // create image
-            const imgElement = document.createElement('img')
-            imgElement.src = image
+            const imgElement = `<img src="${image}"/>`
 
             // Create the delete icon
-            const deleteIcon = document.createElement("i")
-            deleteIcon.classList.add("fa fa-times")
+            const deleteIcon = `<div class="delete-icon">
+                                    <i class="fa fa-times"></i>
+                                </div>`
+
+            const featuredRadio = `<input type="radio" name="featured" id="${image}" ${image == imageArray[0] ? "checked" : ""}>`
 
             // Put the image in the container
-            imageItem.appendChild(imgElement)
-
-            // Put delete icon in container
-            imageItem.appendChild(deleteIcon)
+            imageItem.innerHTML = featuredRadio + imgElement + deleteIcon
 
             // Put the container in the DOM
             imageContainer.appendChild(imageItem)
@@ -250,4 +250,25 @@ function displayImages(){
 
     // Set the hidden input data to the image urls to process on server
     imageInput.value = imageArray.join(";")
+    addDeleteListener()
+    console.log(imageInput.value)
 }   
+
+
+function handleDeleteImage(e){
+    // Get the img tag and  the src value of that image
+    let targetNode = e.target.parentElement
+    if(targetNode.nodeName !== "DIV") targetNode = targetNode.parentElement
+    const imgURL = targetNode.previousSibling.src
+    // remove image from image array
+    imageArray = imageArray.filter(image => image !== imgURL)
+    console.log(imageArray)
+    // Rerender the images
+    displayImages()
+}
+
+function addDeleteListener(){
+    for(let i = 0; i < deleteBtns.length; i++){
+        deleteBtns[i].addEventListener("click", (e) => handleDeleteImage(e))
+    }
+}

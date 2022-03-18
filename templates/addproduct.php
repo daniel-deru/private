@@ -70,6 +70,7 @@ else {
 <?php
     // This will happen when the form is submitted
     if(isset($_POST['save'])){
+        $error = "";
 
         if(isset($_POST['category']) && $_POST['category']){
             $categortArray = array(
@@ -82,7 +83,10 @@ else {
                 $categortArray['parent'] = $_POST['parent-category'];
             }
 
-          if($validCode) $newCategory = json_decode($createCategory($categortArray), true);
+          if($validCode) {
+              $newCategory = json_decode($createCategory($categortArray), true);
+              if($newCategory['error']) $error = $newCategory['message'];
+            };
         }
         
         
@@ -100,6 +104,8 @@ else {
         if(isset($_POST['product-virtual'])) $data['virtual'] = true;
 
         if(isset($_POST['product-downloadable'])) $data['downloadable'] = true;
+
+        if(isset($_POST['draft'])) $data["status"] = "draft";
 
         if(isset($_POST['product-description'])) $data['description'] = $_POST['product-description'];
 
@@ -149,7 +155,7 @@ else {
 
         }
 
-        
+
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
             $productCategories = explode("%", $_POST['product-categories']);
             if($newCategory){
@@ -169,13 +175,14 @@ else {
             $data['tags'] = $productTags;
         }
         
-       if($validCode) $saveProduct = json_decode($addProduct($data), true);
+       if($validCode) {
 
-        $files = glob($imageFolder . "/*");
-        foreach($files as $file){
-            if(is_file($file)) unlink($file);
-        }
-        header("Location: " . $link . "/" . $products_page . "?id=1");
+            $saveProduct = json_decode($addProduct($data), true);
+            if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
+       }
+
+       if(!$error)  header("Location: " . $link . "/" . $products_page . "?id=1");
+
     }
 
 ?>
@@ -201,13 +208,16 @@ else {
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <?php if($validCode): ?>
+        <?php if($error):?>
+            <div id="errors"><?= $error?></div>
+        <?php endif;?>
         <form enctype="multipart/form-data" action="" method="post" enctype='multipart/form-data' id="addeditproduct-form">
 
             <!-- Name Input field -->
             <div id="title-price" class="flex-fields">
                 <div>
                     <label for="product-name" class="label-block">Name</label>
-                    <input type="text" name="product-name" id="name">
+                    <input type="text" name="product-name" id="name" value="<?php if(isset($_POST['product-name'])) echo htmlentities($_POST['product-name'])?>">
                 </div>
             </div>
 
@@ -223,7 +233,9 @@ else {
             <!-- Product Long Description -->
             <div id="product-description">
                 <label for="product-description" class="label-block">Long Description</label>
-                <textarea name="product-description" cols="30" rows="10" id="description"></textarea>
+                <textarea name="product-description" cols="30" rows="10" id="description">
+                    <?php if(isset($_POST['product-description'])) echo htmlentities($_POST['product-description']) ?>
+                </textarea>
             </div>
 
             <!-- Product Data -->
@@ -255,6 +267,11 @@ else {
                         <input type="checkbox" name="product-downloadable" id="downloadable">
                         <label for="product-downloadable" class="inline">Downloadable</label>
                     </div>
+
+                    <div>
+                        <input type="checkbox" name="draft" id="draft">
+                        <label for="draft" class="inline">Make a Draft</label>
+                    </div>
                 </div>
             </div>
 
@@ -264,12 +281,12 @@ else {
                 <div class="flex-container">
                     <div class="flex-container">
                         <label for="product-regular-price" class="">Regular Price</label>
-                        <input type="text" name="product-regular-price" id="regular-price">
+                        <input type="text" name="product-regular-price" id="regular-price" value="<?php if(isset($_POST['product-regular-price'])) echo htmlentities($_POST['product-regular-price']) ?>">
                     </div>
 
                     <div class="flex-container">
                         <label for="product-sale-price" class="padding-left">Sale Price</label>
-                        <input type="text" name="product-sale-price" id="sale-price">
+                        <input type="text" name="product-sale-price" id="sale-price" value="<?php if(isset($_POST['product-sale-price'])) echo htmlentities($_POST['product-sale-price']) ?>">
                     </div>
                 </div>
 
@@ -287,7 +304,7 @@ else {
                 <div class="inventory-container">
                     <div id="sku" class="flex-container">
                         <label for="product-sku" class="">SKU</label>
-                        <input type="text" name="product-sku" id="sku-input">
+                        <input type="text" name="product-sku" id="sku-input" value="<?php if(isset($_POST['product-sku'])) echo htmlentities($_POST['product-sku']) ?>">
                     </div>
                     <div id="stock" class="flex-container">
                         <label for="enable-stock">Enable Stock</label>
@@ -298,7 +315,7 @@ else {
                     </div>
                     <div id="stock-quantity" class="flex-container">
                         <label for="stock-quantity">Stock Quantity</label>
-                        <input type="number" value="0" name="stock-quantity">
+                        <input type="number" value="0" name="stock-quantity" value="<?php if(isset($_POST['stock-quantity'])) echo htmlentities($_POST['stock-quantity']) ?>">
                     </div>
                 </div>
 
@@ -316,20 +333,22 @@ else {
                 <div>
                     <div id="weight" class="flex-container between">
                         <label for="weight" class="">Weight</label>
-                        <input type="text" name="weight">
+                        <input type="text" name="weight" value="<?php if(isset($_POST['weight'])) echo htmlentities($_POST['weight']) ?>">
                     </div>
                     <div id="dimensions" class="flex-container">
                         <label for="">Dimensions</label>
-                        <input type="text" name="length" placeholder="Length">
-                        <input type="text" name="width" placeholder="Width">
-                        <input type="text" name="height" placeholder="Height">
+                        <input type="text" name="length" placeholder="Length" value="<?php if(isset($_POST['length'])) echo htmlentities($_POST['length']) ?>">
+                        <input type="text" name="width" placeholder="Width" value="<?php if(isset($_POST['width'])) echo htmlentities($_POST['width']) ?>">
+                        <input type="text" name="height" placeholder="Height" value="<?php if(isset($_POST['height'])) echo htmlentities($_POST['height']) ?>">
                     </div>
                 </div>
             </div>
 
             <div id="product-short-description">
                 <label for="product-short-description" class="label-block">Short Description</label>
-                <textarea name="product-short-description" id="short-description" cols="30" rows="10"></textarea>
+                <textarea name="product-short-description" id="short-description" cols="30" rows="10">
+                    <?php if(isset($_POST['product-short-description'])) echo htmlentities($_POST['product-short-description']) ?>
+                </textarea>
             </div>
 
         <div id="categories-tags-container" class="flex-container around">
@@ -393,7 +412,6 @@ else {
     <?php else: ?>
         <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
     <?php endif; ?>
-    <div id="errors"></div>
 
 </body>
 <?php wp_footer(); ?>

@@ -46,6 +46,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
             $javascriptProductData = array(
                 'downloadable' => $product['downloadable'],
                 'virtual' => $product['virtual'],
+                'draft' => $product["status"] == "draft" ? true : false,
                 'categories' => $product['categories'],
                 'manage_stock' => $product['manage_stock'],
                 'product_images' => $productImages,
@@ -115,6 +116,9 @@ else {
 
         if(isset($_POST['product-downloadable'])) $data['downloadable'] = true;
         else  $data['downloadable'] = false;
+
+        if(isset($_POST['draft'])) $data['status'] = 'draft';
+        else $data['status'] = 'publish';
 
         if(isset($_POST['product-description']) && $_POST['product-description'] != strip_tags($product['description'])) $data['description'] = $_POST['product-description'];
 
@@ -252,6 +256,7 @@ else {
             </div>
 
             <div id="product-settings">
+
                 <label class="label-block">
                     Product Settings 
                     <span class="help">
@@ -259,6 +264,7 @@ else {
                         <div>Set the product type, if the product is downloadable or virtual (i.e. Not a physical product)</div>
                     </span> 
                 </label>
+
                 <div class="flex-container">
                     <div >
                         <select name="product-type" id="product-type">
@@ -279,6 +285,12 @@ else {
                         <input type="checkbox" name="product-downloadable" id="downloadable">
                         <label for="product-downloadable" class="inline">Downloadable</label>
                     </div>
+
+                    <div>
+                        <input type="checkbox" name="draft" id="draft">
+                        <label for="draft" class="inline">Make Draft</label>
+                    </div>
+
                 </div>
             </div>
 

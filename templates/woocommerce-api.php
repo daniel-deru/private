@@ -53,9 +53,14 @@ $woocommerce = new Client(
 $addProduct = function($data) use ($woocommerce){
 
     if($data['name']){
-        $request = $woocommerce->post('products', $data);
-
+        try{
+            $request = $woocommerce->post('products', $data);
+        } 
+        catch (Exception $e){
+            return json_encode(array("error" => true, 'message' => $e->getMessage()));
+        }
         return json_encode(($request));
+
     }
 
 };
@@ -69,7 +74,20 @@ $getProduct = function($id) use ($woocommerce){
 
 $updateProduct = function($id, $data) use ($woocommerce){
     if($id && $data){
-        $data = $woocommerce->put('products/' . $id, $data);
+        try {
+            $data = $woocommerce->put('products/' . $id, $data);
+            return json_encode($data);
+        } 
+        catch (Exception $e){
+            return json_encode(array('error' => true, "message" => $e->getMessage()));
+        }
+
+    }
+};
+
+$deleteProduct = function($id) use ($woocommerce){
+    if($id){
+        $data = $woocommerce->delete("products/" . $id);
         return json_encode($data);
     }
 };
@@ -80,8 +98,16 @@ $units = function() use ($woocommerce){
 };
 
 $createCategory = function($data) use ($woocommerce) {
-    $data = $woocommerce->post('products/categories', $data);
-    return json_encode($data);
+    if($data){
+        try {
+            $data = $woocommerce->post('products/categories', $data);
+            return json_encode($data);
+        }
+        catch (Exception $e) {
+            return json_encode(array("error" => true, 'message' => $e->getMessage()));
+        }
+    }
+
 }
 
  ?>

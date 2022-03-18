@@ -55,6 +55,11 @@ h1 {
     margin-top: 3rem;
 }
 
+#errors {
+    color: red;
+    text-align: center;
+}
+
 form {
     width: 60vw;
     margin: auto;

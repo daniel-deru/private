@@ -1,5 +1,5 @@
 // Global variable to check if the image is set
-let imageSet = false
+// let imageSet = false
 let tagsArray = []
 let sortedCategories = []
 let imageArray = []
@@ -118,22 +118,18 @@ function setCheckboxes(){
     const virtualCheck = document.getElementById("virtual")
     const manageStockCheck = document.getElementById("manage-stock")
     const categories = document.querySelectorAll(".checkbox")
-    // This fetches all the product data that requires the setting of checkboxes and images
+    const draft = document.getElementById("draft")
 
+    // This fetches all the product data that requires the setting of checkboxes and images
     let productData = JSON.parse(hiddenProduct.value)
     
+    if(productData.downloadable) downloadableCheck.checked = true
 
-    console.log("This is the product data sent from php", productData)
-    if(productData.downloadable){
-        downloadableCheck.checked = true
-    }
-    if(productData.virtual){
-        virtualCheck.checked = true
-    }
+    if(productData.virtual) virtualCheck.checked = true
 
-    if(productData["manage_stock"]){
-        manageStockCheck.checked = true
-    }
+    if(productData.draft) draft.checked = true
+
+    if(productData["manage_stock"]) manageStockCheck.checked = true
     
     for(let i = 0; i < categories.length; i++){
         for(let j = 0; j < productData.categories.length; j++){
@@ -302,23 +298,17 @@ function sortCategories(categories){
     
 }
 
-function showImage(event){
-    let output = document.getElementById("img")
-    output.src = URL.createObjectURL(event.target.files[0])
-    imageSet = true
-}
+// function showImage(event){
+//     let output = document.getElementById("img")
+//     output.src = URL.createObjectURL(event.target.files[0])
+//     // imageSet = true
+// }
 
 function saveClicked(event){
     // event.preventDefault()
     const errors = document.getElementById("errors")
 
     errors.innerHTML = ""
-
-    // if(!imageSet){
-    //     let error = document.createElement("div")
-    //     error.appendChild(document.createTextNode("Please set an image."))
-    //     errors.appendChild(error)
-    // }
 
     let categories = document.querySelectorAll(".checkbox")
     let categoryList = []

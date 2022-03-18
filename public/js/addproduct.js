@@ -180,11 +180,11 @@ function saveClicked(event){
 
     errors.innerHTML = ""
 
-    if(!imageSet){
-        let error = document.createElement("div")
-        error.appendChild(document.createTextNode("Please set an image."))
-        errors.appendChild(error)
-    }
+    // if(!imageSet){
+    //     let error = document.createElement("div")
+    //     error.appendChild(document.createTextNode("Please set an image."))
+    //     errors.appendChild(error)
+    // }
 
     let categories = document.querySelectorAll(".checkbox")
     let categoryList = []

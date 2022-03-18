@@ -114,19 +114,19 @@ textarea:focus {
 }
 
 /* The box where the divs with product images will be in */
-#addproduct-form #image-viewer {
+#addeditproduct-form #image-viewer {
     margin-top: 1rem;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 1rem;
 }
 
-#addproduct-form #image-viewer > div {
+#addeditproduct-form #image-viewer > div {
     position: relative;
     width: 90%;
 }
 
-#addproduct-form #image-viewer svg {
+#addeditproduct-form #image-viewer svg {
     position: absolute;
     top: -10px;
     right: -10px;
@@ -140,7 +140,7 @@ textarea:focus {
     user-select: none;
 }
 
-#addproduct-form #image-viewer div input[type="radio"]{
+#addeditproduct-form #image-viewer div input[type="radio"]{
     position: absolute;
     top: -10px;
     left: -10px;
@@ -153,7 +153,7 @@ textarea:focus {
     place-content: center;
 }
 
-#addproduct-form #image-viewer div input[type="radio"]::before{
+#addeditproduct-form #image-viewer div input[type="radio"]::before{
     content: '';
     width: 10px;
     height: 10px;
@@ -162,12 +162,12 @@ textarea:focus {
     transform: 120ms transform ease-in-out;
     box-shadow: inset 1em 1em var(--main-blue);
 }
-#addproduct-form #image-viewer div input[type="radio"]:checked::before {
+#addeditproduct-form #image-viewer div input[type="radio"]:checked::before {
     transform: scale(1);
 }
 
 
-#addproduct-form img {
+#addeditproduct-form img {
     width: 100%;
 }
 
@@ -203,7 +203,7 @@ textarea:focus {
     width: auto;
 }
 
-#addproduct-form button {
+#addeditproduct-form button {
     margin: 0px 10px;
     padding: 5px 30px;
     color: white;
@@ -213,7 +213,7 @@ textarea:focus {
     cursor: pointer;
 }
 
-#addproduct-form input[type="submit"] {
+#addeditproduct-form input[type="submit"] {
     display: block;
     margin: auto;
     padding: 10px 40px;

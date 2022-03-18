@@ -199,7 +199,7 @@ else {
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <?php if($validCode): ?>
-        <form enctype="multipart/form-data" action="" method="post" enctype='multipart/form-data' id="addproduct-form">
+        <form enctype="multipart/form-data" action="" method="post" enctype='multipart/form-data' id="addeditproduct-form">
 
             <!-- Name Input field -->
             <div id="title-price" class="flex-fields">

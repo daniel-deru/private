@@ -37,6 +37,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
             if(isset($_GET['id'])){
                 $product = json_decode($getProduct($_GET['id']), true);
             }
+            // Make this a string to easily parse in javascript
+           $productImages = implode(";", array_map(function($item){return $item['src'];}, $product['images']));
 
 
             //  Make an array to send to javascript to handle the display of the categories
@@ -44,7 +46,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
                 'downloadable' => $product['downloadable'],
                 'virtual' => $product['virtual'],
                 'categories' => $product['categories'],
-                'manage_stock' => $product['manage_stock']
+                'manage_stock' => $product['manage_stock'],
+                'product_images' => $productImages
             );
 
             $unitData = json_decode($units(), true);
@@ -220,7 +223,7 @@ else {
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <?php if($validCodes): ?>
-        <form enctype="multipart/form-data" action="" method="post">
+        <form enctype="multipart/form-data" action="" method="post" id="addeditproduct-form">
 
             <div id="title-price" class="flex-fields">
                 <!-- This is the name field input -->
@@ -231,16 +234,13 @@ else {
             </div>
 
             
+            <!-- Image Input Field -->
             <div id="product-image">
-                <label class="custom-file-upload">
-                    <input type="file" id="image" name="product-image"/>
-                    Upload Image
-                </label>
-                <div id="image-preview">
-                    <img src="<?= $product['images'][0]['src']?>" alt="" id="img">
-                </div>
+                <button type="button" id="image-selector">Select Image</button>
+                <div id="image-viewer"></div>
+                <input type="hidden" id="image-urls" name="image-urls">
             </div>
-
+            
             <div id="product-description">
                 <label for="product-description" class="label-block">Long Description</label>
                 <textarea name="product-description" cols="30" rows="10" id="description"><?php echo strip_tags($product['description']) ?></textarea>
@@ -423,6 +423,6 @@ else {
         <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
     <?php endif;?>
     <div id="errors"></div>
-
+    <?php wp_footer(); ?>
 </body>
 </html>

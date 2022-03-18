@@ -2,29 +2,116 @@
 let imageSet = false
 let tagsArray = []
 let sortedCategories = []
+let imageArray = []
 
-const imageUpload = document.getElementById("image")
+// const imageUpload = document.getElementById("image")
 const saveBtn = document.getElementById("save-btn")
 const tagBtn = document.getElementById("tag-btn")
+const hiddenProduct = document.getElementById("product-data")
+const imageViewer = document.getElementById("image-viewer")
+const hiddenInputImages = document.getElementById("image-urls")
+const chooseBtn = document.getElementById("image-selector")
 
 
 saveBtn.addEventListener("click", (event) => saveClicked(event))
-imageUpload.addEventListener("change", (event) => showImage(event))
+// imageUpload.addEventListener("change", (event) => showImage(event))
 tagBtn.addEventListener("click", () => addTags())
+chooseBtn.addEventListener("click", (e) => openMedia(e))
+
 
 parseCategories()
 getTags()
 setCheckboxes()
+getImages()
+
+function getImages(){
+    // Get an array of image urls to display
+    imageArray = (JSON.parse(hiddenProduct.value).product_images).split(";")
+    displayImages()
+}
+
+function displayImages(){
+    imageViewer.innerHTML = ""
+    if(imageArray){
+        for(let image of imageArray){
+
+            // create image container
+            const imageItem = document.createElement("div")
+
+            // create image
+            const imgElement = `<img src="${image}"/>`
+
+            // Create the delete icon
+            const deleteIcon = `<div class="delete-icon">
+                                    <i class="fa fa-times"></i>
+                                </div>`
+
+            const featuredRadio = `<input type="radio" name="featured" value="${image}" id="${image}" ${image == imageArray[0] ? "checked" : ""}>`
+
+            // Put the image in the container
+            imageItem.innerHTML = featuredRadio + imgElement + deleteIcon
+
+            // Put the container in the DOM
+            imageViewer.appendChild(imageItem)
+        }
+    }
+
+    // Set the hidden input data to the image urls to process on server
+    hiddenInputImages.value = imageArray.join(";")
+    addDeleteListener()
+    // console.log(imageInput.value)
+}
+
+function addDeleteListener(){
+    for(let i = 0; i < deleteBtns.length; i++){
+        deleteBtns[i].addEventListener("click", (e) => handleDeleteImage(e))
+    }
+}
+
+function handleDeleteImage(e){
+    // Get the img tag and  the src value of that image
+    let targetNode = e.target.parentElement
+    if(targetNode.nodeName !== "DIV") targetNode = targetNode.parentElement
+    const imgURL = targetNode.previousSibling.src
+    // remove image from image array
+    imageArray = imageArray.filter(image => image !== imgURL)
+    console.log(imageArray)
+    // Rerender the images
+    displayImages()
+}
+
+function openMedia(e){
+    e.preventDefault()
+    const frame = wp.media({ 
+        title: 'Upload Image',
+        button: {
+            text: "Select"
+        },
+        multiple: false
+    }).open()
+
+    frame.on('select', function(){
+        // This will return the selected image from the Media Uploader, the result is an object
+        let attachment = frame.state().get('selection').first().toJSON()
+        if(!imageArray.includes(attachment.url)){
+            imageArray.push(attachment.url)
+        }
+        displayImages()
+       
+    })
+}
 
 function setCheckboxes(){
     const downloadableCheck = document.getElementById("downloadable")
     const virtualCheck = document.getElementById("virtual")
     const manageStockCheck = document.getElementById("manage-stock")
     const categories = document.querySelectorAll(".checkbox")
-    const hiddenProduct = document.getElementById("product-data")
+    // This fetches all the product data that requires the setting of checkboxes and images
+
     let productData = JSON.parse(hiddenProduct.value)
-    console.log(manageStockCheck)
-    console.log(productData)
+    
+
+    console.log("This is the product data sent from php", productData)
     if(productData.downloadable){
         downloadableCheck.checked = true
     }

@@ -22,6 +22,7 @@ $products_page = "wp-smart-products";
 $add_page = "wp-smart-add-product";
 $edit_page = "wp-smart-edit-product";
 $validCodes = checkCode();
+wp_enqueue_media();
 
 // Check where the request for the current page is coming from
 if(isset($_SERVER['HTTP_REFERER'])){
@@ -149,22 +150,25 @@ else {
         if(isset($_POST['weight'])) $data["weight"] = $_POST["weight"];
         
 
-        $imageFolder = dirname(__FILE__) . "/images";
+        // $imageFolder = dirname(__FILE__) . "/images";
 
-        if($_FILES['product-image']['name']){
-            $serverImagePath = $imageFolder . "/" . $_FILES['product-image']['name'];
-        
-            move_uploaded_file($_FILES['product-image']['tmp_name'], $serverImagePath);
+         // Handle the image uploads
+         if($_POST['image-urls']){
+            
+            $imageArray = explode(";", $_POST['image-urls']);
+            $featuredImage = $_POST['featured'];
+            if($featuredImage !== $imageArray[0]){
+                $featuredIndex = array_search($featuredImage, $imageArray);
+                array_splice($imageArray, $featuredIndex, 1);
+                array_unshift($imageArray, $featuredImage);
+            };
 
-            $image = "https://" . $_SERVER['HTTP_HOST'] .  "/wp-content/plugins/private/templates/images/" . $_FILES['product-image']['name'];
-
-            $data['images'] = array(
-                array(
-                    'src' => $image
-                )
-            );
+            $imageArray = array_map(function($item){return array('src' => $item);}, $imageArray);
+            $data['images'] = $imageArray;
 
         }
+
+        
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
             
             $productCategories = explode("%", $_POST['product-categories']);
@@ -211,7 +215,7 @@ else {
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.php"?>">
     <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/editproduct.js"?>" defer></script>
-    <title>Add Product</title>
+    <title>Edit Product</title>
 </head>
 <body>
     <header>

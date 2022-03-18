@@ -11,6 +11,7 @@ const hiddenProduct = document.getElementById("product-data")
 const imageViewer = document.getElementById("image-viewer")
 const hiddenInputImages = document.getElementById("image-urls")
 const chooseBtn = document.getElementById("image-selector")
+const deleteBtns = document.getElementsByClassName("delete-icon")
 
 
 saveBtn.addEventListener("click", (event) => saveClicked(event))
@@ -63,12 +64,14 @@ function displayImages(){
 }
 
 function addDeleteListener(){
+    console.log("addDeleteListener Fired")
     for(let i = 0; i < deleteBtns.length; i++){
         deleteBtns[i].addEventListener("click", (e) => handleDeleteImage(e))
     }
 }
 
 function handleDeleteImage(e){
+    console.log("The handleDeleteImage fired")
     // Get the img tag and  the src value of that image
     let targetNode = e.target.parentElement
     if(targetNode.nodeName !== "DIV") targetNode = targetNode.parentElement
@@ -302,11 +305,11 @@ function saveClicked(event){
 
     errors.innerHTML = ""
 
-    if(!imageSet){
-        let error = document.createElement("div")
-        error.appendChild(document.createTextNode("Please set an image."))
-        errors.appendChild(error)
-    }
+    // if(!imageSet){
+    //     let error = document.createElement("div")
+    //     error.appendChild(document.createTextNode("Please set an image."))
+    //     errors.appendChild(error)
+    // }
 
     let categories = document.querySelectorAll(".checkbox")
     let categoryList = []

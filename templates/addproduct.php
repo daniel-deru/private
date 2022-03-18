@@ -143,14 +143,18 @@ else {
         if($_POST['image-urls']){
             
             $imageArray = explode(";", $_POST['image-urls']);
+            echo "<pre>";
+                print_r( $imageArray);
+            echo "</pre>";
             $featuredImage = $_POST['featured'];
+            echo "THis is the featured image => " . $featuredImage;
             if($featuredImage !== $imageArray[0]){
                 $featuredIndex = array_search($featuredImage, $imageArray);
                 array_splice($imageArray, $featuredIndex, 1);
                 array_unshift($imageArray, $featuredImage);
             };
 
-            $imageArray = array_map(function($item){return array('src' => $item);}, $imageArray);
+            $imageArray = array_map(function($item){return array('id' => $item);}, $imageArray);
             $data['images'] = $imageArray;
 
         }

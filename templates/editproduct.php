@@ -86,6 +86,7 @@ else {
 <?php
     // This will happen when the form is submitted
     if(isset($_POST['save'])){
+        $error = "";
 
         if(isset($_POST['category']) && $_POST['category']){
             $categortArray = array(
@@ -98,7 +99,10 @@ else {
                 $categortArray['parent'] = $_POST['parent-category'];
             }
 
-           if($validCodes) $newCategory = json_decode($createCategory($categortArray), true);
+           if($validCodes) {
+               $newCategory = json_decode($createCategory($categortArray), true);
+               if($newCategory["error"]) $error = $newCategory["message"];
+            };
         }
 
 
@@ -198,15 +202,14 @@ else {
             $data['tags'] = array();
         }   
         
-       if($validCodes) $saveProduct = json_decode($updateProduct($id, $data), true);
+       if($validCodes) {
+           $saveProduct = json_decode($updateProduct($id, $data), true);
 
-        $files = glob($imageFolder . "/*");
-        foreach($files as $file){
-            if(is_file($file)){
-                unlink($file);
-            }
-        }
-        header("Location: " . $link . "/" . $products_page . "?id=1");
+           if($saveProduct['error']) $error = $saveProduct['message'];
+        };
+
+
+        if(!$error) header("Location: " . $link . "/" . $products_page . "?id=1");
     } 
 
 ?>
@@ -232,6 +235,11 @@ else {
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <?php if($validCodes): ?>
+
+        <?php if($error): ?>
+            <div id="errors"><?= $error ?></div>
+        <?php endif; ?>
+
         <form enctype="multipart/form-data" action="" method="post" id="addeditproduct-form">
 
             <div id="title-price" class="flex-fields">

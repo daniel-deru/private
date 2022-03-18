@@ -16,6 +16,8 @@ $woocommerce = new Client(
     $secret,
     [
         'version' => 'wc/v3',
+        'timeout' => 120,
+        'wp_api' => true
     ]
 );
 

@@ -214,9 +214,9 @@ function openMedia(e){
     frame.on('select', function(){
         // This will return the selected image from the Media Uploader, the result is an object
         let attachment = frame.state().get('selection').first().toJSON()
-        if(!imageArray.includes(attachment.url)){
-            imageArray.push(attachment.url)
-        }
+        const existingImage = imageArray.filter(image => image.url == attachment.url)
+        if(existingImage.length <= 0) imageArray.push({id: attachment.id, url: attachment.url})
+
         displayImages()
        
     })
@@ -224,6 +224,7 @@ function openMedia(e){
 
 function displayImages(){
     imageContainer.innerHTML = ""
+    console.log(imageArray)
     if(imageArray){
         for(let image of imageArray){
 
@@ -231,14 +232,14 @@ function displayImages(){
             const imageItem = document.createElement("div")
 
             // create image
-            const imgElement = `<img src="${image}"/>`
+            const imgElement = `<img src="${image.url}"/>`
 
             // Create the delete icon
             const deleteIcon = `<div class="delete-icon">
                                     <i class="fa fa-times"></i>
                                 </div>`
 
-            const featuredRadio = `<input type="radio" name="featured" value="${image}" id="${image}" ${image == imageArray[0] ? "checked" : ""}>`
+            const featuredRadio = `<input type="radio" name="featured" value="${image.id}" id="${image.id}" ${image.id == imageArray[0].id ? "checked" : ""}>`
 
             // Put the image in the container
             imageItem.innerHTML = featuredRadio + imgElement + deleteIcon
@@ -249,9 +250,9 @@ function displayImages(){
     }
 
     // Set the hidden input data to the image urls to process on server
-    imageInput.value = imageArray.join(";")
+    const imageIDs = imageArray.map(image => image.id).join(";")
+    imageInput.value = imageIDs
     addDeleteListener()
-    console.log(imageInput.value)
 }   
 
 
@@ -261,8 +262,7 @@ function handleDeleteImage(e){
     if(targetNode.nodeName !== "DIV") targetNode = targetNode.parentElement
     const imgURL = targetNode.previousSibling.src
     // remove image from image array
-    imageArray = imageArray.filter(image => image !== imgURL)
-    console.log(imageArray)
+    imageArray = imageArray.filter(image => image.url !== imgURL)
     // Rerender the images
     displayImages()
 }

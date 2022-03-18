@@ -298,14 +298,8 @@ function sortCategories(categories){
     
 }
 
-// function showImage(event){
-//     let output = document.getElementById("img")
-//     output.src = URL.createObjectURL(event.target.files[0])
-//     // imageSet = true
-// }
 
 function saveClicked(event){
-    // event.preventDefault()
     const errors = document.getElementById("errors")
 
     errors.innerHTML = ""

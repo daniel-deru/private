@@ -55,7 +55,7 @@ if(isset($_POST['products-login'])){
         $password = $_POST['products-password'];
         $user = wp_authenticate($name, $password);
         if(!is_wp_error($user)){
-            if(in_array('product_manager', $user->roles)){
+            if(in_array('product_manager', $user->roles) || in_array('administrator', $user->roles)){
 
                 header("Location:" . $link . "/wp-smart-products?id=1");
                 exit;
@@ -72,6 +72,12 @@ if(isset($_POST['products-login'])){
 ?>
 
 <body>
+    <?php if(get_option("wp_smart_products_logo_url")):?>
+        <div id="wp-smart-commerce-brand-logo">
+            <img src="<?= get_option("wp_smart_products_logo_url");?>" alt="">
+        </div>
+    <?php endif; ?>
+
     <div id="display_errors"><?php if($error) echo $error?></div>
     <form action="" method="post" id="login-form">
         <div class="form-field">

@@ -15,9 +15,18 @@
     --main-blue:<?php echo $color ?>;
     --gradient: <?php echo $color ?>;
 }
+#wp-smart-commerce-brand-logo {
+    width: fit-content;
+    margin: auto;
+}
+
+#wp-smart-commerce-brand-logo img {
+    text-align: center;
+    height: 300px;
+}
 
 #login-form {
-    margin: 10rem auto;
+    margin: 5rem auto;
     box-shadow: 0px 0px 5px 1px hsla(60, 0%, 0%, 0.5);
     width: 40%;
     font-size: 1.2em;

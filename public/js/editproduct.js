@@ -24,6 +24,15 @@ parseCategories()
 getTags()
 setCheckboxes()
 getImages()
+setProductType()
+
+function setProductType(){
+    let productType = JSON.parse(hiddenProduct.value).product_type
+    const productTypes = document.getElementById("product-type").children
+    for(let i = 0; i < productTypes.length; i++){
+        if(productTypes[i].value == productType) productTypes[i].selected = true
+    }
+}
 
 function getImages(){
     // Get an array of image urls to display

@@ -148,6 +148,8 @@ else {
             $data['images'] = $imageArray;
 
         }
+
+        
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
             $productCategories = explode("%", $_POST['product-categories']);
             if($newCategory){

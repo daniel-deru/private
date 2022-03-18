@@ -221,6 +221,7 @@ textarea:focus {
     color: white;
     border-radius: 3px;
     border: none;
+    cursor: pointer;
 }
 
 .subcategory-checkbox {

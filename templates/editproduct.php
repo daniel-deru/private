@@ -48,7 +48,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
                 'virtual' => $product['virtual'],
                 'categories' => $product['categories'],
                 'manage_stock' => $product['manage_stock'],
-                'product_images' => $productImages
+                'product_images' => $productImages,
+                'product_type' => $product['type']
             );
 
             $unitData = json_decode($units(), true);
@@ -168,7 +169,7 @@ else {
 
         }
 
-        
+
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
             
             $productCategories = explode("%", $_POST['product-categories']);
@@ -261,8 +262,8 @@ else {
                 <div class="flex-container">
                     <div >
                         <select name="product-type" id="product-type">
-                            <option value="" selected disabled>Product Type</option>
-                            <option value="simple">Simple Product</option>
+                            <option value=""  disabled>Product Type</option>
+                            <option value="simple" selected>Simple Product</option>
                             <option value="grouped">Grouped Product</option>
                             <option value="external">External/Affiliate Product</option>
                             <option value="variable">Variable Product</option>

@@ -36,7 +36,7 @@ function setProductType(){
 
 function getImages(){
     // Get an array of image urls to display
-    imageArray = (JSON.parse(hiddenProduct.value).product_images).split(";")
+    imageArray = JSON.parse(JSON.parse(hiddenProduct.value).product_images)
     displayImages()
 }
 
@@ -44,19 +44,19 @@ function displayImages(){
     imageViewer.innerHTML = ""
     if(imageArray){
         for(let image of imageArray){
-
+            // console.log("inside the image loop", image)
             // create image container
             const imageItem = document.createElement("div")
 
             // create image
-            const imgElement = `<img src="${image}"/>`
+            const imgElement = `<img src="${image.src}"/>`
 
             // Create the delete icon
             const deleteIcon = `<div class="delete-icon">
                                     <i class="fa fa-times"></i>
                                 </div>`
 
-            const featuredRadio = `<input type="radio" name="featured" value="${image}" id="${image}" ${image == imageArray[0] ? "checked" : ""}>`
+            const featuredRadio = `<input type="radio" name="featured" value="${image.id}" id="${image.id}" ${image.id == imageArray[0].id ? "checked" : ""}>`
 
             // Put the image in the container
             imageItem.innerHTML = featuredRadio + imgElement + deleteIcon
@@ -67,27 +67,29 @@ function displayImages(){
     }
 
     // Set the hidden input data to the image urls to process on server
-    hiddenInputImages.value = imageArray.join(";")
+    hiddenInputImages.value = imageArray.map(image => image.id).join(";")
     addDeleteListener()
     // console.log(imageInput.value)
 }
 
 function addDeleteListener(){
-    console.log("addDeleteListener Fired")
     for(let i = 0; i < deleteBtns.length; i++){
         deleteBtns[i].addEventListener("click", (e) => handleDeleteImage(e))
     }
 }
 
 function handleDeleteImage(e){
-    console.log("The handleDeleteImage fired")
+
     // Get the img tag and  the src value of that image
     let targetNode = e.target.parentElement
+    
     if(targetNode.nodeName !== "DIV") targetNode = targetNode.parentElement
+    
     const imgURL = targetNode.previousSibling.src
+    console.log("This is the target nodesibling", targetNode.previousSibling)
     // remove image from image array
-    imageArray = imageArray.filter(image => image !== imgURL)
-    console.log(imageArray)
+    imageArray = imageArray.filter(image => image.src !== imgURL)
+
     // Rerender the images
     displayImages()
 }
@@ -106,7 +108,7 @@ function openMedia(e){
         // This will return the selected image from the Media Uploader, the result is an object
         let attachment = frame.state().get('selection').first().toJSON()
         if(!imageArray.includes(attachment.url)){
-            imageArray.push(attachment.url)
+            imageArray.push({src: attachment.url, id: attachment.id})
         }
         displayImages()
        

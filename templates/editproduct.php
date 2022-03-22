@@ -39,7 +39,16 @@ if(isset($_SERVER['HTTP_REFERER'])){
                 $product = json_decode($getProduct($_GET['id']), true);
             }
             // Make this a string to easily parse in javascript
-           $productImages = implode(";", array_map(function($item){return $item['src'];}, $product['images']));
+        //    $productImages = implode(";", array_map(function($item){return array(
+        //        "src" => $item['src'],
+        //         'id' => $item['id']
+        //     );}, $product['images']));
+
+            $productImages = json_encode(array_map(function($item){return array('src' => $item["src"], "id" => $item['id']);}, $product['images']));
+
+            // echo "<pre>";
+            //     print_r(json_encode($productImages));
+            // echo "</pre>";
 
 
             //  Make an array to send to javascript to handle the display of the categories
@@ -165,6 +174,7 @@ else {
          if($_POST['image-urls']){
             
             $imageArray = explode(";", $_POST['image-urls']);
+
             $featuredImage = $_POST['featured'];
             if($featuredImage !== $imageArray[0]){
                 $featuredIndex = array_search($featuredImage, $imageArray);
@@ -172,7 +182,7 @@ else {
                 array_unshift($imageArray, $featuredImage);
             };
 
-            $imageArray = array_map(function($item){return array('src' => $item);}, $imageArray);
+            $imageArray = array_map(function($item){return array('id' => $item);}, $imageArray);
             $data['images'] = $imageArray;
 
         }
@@ -208,6 +218,10 @@ else {
            if($saveProduct['error']) $error = $saveProduct['message'];
         };
 
+        // echo "<pre>";
+        // print_r($data['images']);
+        // echo "</pre>";
+
 
         if(!$error) header("Location: " . $link . "/" . $products_page . "?id=1");
     } 
@@ -232,6 +246,7 @@ else {
                 <img src="<?= get_option("wp_smart_products_logo_url")?>"/>
             </div>
         <?php endif;?>
+        <a href="<?= $add_page?>">Add New Product</a>
         <a href="<?= $products_page?>?id=1">Go back to products</a>
     </header>
     <?php if($validCodes): ?>

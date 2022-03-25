@@ -25,6 +25,18 @@ getTags()
 setCheckboxes()
 getImages()
 setProductType()
+setTaxClass()
+
+function setTaxClass(){
+
+    const taxClass = JSON.parse(hiddenProduct.value).tax_class
+    const taxSelect = document.getElementById("tax-class")
+
+    for(let i = 0; i < taxSelect.children.length; i++){ 
+        let option = taxSelect.children[i]
+        if(taxClass === option.value) option.selected = true
+    }
+}
 
 function setProductType(){
     let productType = JSON.parse(hiddenProduct.value).product_type

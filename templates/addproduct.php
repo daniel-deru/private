@@ -40,10 +40,6 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
             $taxClassData = json_decode($getTaxClasses(), true);
 
-            echo "<pre>";
-                print_r($taxClassData);
-            echo "</pre>";
-
             $weightUnit;
             $dimensionsUnit;
 
@@ -304,7 +300,7 @@ else {
 
                     <div class="flex-container-vertical">
                         <label for="tax-class">Tax Class</label>
-                        <select name="tax-class" id="">
+                        <select name="tax-class" id="tax-class">
                             <option value="" disabled selected>Select Tax Class</option>
                             <?php 
                             

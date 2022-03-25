@@ -35,21 +35,14 @@ if(isset($_SERVER['HTTP_REFERER'])){
             $categoriesData = json_decode($listCategories(), true);
             $categories = $categoriesData['data'];
             $id = $_GET['id'];
+
             if(isset($_GET['id'])){
                 $product = json_decode($getProduct($_GET['id']), true);
             }
-            // Make this a string to easily parse in javascript
-        //    $productImages = implode(";", array_map(function($item){return array(
-        //        "src" => $item['src'],
-        //         'id' => $item['id']
-        //     );}, $product['images']));
 
             $productImages = json_encode(array_map(function($item){return array('src' => $item["src"], "id" => $item['id']);}, $product['images']));
 
-            // echo "<pre>";
-            //     print_r(json_encode($productImages));
-            // echo "</pre>";
-
+            $taxClassData = json_decode($getTaxClasses(), true);
 
             //  Make an array to send to javascript to handle the display of the categories
             $javascriptProductData = array(
@@ -59,7 +52,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
                 'categories' => $product['categories'],
                 'manage_stock' => $product['manage_stock'],
                 'product_images' => $productImages,
-                'product_type' => $product['type']
+                'product_type' => $product['type'],
+                'tax_class' => $product["tax_class"]
             );
 
             $unitData = json_decode($units(), true);
@@ -121,6 +115,8 @@ else {
         if(isset($_POST['product-regular-price']) && $_POST['product-regular-price'] != $product['regular_price']) $data['regular_price'] = $_POST['product-regular-price'];
 
         if(isset($_POST['product-sale-price']) && $_POST['product-sale-price'] != $product['sale_price']) $data['sale_price'] = $_POST['product-sale-price'];
+
+        if(isset($_POST['tax-class']) && $_POST['tax-class'] != $product['tax_class'])  $data['tax_class'] = $_POST['tax-class'];
 
         if(isset($_POST['product-type']) && $_POST['product-type'] != $product['type']) $data['type'] = $_POST['product-type'];
 
@@ -318,18 +314,32 @@ else {
                 </div>
             </div>
 
-
+            <!-- GENERAL -->
             <div id="general">
                 <label class="label-block">General</label>
                 <div class="flex-container">
-                    <div class="flex-container">
+                    <div class="flex-container-vertical">
                         <label for="product-regular-price" class="">Regular Price</label>
                         <input type="text" name="product-regular-price" id="regular-price" value="<?= $product['regular_price']?>">
                     </div>
 
-                    <div class="flex-container">
+                    <div class="flex-container-vertical">
                         <label for="product-sale-price" class="">Sale Price</label>
                         <input type="text" name="product-sale-price" id="sale-price" value="<?= $product['sale_price']?>">
+                    </div>
+
+                    <div class="flex-container-vertical">
+                        <label for="tax-class">Tax Class</label>
+                        <select name="tax-class" id="tax-class">
+                            <option value="" disabled selected>Select Tax Class</option>
+                            <?php 
+                            
+                                foreach($taxClassData as $taxClass){ ?>
+                                    <option value="<?= $taxClass["slug"]?>"><?= $taxClass['name']?></option>
+                               <?php }
+                            
+                            ?>
+                        </select>
                     </div>
                 </div>
             </div>

@@ -27,3 +27,11 @@
     padding: 0px 40px;
     margin: auto;
 } 
+
+#guide {
+    display: flex;
+}
+
+#guide b {
+    color: firebrick;
+}

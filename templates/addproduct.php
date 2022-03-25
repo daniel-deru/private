@@ -36,9 +36,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
             $categoriesData = json_decode($listCategories(), true);
             $categories = $categoriesData['data'];
 
-            $unitData = json_decode($units(), true);
-
-            $taxClassData = json_decode($getTaxClasses(), true);
+            $unitData = json_decode($units(), true);            
 
             $weightUnit;
             $dimensionsUnit;
@@ -51,6 +49,10 @@ if(isset($_SERVER['HTTP_REFERER'])){
                     $dimensionsUnit = $option['value'];
                 }
             }
+
+            $taxClassData = json_decode($getTaxClasses(), true);
+
+            $shippingClasses = json_decode($getShippingClasses(), true);
         }
         
 
@@ -126,6 +128,8 @@ else {
             }
         }
 
+        if(isset($_POST['stock-status'])) $data['stock_status'] = $_POST['stock-status'];
+
         // check if the dimensions are filled in and add them to the data object
         if(isset($_POST['length']) && isset($_POST['width']) && isset($_POST['height'])){
             $dimensions = array(
@@ -139,9 +143,10 @@ else {
 
         // Check if the weight is filled
         if(isset($_POST['weight'])) $data["weight"] = $_POST["weight"];
-        
 
-        $imageFolder = dirname(__FILE__) . "/images";
+
+        if(isset($_POST['shipping-class'])) $data['shipping_class'] = $_POST['shipping-class'];
+
 
         // Handle the image uploads
         if($_POST['image-urls']){
@@ -329,6 +334,7 @@ else {
                         <label for="product-sku" class="">SKU</label>
                         <input type="text" name="product-sku" id="sku-input" value="<?php if(isset($_POST['product-sku'])) echo htmlentities($_POST['product-sku']) ?>">
                     </div>
+
                     <div id="stock" class="flex-container">
                         <label for="enable-stock">Enable Stock</label>
                         <span>
@@ -336,9 +342,19 @@ else {
                             This will keep count of the stock in the store
                         </span>
                     </div>
+
                     <div id="stock-quantity" class="flex-container">
                         <label for="stock-quantity">Stock Quantity</label>
                         <input type="number" value="0" name="stock-quantity" value="<?php if(isset($_POST['stock-quantity'])) echo htmlentities($_POST['stock-quantity']) ?>">
+                    </div>
+
+                    <div id="stock-status-container" class="flex-container">
+                        <label for="stock-status">Stock Status</label>
+                        <select name="stock-status" id="stock-status">
+                            <option value="instock" >In Stock</option>
+                            <option value="outofstock" >Out of Stock</option>
+                            <option value="onbackorder" >On Back Order</option>
+                        </select>
                     </div>
                 </div>
 
@@ -353,17 +369,33 @@ else {
                         <div>Set shipping information such as the weight and dimensions of the product. (keep in mind the unit these values are measured in)</div>
                     </span>
                 </label>
+
                 <div>
                     <div id="weight" class="flex-container between">
                         <label for="weight" class="">Weight</label>
                         <input type="text" name="weight" value="<?php if(isset($_POST['weight'])) echo htmlentities($_POST['weight']) ?>">
                     </div>
+
                     <div id="dimensions" class="flex-container">
                         <label for="">Dimensions</label>
                         <input type="text" name="length" placeholder="Length" value="<?php if(isset($_POST['length'])) echo htmlentities($_POST['length']) ?>">
                         <input type="text" name="width" placeholder="Width" value="<?php if(isset($_POST['width'])) echo htmlentities($_POST['width']) ?>">
                         <input type="text" name="height" placeholder="Height" value="<?php if(isset($_POST['height'])) echo htmlentities($_POST['height']) ?>">
                     </div>
+
+                    <?php if(count($shippingClasses) > 0):?>
+                        <div id="shipping-class-container" class="flex-container between">
+                            <label for="shipping-class">Shipping Class</label>
+                            <select name="shipping-class" id="shipping-class">
+                                <option value="">No Shipping Class</option>
+                                <?php foreach($shippingClasses as $shippingClass):?>
+                                    <option value="<?= $shippingClass['slug']?>"><?= $shippingClass['name']?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    <?php endif; ?>
+
+                    
                 </div>
             </div>
 

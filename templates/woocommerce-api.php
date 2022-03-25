@@ -119,7 +119,16 @@ $getTaxClasses = function() use ($woocommerce) {
     } catch (Exception $e){
         return json_encode(array('error' => true, 'message' => $e->getMessage()));
     }
-}
+};
+
+$getShippingClasses = function() use ($woocommerce){
+    try {
+        $data = $woocommerce->get("products/shipping_classes");
+        return json_encode($data);
+    } catch (Exception $e) {
+        return json_encode(array('error' => true, 'message' => $e->getMessage()));
+    }
+};
 
  ?>
 

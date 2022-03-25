@@ -44,17 +44,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
             $taxClassData = json_decode($getTaxClasses(), true);
 
-            //  Make an array to send to javascript to handle the display of the categories
-            $javascriptProductData = array(
-                'downloadable' => $product['downloadable'],
-                'virtual' => $product['virtual'],
-                'draft' => $product["status"] == "draft" ? true : false,
-                'categories' => $product['categories'],
-                'manage_stock' => $product['manage_stock'],
-                'product_images' => $productImages,
-                'product_type' => $product['type'],
-                'tax_class' => $product["tax_class"]
-            );
+            $shippingClasses = json_decode($getShippingClasses(), true);
+
 
             $unitData = json_decode($units(), true);
 
@@ -69,6 +60,22 @@ if(isset($_SERVER['HTTP_REFERER'])){
                     $dimensionsUnit = $option['value'];
                 }
             }
+
+            $shippingClasses = json_decode($getShippingClasses(), true);
+
+            //  Make an array to send to javascript to handle the display of the categories
+            $javascriptProductData = array(
+                'downloadable' => $product['downloadable'],
+                'virtual' => $product['virtual'],
+                'draft' => $product["status"] == "draft" ? true : false,
+                'categories' => $product['categories'],
+                'manage_stock' => $product['manage_stock'],
+                'product_images' => $productImages,
+                'product_type' => $product['type'],
+                'tax_class' => $product["tax_class"],
+                'stock_status' => $product['stock_status'],
+                'shipping_class' => $product['shipping_class']
+            );
         }
 
     }
@@ -140,13 +147,9 @@ else {
         if(isset($_POST['manage-stock'])) $data['manage_stock'] = true; 
         else  $data['manage_stock'] = false;
 
-        if(isset($_POST['stock-quantity'])){
-            
-            $data['stock_quantity'] = $_POST['stock-quantity'];
-            if(!$_POST['stock-quantity']){
-                $data['stock_quantity'] = 0;
-            }
-        }
+        if(isset($_POST['stock-quantity']) && $_POST['stock-quantity']) $data['stock_quantity'] = $_POST['stock-quantity'];
+
+        if(isset($_POST['stock-status']) && $_POST['stock-status'] != $product['stock_status']) $data['stock_status'] = $_POST['stock-status'];
 
 
         // check if the dimensions are filled in and add them to the data object
@@ -163,8 +166,7 @@ else {
         // Check if the weight is filled
         if(isset($_POST['weight'])) $data["weight"] = $_POST["weight"];
         
-
-        // $imageFolder = dirname(__FILE__) . "/images";
+        if(isset($_POST['shipping-class']) && $_POST['shipping-class'] != $product['shipping_class']) $data['shipping_class'] = $_POST['shipping-class'];
 
          // Handle the image uploads
          if($_POST['image-urls']){
@@ -344,7 +346,7 @@ else {
                 </div>
             </div>
 
-
+            <!-- INVENTORY -->
             <div id="inventory">
                 <label class="label-block">
                     Inventory 
@@ -358,6 +360,7 @@ else {
                         <label for="product-sku">SKU </label>
                         <input type="text" name="product-sku" id="sku-input" value="<?= $product['sku']?>">
                     </div>
+
                     <div id="stock" class="flex-container">
                         <label for="enable-stock">Enable Stock </label>
                         <span>
@@ -365,9 +368,19 @@ else {
                             This will keep count of the stock in the store
                         </span>
                     </div>
+
                     <div id="stock-quantity" class="flex-container">
                         <label for="stock-quantity">Stock Quantity </label>
                         <input type="number" name="stock-quantity" value="<?= $product['stock_quantity'] ?>">
+                    </div>
+
+                    <div id="stock-status-container" class="flex-container">
+                        <label for="stock-status">Stock Status</label>
+                        <select name="stock-status" id="stock-status">
+                            <option value="instock" >In Stock</option>
+                            <option value="outofstock" >Out of Stock</option>
+                            <option value="onbackorder" >On Back Order</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -386,12 +399,25 @@ else {
                         <label for="weight" class="">Weight (<?= $dimensionsUnit?>)</label>
                         <input type="text" name="weight" value="<?= $product['weight'] ?>">
                     </div>
+
                     <div id="dimensions" class="flex-container">
                         <label for="">Dimensions (<?= $dimensionsUnit?>)</label>
                         <input type="text" name="length" placeholder="Length" value="<?= $product["dimensions"]["length"]?>">
                         <input type="text" name="width" placeholder="Width"  value="<?= $product["dimensions"]["width"]?>">
                         <input type="text" name="height" placeholder="Height"  value="<?= $product["dimensions"]["height"]?>">
                     </div>
+
+                    <?php if(count($shippingClasses) > 0):?>
+                        <div id="shipping-class-container" class="flex-container between">
+                            <label for="shipping-class">Shipping Class</label>
+                            <select name="shipping-class" id="shipping-class">
+                                <option value="" >No Shipping Class</option>
+                                <?php foreach($shippingClasses as $shippingClass):?>
+                                    <option value="<?= $shippingClass['slug']?>"><?= $shippingClass['name']?></option>
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
 

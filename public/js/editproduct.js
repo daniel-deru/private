@@ -26,6 +26,17 @@ setCheckboxes()
 getImages()
 setProductType()
 setTaxClass()
+setStockStatus()
+
+function setStockStatus(){
+    const stockStatus = JSON.parse(hiddenProduct.value).stock_status
+    const StockStatusSelect = document.getElementById("stock-status")
+
+    for(let i = 0; i <= StockStatusSelect.children.length; i++){
+        let option = StockStatusSelect.children[i]
+        if(option.value === stockStatus) option.selected = true
+    }
+}
 
 function setTaxClass(){
 

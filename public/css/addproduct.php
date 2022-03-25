@@ -90,6 +90,14 @@ label {
 .flex-container {
     display: flex;
     width: 100%;
+    /* margin: auto; */
+    justify-content: space-between;
+}
+
+.flex-container-vertical {
+    display: flex;
+    /* width: 100%; */
+    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -180,6 +188,24 @@ textarea:focus {
 #addeditproduct-form img {
     width: 100%;
 }
+
+#general > div {
+    display: flex;
+
+    justify-content: space-between;
+}
+#general label {
+    margin-bottom: 10px;
+}
+
+#general .flex-container-vertical {
+    width: 80%;
+}
+
+#general .flex-container-vertical select, 
+#general .flex-container-vertical input {
+    width: 80%;
+} 
 
 #product-settings  {
     padding: 20px;
@@ -285,5 +311,5 @@ textarea:focus {
 
 #general .flex-container:nth-child(2) label {
     display: inline-block;
-    margin-left: 20px;
+    /* margin-left: 20px; */
 }

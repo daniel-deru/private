@@ -105,6 +105,8 @@ else {
 
         if(isset($_POST['product-sale-price'])) $data['sale_price'] = $_POST['product-sale-price'];
 
+        if(isset($_POST['tax-class'])) $data['tax_class'] = $_POST['tax-class'];
+
         if(isset($_POST['product-type'])) $data['type'] = $_POST['product-type'];
 
         if(isset($_POST['product-virtual'])) $data['virtual'] = true;
@@ -290,19 +292,19 @@ else {
             <div id="general">
                 <label class="label-block">General</label>
                 <div class="flex-container">
-                    <div class="flex-container">
+                    <div class="flex-container-vertical">
                         <label for="product-regular-price" class="">Regular Price</label>
                         <input type="text" name="product-regular-price" id="regular-price" value="<?php if(isset($_POST['product-regular-price'])) echo htmlentities($_POST['product-regular-price']) ?>">
                     </div>
 
-                    <div class="flex-container">
+                    <div class="flex-container-vertical">
                         <label for="product-sale-price" class="padding-left">Sale Price</label>
                         <input type="text" name="product-sale-price" id="sale-price" value="<?php if(isset($_POST['product-sale-price'])) echo htmlentities($_POST['product-sale-price']) ?>">
                     </div>
 
-                    <div class="flex-container">
+                    <div class="flex-container-vertical">
                         <label for="tax-class">Tax Class</label>
-                        <select name="" id="">
+                        <select name="tax-class" id="">
                             <option value="" disabled selected>Select Tax Class</option>
                             <?php 
                             

@@ -118,6 +118,11 @@ textarea:focus {
     outline: 1px solid var(--main-blue);
 }
 
+#product-image div {
+    display: flex;
+    justify-content: space-between;
+}
+
 /* The box where the divs with product images will be in */
 #addeditproduct-form #image-viewer {
     margin-top: 1rem;
@@ -220,7 +225,7 @@ textarea:focus {
 
 #addeditproduct-form input[type="submit"] {
     display: block;
-    margin: auto;
+    /* margin: auto; */
     padding: 10px 40px;
     background-color: var(--main-blue);
     color: white;
@@ -241,6 +246,16 @@ textarea:focus {
 #categories-checkboxes {
     height: 300px;
     overflow: auto;
+}
+
+#btn-save {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#btn-save label {
+    font-weight: 700;
 }
 
 .help {

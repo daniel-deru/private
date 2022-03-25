@@ -38,6 +38,12 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
             $unitData = json_decode($units(), true);
 
+            $taxClassData = json_decode($getTaxClasses(), true);
+
+            echo "<pre>";
+                print_r($taxClassData);
+            echo "</pre>";
+
             $weightUnit;
             $dimensionsUnit;
 
@@ -220,7 +226,7 @@ else {
             <!-- Name Input field -->
             <div id="title-price" class="flex-fields">
                 <div>
-                    <label for="product-name" class="label-block">Name</label>
+                    <label for="product-name" class="label-block">Product Name</label>
                     <input type="text" name="product-name" id="name" value="<?php if(isset($_POST['product-name'])) echo htmlentities($_POST['product-name'])?>">
                 </div>
             </div>
@@ -228,7 +234,11 @@ else {
 
             <!-- Image Input Field -->
             <div id="product-image">
-                <button type="button" id="image-selector">Select Image</button>
+                <div>
+                    <label for="" class="label-block">Product Image & Gallery</label>
+                    <button type="button" id="image-selector">Select Image</button>
+                </div>
+                
                 <div id="image-viewer"></div>
                 <input type="hidden" id="image-urls" name="image-urls">
             </div>
@@ -272,10 +282,7 @@ else {
                         <label for="product-downloadable" class="inline">Downloadable</label>
                     </div>
 
-                    <div>
-                        <input type="checkbox" name="draft" id="draft">
-                        <label for="draft" class="inline">Make a Draft</label>
-                    </div>
+
                 </div>
             </div>
 
@@ -291,6 +298,20 @@ else {
                     <div class="flex-container">
                         <label for="product-sale-price" class="padding-left">Sale Price</label>
                         <input type="text" name="product-sale-price" id="sale-price" value="<?php if(isset($_POST['product-sale-price'])) echo htmlentities($_POST['product-sale-price']) ?>">
+                    </div>
+
+                    <div class="flex-container">
+                        <label for="tax-class">Tax Class</label>
+                        <select name="" id="">
+                            <option value="" disabled selected>Select Tax Class</option>
+                            <?php 
+                            
+                                foreach($taxClassData as $taxClass){ ?>
+                                    <option value="<?= $taxClass["slug"]?>"><?= $taxClass['name']?></option>
+                               <?php }
+                            
+                            ?>
+                        </select>
                     </div>
                 </div>
 
@@ -406,6 +427,10 @@ else {
 
             <div id="btn-save">
                 <input type="submit" id="save-btn" value="Save" name="save">
+                <div>
+                    <input type="checkbox" name="draft" id="draft">
+                    <label for="draft" class="inline">Hide Product</label>
+                </div>
             </div>
             <?php //This will get the data from the form to submit to the api?>
             <input type="hidden" name="product-categories" id="hidden-categories">

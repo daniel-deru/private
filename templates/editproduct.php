@@ -260,7 +260,7 @@ else {
             <div id="title-price" class="flex-fields">
                 <!-- This is the name field input -->
                 <div>
-                    <label for="product-name" class="label-block">Name</label>
+                    <label for="product-name" class="label-block">Product Name</label>
                     <input type="text" name="product-name" id="name" value="<?= $product['name']?>">
                 </div>
             </div>
@@ -268,7 +268,11 @@ else {
             
             <!-- Image Input Field -->
             <div id="product-image">
-                <button type="button" id="image-selector">Select Image</button>
+                <div>
+                    <label for="" class="label-block">Product Image & Gallery</label>
+                    <button type="button" id="image-selector">Select Image</button>
+                </div>
+                
                 <div id="image-viewer"></div>
                 <input type="hidden" id="image-urls" name="image-urls">
             </div>
@@ -309,10 +313,7 @@ else {
                         <label for="product-downloadable" class="inline">Downloadable</label>
                     </div>
 
-                    <div>
-                        <input type="checkbox" name="draft" id="draft">
-                        <label for="draft" class="inline">Make Draft</label>
-                    </div>
+
 
                 </div>
             </div>
@@ -451,6 +452,10 @@ else {
 
             <div id="btn-save">
                 <input type="submit" id="save-btn" value="Save" name="save">
+                <div>
+                    <input type="checkbox" name="draft" id="draft">
+                    <label for="draft" class="inline">Hide Product</label>
+                </div>
             </div>
             <?php //This will get the data from the form to submit to the api?>
             <input type="hidden" name="product-categories" id="hidden-categories">

@@ -110,6 +110,15 @@ $createCategory = function($data) use ($woocommerce) {
         }
     }
 
+};
+
+$getTaxClasses = function() use ($woocommerce) {
+    try {
+        $data = $woocommerce->get("taxes/classes");
+        return json_encode($data);
+    } catch (Exception $e){
+        return json_encode(array('error' => true, 'message' => $e->getMessage()));
+    }
 }
 
  ?>

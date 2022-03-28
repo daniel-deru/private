@@ -113,9 +113,9 @@ else {
 
         if(isset($_POST['draft'])) $data["status"] = "draft";
 
-        if(isset($_POST['product-description'])) $data['description'] = $_POST['product-description'];
+        if(isset($_POST['wp-commerce-product-description'])) $data['description'] = $_POST['wp-commerce-product-description'];
 
-        if(isset($_POST['product-short-description'])) $data['short_description'] = $_POST['product-short-description'];
+        if(isset($_POST['wp-commerce-product-short-description'])) $data['short_description'] = $_POST['wp-commerce-product-short-description'];
 
         if(isset($_POST['product-sku'])) $data['sku'] = $_POST['product-sku'];
 
@@ -152,9 +152,6 @@ else {
         if($_POST['image-urls']){
             
             $imageArray = explode(";", $_POST['image-urls']);
-            echo "<pre>";
-                print_r( $imageArray);
-            echo "</pre>";
             $featuredImage = $_POST['featured'];
             echo "THis is the featured image => " . $featuredImage;
             if($featuredImage !== $imageArray[0]){
@@ -188,16 +185,12 @@ else {
             $data['tags'] = $productTags;
         }
 
-        echo "<pre>";
-        print_r($data['description']);
-        print_r($data['short_description']);
-        echo "</pre>";
         
-    //    if($validCode) {
+       if($validCode) {
 
-    //         $saveProduct = json_decode($addProduct($data), true);
-    //         if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
-    //    }
+            $saveProduct = json_decode($addProduct($data), true);
+            if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
+       }
 
        if(!$error)  header("Location: " . $link . "/" . $products_page . "?id=1");
 
@@ -255,7 +248,7 @@ else {
             <!-- Product Long Description -->
             <div id="product-description">
                 <label for="product-description" class="label-block">Long Description</label>
-                <?php wp_editor("", "product-description")?>
+                <?php wp_editor("", "wp-commerce-product-description")?>
                
                 <!-- <textarea name="product-description" cols="30" rows="10" id="description">
                     <?php //if(isset($_POST['product-description'])) echo htmlentities($_POST['product-description']) ?>
@@ -408,7 +401,7 @@ else {
 
             <div id="product-short-description">
                 <label for="product-short-description" class="label-block">Short Description</label>
-                <?php wp_editor("", "product-short-description")?>
+                <?php wp_editor("", "wp-commerce-product-short-description")?>
                 <!-- <textarea name="product-short-description" id="short-description" cols="30" rows="10">
                     <?php // if(isset($_POST['product-short-description'])) echo htmlentities($_POST['product-short-description']) ?>
                 </textarea> -->

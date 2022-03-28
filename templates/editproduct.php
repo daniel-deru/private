@@ -138,9 +138,13 @@ else {
         if(isset($_POST['draft'])) $data['status'] = 'draft';
         else $data['status'] = 'publish';
 
-        if(isset($_POST['product-description']) && $_POST['product-description'] != strip_tags($product['description'])) $data['description'] = $_POST['product-description'];
+        if(isset($_POST['wp-commerce-product-description']) && $_POST['wp-commerce-product-description'] != strip_tags($product['description'])){
+            $data['description'] = $_POST['wp-commerce-product-description'];
+        } 
 
-        if(isset($_POST['product-short-description']) && $_POST['product-short-description'] != strip_tags($product['short_description'])) $data['short_description'] = $_POST['product-short-description'];
+        if(isset($_POST['wp-commerce-product-short-description']) && $_POST['wp-commerce-product-short-description'] != strip_tags($product['short_description'])){
+            $data['short_description'] = $_POST['wp-commerce-product-short-description'];
+        } 
 
         if(isset($_POST['product-sku']) && $_POST['product-sku'] != $product['sku']){
             $data['sku'] = $_POST['product-sku'];
@@ -279,7 +283,8 @@ else {
             
             <div id="product-description">
                 <label for="product-description" class="label-block">Long Description</label>
-                <textarea name="product-description" cols="30" rows="10" id="description"><?php echo strip_tags($product['description']) ?></textarea>
+                <?php wp_editor($product['description'], "wp-commerce-product-description")?>
+                <!-- <textarea name="product-description" cols="30" rows="10" id="description"><?php //echo strip_tags($product['description']) ?></textarea> -->
             </div>
 
             <div id="product-settings">
@@ -427,7 +432,8 @@ else {
 
             <div id="product-short-description">
                 <label for="product-short-description" class="label-block">Short Description</label>
-                <textarea name="product-short-description" id="short-description" cols="30" rows="10"><?php echo strip_tags($product['short_description']) ?></textarea>
+                <?php wp_editor($product['short_description'], "wp-commerce-product-short-description")?>
+                <!-- <textarea name="product-short-description" id="short-description" cols="30" rows="10"><?php //echo strip_tags($product['short_description']) ?></textarea> -->
             </div>
 
             

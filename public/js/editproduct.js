@@ -27,12 +27,26 @@ getImages()
 setProductType()
 setTaxClass()
 setStockStatus()
+setShippingClass()
+
+function setShippingClass(){
+    const shippingClass = JSON.parse(hiddenProduct.value).shipping_class
+
+    if(shippingClass) {
+        const shippingClassSelect = document.getElementById("shipping-class")
+
+        for(let i = 0; i < shippingClassSelect.children.length; i++){
+            let option = shippingClassSelect.children[i]
+            if(option.value == shippingClass) option.selected = true
+        }
+    }
+}
 
 function setStockStatus(){
     const stockStatus = JSON.parse(hiddenProduct.value).stock_status
     const StockStatusSelect = document.getElementById("stock-status")
 
-    for(let i = 0; i <= StockStatusSelect.children.length; i++){
+    for(let i = 0; i < StockStatusSelect.children.length; i++){
         let option = StockStatusSelect.children[i]
         if(option.value === stockStatus) option.selected = true
     }

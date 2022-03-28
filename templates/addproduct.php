@@ -187,12 +187,17 @@ else {
             }, $productTags);
             $data['tags'] = $productTags;
         }
-        
-       if($validCode) {
 
-            $saveProduct = json_decode($addProduct($data), true);
-            if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
-       }
+        echo "<pre>";
+        print_r($data['description']);
+        print_r($data['short_description']);
+        echo "</pre>";
+        
+    //    if($validCode) {
+
+    //         $saveProduct = json_decode($addProduct($data), true);
+    //         if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
+    //    }
 
        if(!$error)  header("Location: " . $link . "/" . $products_page . "?id=1");
 
@@ -250,9 +255,11 @@ else {
             <!-- Product Long Description -->
             <div id="product-description">
                 <label for="product-description" class="label-block">Long Description</label>
-                <textarea name="product-description" cols="30" rows="10" id="description">
-                    <?php if(isset($_POST['product-description'])) echo htmlentities($_POST['product-description']) ?>
-                </textarea>
+                <?php wp_editor("", "product-description")?>
+               
+                <!-- <textarea name="product-description" cols="30" rows="10" id="description">
+                    <?php //if(isset($_POST['product-description'])) echo htmlentities($_POST['product-description']) ?>
+                </textarea> -->
             </div>
 
             <!-- Product Data -->
@@ -401,9 +408,10 @@ else {
 
             <div id="product-short-description">
                 <label for="product-short-description" class="label-block">Short Description</label>
-                <textarea name="product-short-description" id="short-description" cols="30" rows="10">
-                    <?php if(isset($_POST['product-short-description'])) echo htmlentities($_POST['product-short-description']) ?>
-                </textarea>
+                <?php wp_editor("", "product-short-description")?>
+                <!-- <textarea name="product-short-description" id="short-description" cols="30" rows="10">
+                    <?php // if(isset($_POST['product-short-description'])) echo htmlentities($_POST['product-short-description']) ?>
+                </textarea> -->
             </div>
 
         <div id="categories-tags-container" class="flex-container around">

@@ -74,8 +74,10 @@ if(isset($_SERVER['HTTP_REFERER'])){
                 'product_type' => $product['type'],
                 'tax_class' => $product["tax_class"],
                 'stock_status' => $product['stock_status'],
-                'shipping_class' => $product['shipping_class']
             );
+
+            // Check if the product has a shipping class before sending it to javascript
+            $product['shipping_class'] && $javascriptProductData['shipping_class'] = $product['shipping_class'];
         }
 
     }

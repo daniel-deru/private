@@ -188,6 +188,36 @@ textarea:focus {
 #addeditproduct-form img {
     width: 100%;
 }
+#product-description label,
+#product-short-description label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+#product-description button,
+#product-short-description button  {
+    padding: 5px 15px;
+    margin: 0px 5px;
+    background-color: var(--main-blue);
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+}
+
+#product-description button i,
+#product-short-description button i  {
+    color: white;
+}
+#product-description input[type="button"] {
+    color: white;
+    background-color: var(--main-blue);
+    border: none;
+}
+.wp-editor-tabs button {
+    margin: 0px 5px;
+}
 
 #general > div {
     display: flex;
@@ -239,7 +269,7 @@ textarea:focus {
     width: auto;
 }
 
-#addeditproduct-form button {
+#addeditproduct-form button:not(#product-description button, #product-short-description button) {
     margin: 0px 10px;
     padding: 5px 30px;
     color: white;

@@ -105,32 +105,36 @@ if(isset($_POST['products-login'])){
 ?>
 
 <body>
-    <?php if(get_option("wp_smart_products_logo_url")):?>
-        <div id="wp-smart-commerce-brand-logo">
-            <img src="<?= get_option("wp_smart_products_logo_url");?>" alt="">
-        </div>
-    <?php endif; ?>
+
 
     <div id="display_errors"><?php if($error) echo $error?></div>
-    <form action="" method="post" id="login-form">
-        <div class="form-field">
-            <label for="products-name">Username</label>
-            <input type="text" name="products-name">
-        </div>
-
-        <div class="form-field">
-            <label for="products-password">Password</label>
-            <div class="password-container">
-                <input type="password" name="products-password" id="password">
-                <button id="icon-button" type="button">
-                    <i class="fa fa-eye show" id="show-password"></i>
-                </button>
+    <div id="login-form-wrapper">
+        <?php if(get_option("wp_smart_products_logo_url")):?>
+            <div id="wp-smart-commerce-brand-logo">
+                <img src="<?= get_option("wp_smart_products_logo_url");?>" alt="">
             </div>
-        </div>
-        <div class="form-field">
-            <input type="submit" name="products-login" value="login" id="login-btn">
-        </div>
-    </form>
+        <?php endif; ?>
+        <form action="" method="post" id="login-form">
+            <div class="form-field">
+                <label for="products-name">Username</label>
+                <input type="text" name="products-name">
+            </div>
+
+            <div class="form-field">
+                <label for="products-password">Password</label>
+                <div class="password-container">
+                    <input type="password" name="products-password" id="password">
+                    <button id="icon-button" type="button">
+                        <i class="fa fa-eye show" id="show-password"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="form-field">
+                <input type="submit" name="products-login" value="login" id="login-btn">
+            </div>
+        </form>
+    </div>
+    
    
 </body>
 </html>

@@ -16,24 +16,38 @@
     --gradient: <?php echo $color ?>;
 }
 #wp-smart-commerce-brand-logo {
-    width: fit-content;
+    box-sizing: border-box;
+    width: 100%;
     margin: auto;
+    background-color: var(--main-blue);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0px 0px 5px 1px hsla(60, 0%, 0%, 0.5);
+    padding: 2rem;
 }
 
 #wp-smart-commerce-brand-logo img {
     text-align: center;
-    height: 300px;
+    height: 100px;
+    margin: auto;
+    display: block;
+}
+
+#login-form-wrapper {
+    margin: 5rem auto;
+    
+    box-shadow: 0px 0px 5px 1px hsla(60, 0%, 0%, 0.5);
+    width: 50%;
+    font-size: 1.2em;
+    font-family: sans-serif;
+    border-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-sizing: border-box;
 }
 
 #login-form {
-    margin: 5rem auto;
-    box-shadow: 0px 0px 5px 1px hsla(60, 0%, 0%, 0.5);
-    width: 40%;
-    font-size: 1.2em;
-    font-family: sans-serif;
-    padding: 1em 0em;
-    border-radius: 10px;
-    box-sizing: border-box;
+    padding: 1em 0em;  
 }
 
 label {

@@ -1,6 +1,18 @@
 #smt-admin-page {
     font-size: 1.5em;
 }
+#smt-admin-page #wp-smart-commerce-header-container {
+    display: flex;
+    align-items: center;
+}
+
+#smt-admin-page #wp-smart-commerce-header-container h1 {
+    margin-left: 1rem;
+}
+
+#smt-admin-page #wp-smart-commerce-header-container img {
+    width: 100px;
+}
 
 #smt-admin-page form {
     display: flex;

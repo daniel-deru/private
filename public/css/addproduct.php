@@ -188,6 +188,21 @@ textarea:focus {
 #addeditproduct-form img {
     width: 100%;
 }
+
+.wp-media-buttons:not(#insert-media-button) {
+    margin: 10px 0px;
+
+}
+
+#insert-media-button {
+    padding: 5px 15px;
+    background-color: var(--main-blue);
+    border: none;
+    border-radius: 3px;
+    color: white;
+    cursor: pointer;
+}
+
 #product-description label,
 #product-short-description label {
     display: block;
@@ -195,8 +210,8 @@ textarea:focus {
     font-weight: 700;
 }
 
-#product-description button,
-#product-short-description button  {
+#product-description  button:not(#insert-media-button),
+#product-short-description button:not(#insert-media-button)  {
     padding: 5px 15px;
     margin: 0px 5px;
     background-color: var(--main-blue);
@@ -206,17 +221,27 @@ textarea:focus {
     cursor: pointer;
 }
 
+.mce-container-body div[role="button"] {
+    border-color: transparent !important;
+    border: none !important;
+}
+
 #product-description button i,
 #product-short-description button i  {
     color: white;
 }
-#product-description input[type="button"] {
+#product-description input[type="button"], 
+#product-short-description input[type="button"] {
     color: white;
     background-color: var(--main-blue);
     border: none;
 }
-.wp-editor-tabs button {
-    margin: 0px 5px;
+
+.mce-preview {
+    left: 0 !important;
+    transform: translateX(100%) !important;
+    
+
 }
 
 #general > div {
@@ -312,6 +337,13 @@ textarea:focus {
 
 #btn-save label {
     font-weight: 700;
+    background-color: var(--main-blue);
+    text-align: center;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    user-select: none;
+    cursor: pointer;
 }
 
 .help {

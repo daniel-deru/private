@@ -27,6 +27,39 @@
 
 
 <?php
+
+function checkUser(){
+    $link = 'http://';
+    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
+        $link = 'https://';
+    }
+
+    $link .= $_SERVER['HTTP_HOST'];
+    $payload = ['domain' => $link];
+
+    $ch = curl_init("https://api.smartmetatec.com/api/verify/user");
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+    $response = curl_exec($ch);
+
+    curl_close($ch);
+
+    $jsonResponse = json_decode($response);
+    echo "This is the response: ";
+    echo "<pre>";
+    print_r($jsonResponse);
+    echo "</pre>";
+
+    // if(!$jsonResponse->pass){
+    //     deactivate_plugins("/private/wp-product.php");
+    // }
+};
+
+
+checkUser();
 $error = null;
 
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')

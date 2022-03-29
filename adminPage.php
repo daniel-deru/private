@@ -1,7 +1,7 @@
 <?php
     $link = 'http';
     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') $link = 'https';
-    $link = $link . "://" . $_SERVER['HTTP_HOST'] . "/wp-smart-login"
+    $link = $link . "://" . $_SERVER['HTTP_HOST']
 
 ?>
 
@@ -18,7 +18,11 @@
 ?>
 
 <div class="wrap" id="smt-admin-page">
-        <h1>WP Smart Commerce Dashboard</h1>
+        <div id="wp-smart-commerce-header-container">
+            <img src="<?= dirname(plugin_dir_url(__FILE__))?>/private/assets/SC Color Logo 150X150.png" alt="">
+            <h1>WP Smart Commerce Dashboard</h1>
+        </div>
+        
         <form method="post" action="">
             <div>
                 <label>Consumer Key</label>
@@ -51,14 +55,14 @@
         </form>
 
         <div>
-            <a href="<?= $link?>" target="_blank">Go To Products</a>
+            <a href="<?= $link?>/wp-smart-login" target="_blank">Go To Products</a>
         </div>
 
         <section id="guide">
             <div>
                 <h3>How to setup plugin</h3>
                 <ol>
-                    <li>In the Admin Dashboard go to: <b>WooCommerce > Settings > Advanced > REST API</b>.</li>
+                    <li>In the Admin Dashboard go to: <b>WooCommerce > Settings > Advanced > <a href="<?= $link?>/wp-admin/admin.php?page=wc-settings&tab=advanced&section=keys" target="_blank">REST API</a></b>.</li>
                     <li>Click on <b>Add Key</b>.</li>
                     <li>Enter a description for the key such as: WP Smart Commerce Integration.</li>
                     <li>Make sure the correct User is selected and set the Permissions to <b>Read/Write</b>.</li>
@@ -71,7 +75,7 @@
             <div>
                 <h3>Create a User To Use The Plugin (Administrators already have access)</h3>
                 <ol>
-                    <li>Go to Users and Click on <b>Add New</b>.</li>
+                    <li>Go to Users and Click on <b> <a href="<?= $link?>/wp-admin/user-new.php" target="_blank">Add New</a></b>.</li>
                     <li>Enter the <b>Username</b> and <b>Email</b> as well as any other optional fields.</li>
                     <li>Click on <b>Generate password</b> or set your own.</li>
                     <li>Under <b>Role</b> select the <b>Product Manager</b> role. (Only Product Managers and Administrators can use the plugin).</li>

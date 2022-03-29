@@ -260,3 +260,33 @@ function admin_styles(){
 // function verifyDomain(){
 //     $request = curl_init("http");
 // };
+
+// register_activation_hook(__FILE__, "checkUser");
+// add_action("wp_login", "checkUser");
+
+// function checkUser(){
+//     $link = 'http://';
+//     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
+//         $link = 'https://';
+//     }
+
+//     $link .= $_SERVER['HTTP_HOST'];
+//     $payload = ['domain' => $link];
+
+//     $ch = curl_init("https://api.smartmetatec.com/api/verify/user");
+
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_POST, true);
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+//     $response = curl_exec($ch);
+
+//     curl_close($ch);
+
+//     $jsonResponse = json_decode($response);
+
+//     if(!$jsonResponse->pass){
+//         deactivate_plugins("/private/wp-product.php");
+//     }
+// }
+

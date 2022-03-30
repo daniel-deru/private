@@ -19,7 +19,7 @@
 
 <div class="wrap" id="smt-admin-page">
         <div id="wp-smart-commerce-header-container">
-            <img src="<?= dirname(plugin_dir_url(__FILE__))?>/private/assets/SC Color Logo 150X150.png" alt="">
+            <img src="<?= dirname(plugin_dir_url(__FILE__))?>/smart_commerce/assets/SC Color Logo 150X150.png" alt="">
             <h1>WP Smart Commerce Dashboard</h1>
         </div>
         

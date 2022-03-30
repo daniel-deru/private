@@ -24,21 +24,26 @@
     <title>Login</title>
 </head>
 
-
-
 <?php
 
-function checkUser(){
+function check(){
     $link = 'http://';
     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
         $link = 'https://';
     }
 
-    $link .= $_SERVER['HTTP_HOST'];
-    $payload = ['domain' => $link];
+    $link .= str_replace("www.", "", $_SERVER['HTTP_HOST']);
+    // $link .= $_SERVER['HTTP_HOST'];
 
-    $ch = curl_init("https://api.smartmetatec.com/api/verify/user");
+    $data = array(
+        'domain' => $link
+    );
 
+    $payload = http_build_query($data);
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://api.smartmetatec.com/api/verify/commerce/user");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
@@ -47,19 +52,23 @@ function checkUser(){
 
     curl_close($ch);
 
-    $jsonResponse = json_decode($response);
-    echo "This is the response: ";
+    $jsonResponse = json_decode($response, true);
     echo "<pre>";
+    print_r($data);
     print_r($jsonResponse);
     echo "</pre>";
 
-    // if(!$jsonResponse->pass){
-    //     deactivate_plugins("/private/wp-product.php");
-    // }
+    if(!$jsonResponse['pass']){
+        echo "the response didn't pass";
+    }
+    else {
+        echo "The response passed";
+    }
+
 };
 
 
-checkUser();
+check();
 $error = null;
 
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')

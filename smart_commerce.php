@@ -10,7 +10,7 @@ Author: Smart Meta Technologies
 Author URI: https://smartmetatec.com
 
 */
-
+require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 // This function creates a custom login page
 function add_login(){ 
@@ -251,7 +251,7 @@ function PageContent() {
 }
 
 function admin_styles(){
-    echo '<link rel="stylesheet" href="' . dirname(plugin_dir_url(__FILE__)) .'/private/public/css/admin.css">';
+    echo '<link rel="stylesheet" href="' . dirname(plugin_dir_url(__FILE__)) .'/smart_commerce/public/css/admin.css">';
     // echo  '<script src="' . dirname(plugin_dir_url(__FILE__)) . '/lk_supplier/public/js/wp_smart_feeds_help.js" defer></script>';
 }
 
@@ -261,32 +261,43 @@ function admin_styles(){
 //     $request = curl_init("http");
 // };
 
-// register_activation_hook(__FILE__, "checkUser");
-// add_action("wp_login", "checkUser");
 
-// function checkUser(){
-//     $link = 'http://';
-//     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
-//         $link = 'https://';
-//     }
+add_action("wp_login", "wp_commerce_checkUser");
 
-//     $link .= $_SERVER['HTTP_HOST'];
-//     $payload = ['domain' => $link];
 
-//     $ch = curl_init("https://api.smartmetatec.com/api/verify/user");
+function wp_commerce_checkUser(){
 
-//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//     curl_setopt($ch, CURLOPT_POST, true);
-//     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+    $link = 'http://';
+    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
+        $link = 'https://';
+    }
 
-//     $response = curl_exec($ch);
+    $link .= str_replace("www.", "", $_SERVER['HTTP_HOST']);
 
-//     curl_close($ch);
+    $data = array(
+        'domain' => $link
+    );
 
-//     $jsonResponse = json_decode($response);
+    $payload = http_build_query($data);
 
-//     if(!$jsonResponse->pass){
-//         deactivate_plugins("/private/wp-product.php");
-//     }
-// }
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://api.smartmetatec.com/api/verify/commerce/user");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+    $response = curl_exec($ch);
+
+    curl_close($ch);
+
+    $jsonResponse = json_decode($response, true);
+
+    if(!$jsonResponse['pass']){
+        deactivate_plugins(plugin_basename(__FILE__), true);
+    }
+
+};
+
+register_activation_hook(__FILE__, "wp_commerce_checkUser");
 

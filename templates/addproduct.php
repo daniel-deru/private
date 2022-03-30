@@ -203,6 +203,7 @@ else {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="<?= get_site_icon_url() ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.php"?>">
@@ -277,12 +278,12 @@ else {
         
                     <div>
                         <input type="checkbox" name="product-virtual" id="virtual">
-                        <label for="product-virtual" class="inline">Virtual</label>
+                        <label for="virtual" class="inline">Virtual</label>
                     </div>
         
                     <div>
                         <input type="checkbox" name="product-downloadable" id="downloadable">
-                        <label for="product-downloadable" class="inline">Downloadable</label>
+                        <label for="downloadable" class="inline">Downloadable</label>
                     </div>
 
 

@@ -262,7 +262,7 @@ function admin_styles(){
 // };
 
 
-add_action("wp_login", "wp_commerce_checkUser");
+
 
 
 function wp_commerce_checkUser(){
@@ -298,6 +298,30 @@ function wp_commerce_checkUser(){
     }
 
 };
-
+add_action("wp_login", "wp_commerce_checkUser");
 register_activation_hook(__FILE__, "wp_commerce_checkUser");
+
+function addLinks($links){
+    $url = esc_url(
+        add_query_arg(
+            'page',
+            'smart_commerce/smart_commerce.php',
+            get_admin_url() . "admin.php"
+        ));
+
+    $settings_link = "<a href='" . $url ."' target='_blank'>Settings</a>";
+
+    array_unshift(
+        $links,
+        $settings_link
+    );
+    return $links;
+}
+
+add_filter('plugin_action_links_smart_commerce/smart_commerce.php', "addLinks");
+
+
+
+
+
 

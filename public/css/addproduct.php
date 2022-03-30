@@ -224,6 +224,7 @@ textarea:focus {
 .mce-container-body div[role="button"] {
     border-color: transparent !important;
     border: none !important;
+    background-color: transparent !important;
 }
 
 #product-description button i,
@@ -242,6 +243,14 @@ textarea:focus {
     transform: translateX(100%) !important;
     
 
+}
+
+#product-settings .flex-container div {
+    width: 100%;
+}
+
+#product-settings .flex-container select {
+    width: 80%;
 }
 
 #general > div {
@@ -335,7 +344,7 @@ textarea:focus {
     align-items: center;
 }
 
-#btn-save label {
+#btn-save div {
     font-weight: 700;
     background-color: var(--main-blue);
     text-align: center;
@@ -344,6 +353,10 @@ textarea:focus {
     border-radius: 5px;
     user-select: none;
     cursor: pointer;
+}
+
+#btn-save label {
+    color: white;
 }
 
 .help {

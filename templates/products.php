@@ -12,6 +12,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="<?= get_site_icon_url() ?>">
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>">
     <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script>
     <title>Products</title>
@@ -130,13 +131,32 @@ else {
                                 <img src="<?php echo $product['images'][0]['src']?>" alt="" class="product-image">
                                 <div class="title"><?php echo $product['name']?></div>
                                 <?php 
-                                    if($product['regular_price']){
-                                        ?>
-                                        <div class="price">R <?php echo $product['regular_price']?></div>
-                                        <?php
-                                    }
-                                
+                                    if($product['regular_price']):
+                                        $full_price = explode(".", $product['regular_price']);
+
+                                        $integer_price = str_split($full_price[0]);
+
+                                        $price_array = array_reverse($integer_price);
+
+                                        
+                                       $price_array = array_map(function ($index, $value){
+                                            // return ($index + 1) % 3;
+                                            if(($index + 1) % 3 == 0) return "  " . $value;
+                                            return $value;
+                                        }, array_keys($price_array) ,$price_array);
+                                        
+                                        
+                                        // echo "<pre>";
+                                        // print_r($price_array);
+                                        // echo "</pre>";
+                                        $integer_price_array = implode("", array_reverse($price_array));
+                                        echo $integer_price_array
+                                        // $full_price = $integer_price + $full_price[1];
+                                        
+                                        
                                 ?>
+                                    <div class="price">R <?php echo "price"?></div>
+                                <?php endif;?>
                                 
                                 <div class="SKU-categories">
                                     <div class="SKU"><b>SKU: </b><?php echo displayData($product['sku'])?></div>

@@ -145,17 +145,12 @@ else {
                                             return $value;
                                         }, array_keys($price_array) ,$price_array);
                                         
-                                        
-                                        // echo "<pre>";
-                                        // print_r($price_array);
-                                        // echo "</pre>";
-                                        $integer_price_array = implode("", array_reverse($price_array));
-                                        echo $integer_price_array
-                                        // $full_price = $integer_price + $full_price[1];
+                                        $integer_price_str = implode("", array_reverse($price_array));
+                                        $final_price = count($full_price) > 1 ? $integer_price_str . "." . $full_price[1] : $integer_price_str;
                                         
                                         
                                 ?>
-                                    <div class="price">R <?php echo "price"?></div>
+                                    <div class="price">R <?php echo $final_price;?></div>
                                 <?php endif;?>
                                 
                                 <div class="SKU-categories">

@@ -131,6 +131,7 @@ else {
                                 <img src="<?php echo $product['images'][0]['src']?>" alt="" class="product-image">
                                 <div class="title"><?php echo $product['name']?></div>
                                 <?php 
+
                                     if($product['regular_price']):
                                         $full_price = explode(".", $product['regular_price']);
 
@@ -150,7 +151,7 @@ else {
                                         
                                         
                                 ?>
-                                    <div class="price">R <?php echo $final_price;?></div>
+                                    <div class="price"> <?php echo get_woocommerce_currency_symbol() . " " . $final_price;?></div>
                                 <?php endif;?>
                                 
                                 <div class="SKU-categories">

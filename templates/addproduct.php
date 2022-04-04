@@ -185,7 +185,6 @@ else {
             $data['tags'] = $productTags;
         }
 
-        
        if($validCode) {
 
             $saveProduct = json_decode($addProduct($data), true);

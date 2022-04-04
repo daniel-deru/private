@@ -175,16 +175,10 @@ function showImage(event){
 }
 
 function saveClicked(event){
-    // event.preventDefault()
-    const errors = document.getElementById("errors")
+    event.preventDefault()
+    // const errors = document.getElementById("errors")
 
-    errors.innerHTML = ""
-
-    // if(!imageSet){
-    //     let error = document.createElement("div")
-    //     error.appendChild(document.createTextNode("Please set an image."))
-    //     errors.appendChild(error)
-    // }
+    // errors.innerHTML = ""
 
     let categories = document.querySelectorAll(".checkbox")
     let categoryList = []
@@ -196,6 +190,8 @@ function saveClicked(event){
 
     const hiddenCategories = document.getElementById("hidden-categories")
     const hiddenTags = document.getElementById("hidden-tags")
+    console.log("These are the tags and categories")
+    console.log(categoryList.join("%"), tagsArray.join("%"))
 
     hiddenCategories.value = categoryList.join("%")
     hiddenTags.value = tagsArray.join("%")

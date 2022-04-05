@@ -175,7 +175,7 @@ function showImage(event){
 }
 
 function saveClicked(event){
-    event.preventDefault()
+    // event.preventDefault()
     // const errors = document.getElementById("errors")
 
     // errors.innerHTML = ""

@@ -151,7 +151,7 @@ else {
                                         
                                         
                                 ?>
-                                    <div class="price"> <?php echo get_woocommerce_currency_symbol() . " " . $final_price;?></div>
+                                    <div class="price"> <?php echo $product['price_html']?></div>
                                 <?php endif;?>
                                 
                                 <div class="SKU-categories">

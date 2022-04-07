@@ -129,6 +129,10 @@ header a {
     font-size: 1.2em;
 }
 
+.product-container ins {
+    text-decoration: none;
+}
+
 .product-container a {
     display: block;
     margin: auto;
@@ -143,6 +147,8 @@ header a {
     font-family: sans-serif;
     text-align: center;
 }
+
+
 
 #pagination {
     text-align: center;

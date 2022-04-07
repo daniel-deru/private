@@ -261,9 +261,9 @@ function admin_styles(){
 //     $request = curl_init("http");
 // };
 
-
-
-
+add_action("wp_login", "wp_commerce_checkUser");
+register_activation_hook(__FILE__, "wp_commerce_checkUser");
+wp_schedule_event(time(), 'hourly', 'wp_commerce_checkUser');
 
 function wp_commerce_checkUser(){
 
@@ -298,8 +298,7 @@ function wp_commerce_checkUser(){
     }
 
 };
-add_action("wp_login", "wp_commerce_checkUser");
-register_activation_hook(__FILE__, "wp_commerce_checkUser");
+
 
 function addLinks($links){
     $url = esc_url(

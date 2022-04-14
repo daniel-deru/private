@@ -25,34 +25,34 @@ $woocommerce = new Client(
 
 <?php
  
- $getHeaders = function() use ($woocommerce){
+ $smt_smart_commerce_pro_getHeaders = function() use ($woocommerce){
     $lastResponse = $woocommerce->http->getResponse();
     return $lastResponse->getHeaders();
  };
 
- $listCategories = function ($page=1) use ($woocommerce, $getHeaders){
+ $smt_smart_commerce_pro_listCategories = function ($page=1) use ($woocommerce, $smt_smart_commerce_pro_getHeaders){
     $data = array(
         'data' => $woocommerce->get("products/categories", array(
             'per_page' => 100,
             'page' => $page)),
-        'headers' => $getHeaders());
+        'headers' => $smt_smart_commerce_pro_getHeaders());
 
-    $data['headers'] = $getHeaders();
+    $data['headers'] = $smt_smart_commerce_pro_getHeaders();
 
     return json_encode($data);
  };
 
- $listProducts = function ($page=1) use ($woocommerce, $getHeaders){
+ $smt_smart_commerce_pro_listProducts = function ($page=1) use ($woocommerce, $smt_smart_commerce_pro_getHeaders){
     $data = array(
         'data'=>$woocommerce->get("products", array(
             "per_page" => 20,
             "page" => $page)),
-        'headers' => $getHeaders());
+        'headers' => $smt_smart_commerce_pro_getHeaders());
 
     return json_encode($data);
  };
 
-$addProduct = function($data) use ($woocommerce){
+$smt_smart_commerce_pro_addProduct = function($data) use ($woocommerce){
 
     if($data['name']){
         try{
@@ -67,14 +67,14 @@ $addProduct = function($data) use ($woocommerce){
 
 };
 
-$getProduct = function($id) use ($woocommerce){
+$smt_smart_commerce_pro_getProduct = function($id) use ($woocommerce){
     if($id){
         $data = $woocommerce->get('products/' . $id);
         return json_encode($data);
     }
 };
 
-$updateProduct = function($id, $data) use ($woocommerce){
+$smt_smart_commerce_pro_updateProduct = function($id, $data) use ($woocommerce){
     if($id && $data){
         try {
             $data = $woocommerce->put('products/' . $id, $data);
@@ -87,19 +87,19 @@ $updateProduct = function($id, $data) use ($woocommerce){
     }
 };
 
-$deleteProduct = function($id) use ($woocommerce){
+$smt_smart_commerce_pro_deleteProduct = function($id) use ($woocommerce){
     if($id){
         $data = $woocommerce->delete("products/" . $id);
         return json_encode($data);
     }
 };
 
-$units = function() use ($woocommerce){
+$smt_smart_commerce_pro_units = function() use ($woocommerce){
     $data = $woocommerce->get("settings/products");
     return json_encode($data);
 };
 
-$createCategory = function($data) use ($woocommerce) {
+$smt_smart_commerce_pro_createCategory = function($data) use ($woocommerce) {
     if($data){
         try {
             $data = $woocommerce->post('products/categories', $data);
@@ -112,7 +112,7 @@ $createCategory = function($data) use ($woocommerce) {
 
 };
 
-$getTaxClasses = function() use ($woocommerce) {
+$smt_smart_commerce_pro_getTaxClasses = function() use ($woocommerce) {
     try {
         $data = $woocommerce->get("taxes/classes");
         return json_encode($data);
@@ -121,7 +121,7 @@ $getTaxClasses = function() use ($woocommerce) {
     }
 };
 
-$getShippingClasses = function() use ($woocommerce){
+$smt_smart_commerce_pro_getShippingClasses = function() use ($woocommerce){
     try {
         $data = $woocommerce->get("products/shipping_classes");
         return json_encode($data);

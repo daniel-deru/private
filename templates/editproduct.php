@@ -21,7 +21,7 @@ $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
 $add_page = "wp-smart-add-product";
 $edit_page = "wp-smart-edit-product";
-$validCodes = checkCode();
+$validCodes = smt_smart_commerce_pro_checkCode();
 wp_enqueue_media();
 
 // Check where the request for the current page is coming from
@@ -32,22 +32,22 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
     if($from_products || $from_self){
         if($validCodes){
-            $categoriesData = json_decode($listCategories(), true);
+            $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
             $categories = $categoriesData['data'];
             $id = $_GET['id'];
 
             if(isset($_GET['id'])){
-                $product = json_decode($getProduct($_GET['id']), true);
+                $product = json_decode($smt_smart_commerce_pro_getProduct($_GET['id']), true);
             }
 
             $productImages = json_encode(array_map(function($item){return array('src' => $item["src"], "id" => $item['id']);}, $product['images']));
 
-            $taxClassData = json_decode($getTaxClasses(), true);
+            $taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
 
-            $shippingClasses = json_decode($getShippingClasses(), true);
+            $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
 
 
-            $unitData = json_decode($units(), true);
+            $unitData = json_decode($smt_smart_commerce_pro_units(), true);
 
             $weightUnit;
             $dimensionsUnit;
@@ -61,7 +61,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
                 }
             }
 
-            $shippingClasses = json_decode($getShippingClasses(), true);
+            $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
 
             //  Make an array to send to javascript to handle the display of the categories
             $javascriptProductData = array(
@@ -112,7 +112,7 @@ else {
             }
 
            if($validCodes) {
-               $newCategory = json_decode($createCategory($categortArray), true);
+               $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categortArray), true);
                if($newCategory["error"]) $error = $newCategory["message"];
             };
         }
@@ -196,7 +196,7 @@ else {
             
             $productCategories = explode("%", $_POST['product-categories']);
             if(isset($newCategory)){
-                array_push($productCategories, $newCategory['id']);
+                array_push($smt_smart_commerce_pro_productCategories, $newCategory['id']);
             }
             $productCategories = array_map(function($c){
                 return array('id' => $c);
@@ -217,7 +217,7 @@ else {
         }   
         
        if($validCodes) {
-           $saveProduct = json_decode($updateProduct($id, $data), true);
+           $saveProduct = json_decode($smt_smart_commerce_pro_updateProduct($id, $data), true);
 
            if($saveProduct['error']) $error = $saveProduct['message'];
         };

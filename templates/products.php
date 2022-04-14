@@ -1,24 +1,10 @@
 <?php 
 /**
  * 
- * 
  *  Template Name: Products
+ *  Template Post Type: page
+ * 
  */
-
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="<?= get_site_icon_url() ?>">
-    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>">
-    <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script>
-    <title>Products</title>
-</head>
-
-<?php
 
 require __DIR__ . "/woocommerce-api.php";
 require  __DIR__ . "/../includes/helpers.php";
@@ -29,7 +15,7 @@ $products_page = "wp-smart-products";
 $edit_page = "wp-smart-edit-product";
 $add_page = "wp-smart-add-product";
 
-function displayData($data){
+function smt_smart_commerce_pro_displayData($data){
     if($data){
         return $data;
     }
@@ -55,15 +41,15 @@ if(isset($_SERVER['HTTP_REFERER'])){
     $from_add = preg_match("/" . $add_page . "/", $previous_page);
 
     $page = 1;
-    $validCodes = checkCode();
+    $validCodes = smt_smart_commerce_pro_checkCode();
     if($from_login || $from_self || $from_edit || $from_add){
         if(isset($_GET['id'])){
             $page = intval($_GET['id']);
         }
         
         if($validCodes){
-            $productsData = json_decode($listProducts($page), true);
-            $categoriesData = json_decode($listCategories(), true);
+            $productsData = json_decode($smt_smart_commerce_pro_listProducts($page), true);
+            $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
     
             $products = $productsData['data'];
             $categories = $categoriesData['data'];
@@ -86,6 +72,17 @@ else {
 }
 
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="<?= get_site_icon_url() ?>">
+    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>">
+    <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script>
+    <title>Products</title>
+</head>
 <body>
     <header>
         
@@ -155,7 +152,7 @@ else {
                                 <?php endif;?>
                                 
                                 <div class="SKU-categories">
-                                    <div class="SKU"><b>SKU: </b><?php echo displayData($product['sku'])?></div>
+                                    <div class="SKU"><b>SKU: </b><?php echo smt_smart_commerce_pro_displayData($product['sku'])?></div>
                                     <div class="Categories"><b>Categories: </b><?php echo $categoryList?></div>
                                 </div>
                                 <a href="<?= $edit_page?>?id=<?= $product['id']?>" class="edit-product">Edit Product</a>

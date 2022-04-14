@@ -19,7 +19,7 @@ $link .= "://" . $_SERVER['HTTP_HOST'];
 $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
 $add_page = "wp-smart-add-product";
-$validCode = checkCode();
+$validCode = smt_smart_commerce_pro_checkCode();
 wp_enqueue_media();
 
 
@@ -33,10 +33,10 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
     if($from_products || $from_self){
         if($validCode){
-            $categoriesData = json_decode($listCategories(), true);
+            $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
             $categories = $categoriesData['data'];
 
-            $unitData = json_decode($units(), true);            
+            $unitData = json_decode($smt_smart_commerce_pro_units(), true);            
 
             $weightUnit;
             $dimensionsUnit;
@@ -50,9 +50,9 @@ if(isset($_SERVER['HTTP_REFERER'])){
                 }
             }
 
-            $taxClassData = json_decode($getTaxClasses(), true);
+            $taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
 
-            $shippingClasses = json_decode($getShippingClasses(), true);
+            $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
         }
         
 
@@ -88,7 +88,7 @@ else {
             }
 
           if($validCode) {
-              $newCategory = json_decode($createCategory($categortArray), true);
+              $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categortArray), true);
               if($newCategory['error']) $error = $newCategory['message'];
             };
         }
@@ -187,7 +187,7 @@ else {
 
        if($validCode) {
 
-            $saveProduct = json_decode($addProduct($data), true);
+            $saveProduct = json_decode($smt_smart_commerce_pro_addProduct($data), true);
             if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
        }
 

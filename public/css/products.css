@@ -1,19 +1,5 @@
-<?php
-    $absolute_path = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
-    $wp_load = $absolute_path[0] . 'wp-load.php';
-    require_once($wp_load);
-
-    $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
-
-
-    header('Content-Type: text/css');
-    header("Cache-control: must-revalidate");
-?>
-/*<style>*/
 :root {
-    --main-green: <?php echo $color ?>;
-    --main-light-green: <?php echo $color ?>;
-    --gradient: <?php echo $color ?>;
+    --main-blue: transparent;
 }
 
 * {
@@ -23,7 +9,7 @@
 
 header {
     height: 15vh;
-    background: var(--gradient);
+    background: var(--main-blue);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -80,7 +66,7 @@ h1 {
 }
 
 select option {
-    background-color: var(--main-green);
+    background-color: var(--main-blue);
     color: white;
 }
 
@@ -141,7 +127,7 @@ header a {
     padding: 10px 16px;
     border-radius: 5px;
     border: none;
-    background: var(--gradient);
+    background: var(--main-blue);
     color: white;
     text-decoration: none;
     font-family: sans-serif;
@@ -176,12 +162,12 @@ header a {
 }
 
 #pagination a:active {
-    color: var(--main-green);
-    border: 2px solid var(--main-green);
+    color: var(--main-blue);
+    border: 2px solid var(--main-blue);
 }
 
 #pagination a:visited {
-    color: var(--main-green);
-    border: 2px solid var(--main-green);
+    color: var(--main-blue);
+    border: 2px solid var(--main-blue);
 }
 

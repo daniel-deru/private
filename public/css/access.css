@@ -1,25 +1,11 @@
-<?php
-    $absolute_path = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
-    $wp_load = $absolute_path[0] . 'wp-load.php';
-    require_once($wp_load);
-
-    $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
-
-
-    header('Content-Type: text/css');
-    header("Cache-control: must-revalidate");
-?>
-/*<style>*/
 :root {
-    --main-green: <?php echo $color ?>;
-    --main-blue:<?php echo $color ?>;
-    --gradient: <?php echo $color ?>;
+    --main-blue: transparent;
 }
 #wp-smart-commerce-brand-logo {
     box-sizing: border-box;
     width: 100%;
     margin: auto;
-    background-color: var(--main-blue);
+    /* background-color: var(--main-blue); */
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     box-shadow: 0px 0px 5px 1px hsla(60, 0%, 0%, 0.5);
@@ -52,7 +38,7 @@
 
 label {
     display: block;
-    color: var(--main-blue);
+    /* color: var(--main-blue); */
 }
 
 #login-form > div {
@@ -73,21 +59,21 @@ label {
     font-size: 1.2em;
     width: 100%;
     border-radius: 5px;
-    outline-color: var(--main-green);
+    outline-color: var(--main-blue);
     /* padding: 10px; */
-    color: var(--main-blue);
+    /* color: var(--main-blue); */
 }
 
-#login-form > div input:not(input[type="submit"]){
+/* #login-form > div input:not(input[type="submit"]){
     border: 2px solid var(--main-blue);
-}
+} */
 
 #login-form > div input[type="submit"]{
-    border: 2px solid var(--gradient);
+    /* border: 2px solid var(--main-blue); */
     border-radius: 5px;
     display: block;
     font-size: 1.2em;
-    background: var(--gradient);
+    /* background: var(--main-blue); */
     color: white;
     width: 20rem;
     margin: auto;

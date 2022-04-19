@@ -71,6 +71,8 @@ else {
     exit;
 }
 
+$color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,7 +81,7 @@ else {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
-    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>">
+    <!-- <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>"> -->
     <!-- <script src="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script> -->
     <?php wp_head() ?>
     <title>Products</title>
@@ -182,6 +184,7 @@ else {
         <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
 
     <?php endif;?>
+    <input type="hidden" value="<?php echo esc_html($color) ?>" id="brand-color">
     <?php wp_footer() ?>
 </body>
 </html>

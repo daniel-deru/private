@@ -303,23 +303,19 @@ function smt_smart_commerce_register_scripts(){
     wp_enqueue_script("smt_smart_commerce_fontawesome_js", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js", [], false, true);
 
     if ( is_page( 'WP Smart Login' ) ) {
-        // wp_enqueue_style("smt_smart_commerce_access_style", plugins_url("/public/css/access.css", __FILE__));
-        // wp_enqueue_style("smt_smart_commerce_access_style", admin_url('admin-ajax.php').'?action=smt_smart_commerce_access_style_dynamic');
+        wp_enqueue_style("smt_smart_commerce_access_style", plugins_url("/public/css/access.css", __FILE__));
         wp_enqueue_script("smt_smart_commerce_access", plugins_url("/public/js/access.js", __FILE__), array('jquery'), false, true);
     }
     else if( is_page('WP Smart Products')){
-        // wp_enqueue_style("smt_smart_commerce_product_style", plugins_url("/public/css/products.css", __FILE__));
-        // wp_enqueue_style("smt_smart_commerce_product_style", admin_url('admin-ajax.php').'?action=smt_smart_commerce_product_style_dynamic');
+        wp_enqueue_style("smt_smart_commerce_product_style", plugins_url("/public/css/products.css", __FILE__));
         wp_enqueue_script("smt_smart_commerce_products", plugins_url("/public/js/products.js", __FILE__), array('jquery'), false, true);
     }
     else if(is_page('WP Smart Add Product')){
-        // wp_enqueue_style("smt_smart_commerce_add_product_style", plugins_url("/public/css/addproduct.css", __FILE__));
-        // wp_enqueue_style("smt_smart_commerce_add_product_style", admin_url('admin-ajax.php').'?action=smt_smart_commerce_add_product_style_dynamic');
+        wp_enqueue_style("smt_smart_commerce_add_product_style", plugins_url("/public/css/addproduct.css", __FILE__));
         wp_enqueue_script("smt_smart_commerce_add_product", plugins_url("/public/js/addproduct.js", __FILE__), array('jquery'), false, true);
     }
     else if(is_page('WP Smart Edit Product')){
-        // wp_enqueue_style("smt_smart_commerce_edit_product_style", plugins_url("/public/css/addproduct.css", __FILE__));
-        // wp_enqueue_style("smt_smart_commerce_edit_product_style", admin_url('admin-ajax.php').'?action=smt_smart_commerce_edit_product_style_dynamic');
+        wp_enqueue_style("smt_smart_commerce_edit_product_style", plugins_url("/public/css/addproduct.css", __FILE__));
         wp_enqueue_script("smt_smart_commerce_edit_product", plugins_url("/public/js/editproduct.js", __FILE__), array('jquery'), false, true);
     }
 

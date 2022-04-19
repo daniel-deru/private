@@ -259,6 +259,8 @@ else {
 
     }
 
+    $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -269,7 +271,7 @@ else {
     <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     <!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.php"?>">
+    <!-- <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.php"?>"> -->
     <!-- <script src="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/addproduct.js"?>" defer></script> -->
     <?php wp_head() ?>
     <title>Add Product</title>
@@ -537,7 +539,7 @@ else {
     <?php else: ?>
         <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
     <?php endif; ?>
-
+    <input type="hidden" value="<?php echo esc_html($color) ?>" id="brand-color">
 </body>
 <?php wp_footer(); ?>
 </html>

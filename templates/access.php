@@ -92,6 +92,9 @@ if(isset($_POST['products-login'])){
     }
 }
 
+
+$color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,7 +105,7 @@ if(isset($_POST['products-login'])){
     <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     <!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/access.php"?>">
+    <!-- <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/access.php"?>"> -->
     <!-- <script src="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/access.js"?>" defer></script> -->
     <?php wp_head() ?>
     <title>Login</title>
@@ -137,7 +140,7 @@ if(isset($_POST['products-login'])){
             </div>
         </form>
     </div>
-    
+    <input type="hidden" value="<?php echo esc_html($color) ?>" id="brand-color">
    <?php wp_footer() ?>
 </body>
 </html>

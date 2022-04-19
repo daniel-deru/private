@@ -34,3 +34,20 @@ function resetFilter(event){
     productContainer.innerHTML = ''
     productContainer.append(...productsArray)
 }
+
+// Set the dynamic color with jQuery
+jQuery(document).ready($ => {
+    const color = $("#brand-color").val()
+
+    $('header').css('background-color', color)
+    $('select option').css('background-color', color)
+    $('.product-container a').css('background-color', color)
+    $('#pagination a:active').css({
+        'color': color,
+        'border': `2px solid ${color}`
+    })
+    $('#pagination a:visited').css({
+        'color': color,
+        'border': `2px solid ${color}`
+    })
+})

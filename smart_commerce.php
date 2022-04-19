@@ -10,7 +10,7 @@ Author: Smart Meta Technologies
 Author URI: https://smartmetatec.com
 
 */
-require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+// require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 // This function creates a custom login page
 function smt_smart_commerce_pro_add_login(){ 
@@ -129,7 +129,7 @@ function smt_smart_commerce_pro_delete_editproduct(){
 function smt_smart_commerce_pro_login_page_template( $page_template )
 {
     if ( is_page( 'WP Smart Login' ) ) {
-        $page_template = dirname( __FILE__ ) . '/templates/access.php';
+        $page_template = plugin_dir_path( __FILE__ ) . 'templates/access.php';
     }
     return $page_template;
 }
@@ -138,7 +138,7 @@ function smt_smart_commerce_pro_login_page_template( $page_template )
 function smt_smart_commerce_pro_products_page_template( $page_template )
 {
     if ( is_page( 'WP Smart Products' ) ) {
-        $page_template = dirname( __FILE__ ) . '/templates/products.php';
+        $page_template = plugin_dir_path( __FILE__ ) . 'templates/products.php';
     }
     return $page_template;
 }
@@ -148,7 +148,7 @@ function smt_smart_commerce_pro_addproduct_page_template( $page_template )
 {
     if ( is_page( 'WP Smart Add Product' ) ) {
         wp_enqueue_media();
-        $page_template = dirname( __FILE__ ) . '/templates/addproduct.php';
+        $page_template = plugin_dir_path( __FILE__ ) . 'templates/addproduct.php';
     }
     return $page_template;
 }
@@ -157,7 +157,7 @@ function smt_smart_commerce_pro_addproduct_page_template( $page_template )
 function smt_smart_commerce_pro_editproduct_page_template( $page_template )
 {
     if ( is_page( 'WP Smart Edit Product' ) ) {
-        $page_template = dirname( __FILE__ ) . '/templates/editproduct.php';
+        $page_template = plugin_dir_path( __FILE__ ) . 'templates/editproduct.php';
     }
     return $page_template;
 }
@@ -207,13 +207,7 @@ function smt_smart_commerce_pro_hide_admin_bar(){
 
 add_action('admin_menu', 'smt_smart_commerce_pro_SetupPage');
 add_action('admin_init', 'smt_smart_commerce_pro_RegisterSettings');
-// add_action("admin_head", "smt_smart_commerce_pro_admin_styles");
 add_action("wp_enqueue_scripts", "wp_enqueue_media");
-
-// add_action("admin_enqueue_scripts", "load_media");
-// function load_media(){
-//     wp_enqueue_media();
-// }
 
 
 function smt_smart_commerce_pro_SetupPage() {
@@ -231,12 +225,8 @@ function smt_smart_commerce_pro_RegisterSettings() {
 
 function smt_smart_commerce_pro_PageContent() {
     if (!current_user_can('manage_options')) wp_die(__("You don't have access to this page"));
-    require_once dirname( __FILE__ ) . "/adminPage.php";
+    require_once "adminPage.php";
 }
-
-// function smt_smart_commerce_pro_admin_styles(){
-//     echo '<link rel="stylesheet" href="' . esc_url(plugins_url("public/css/admin.css") , __FILE__) .'">';
-// }
 
 add_action("wp_login", "smt_smart_commerce_pro_checkUser");
 register_activation_hook(__FILE__, "smt_smart_commerce_pro_checkUser");

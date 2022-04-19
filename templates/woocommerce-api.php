@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
+require 'vendor/autoload.php';
 
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $host = "https";

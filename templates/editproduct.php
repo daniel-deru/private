@@ -6,8 +6,8 @@
 
 
 // Get the woocommerce api functions
-require __DIR__ . "/woocommerce-api.php";
-require  __DIR__ . "/../includes/helpers.php";
+require "woocommerce-api.php";
+require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
 // get the correct protocol
 
 // Everything in this php tag happens when the page is loaded

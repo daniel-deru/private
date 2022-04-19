@@ -368,15 +368,17 @@ function setColors(){
         $("header").css("background-color", color)
         $("label:not(#smt-smart-commerce-hide)").css("color", color)
         $('select, input[type="text"]:focus, input[type="number"]:focus, textarea:focus').css("outline", `1px solid ${color}`)
-        // $('#addeditproduct-form #image-viewer svg').css('background-color', color)
+        $('#addeditproduct-form #image-viewer svg').css('background-color', color)
         // $('#addeditproduct-form #image-viewer div input[type="radio"]').css('border', `2px solid ${color}`)
         // $('#addeditproduct-form #image-viewer div input[type="radio"]::before').css('box-shadow', `inset 1em 1em ${color}`)
         $('#insert-media-button').css('background-color', color)
-        $('#product-description  button:not(#insert-media-button), #product-short-description button:not(#insert-media-button)').css('background-color', color)
+        // $('#product-description button:not(#insert-media-button), #product-short-description button:not(#insert-media-button)').css('background-color', color)
+        $('#product-description button, #product-short-description button').css('background-color', color)
         $('#product-description input[type="button"], #product-short-description input[type="button"]').css('background-color', color)
         $('#addeditproduct-form button:not(#product-description button, #product-short-description button)').css('background-color', color)
         $('#addeditproduct-form input[type="submit"]').css('background-color', color)
         $('#btn-save div').css('background-color', color)
+
     })
 }
 

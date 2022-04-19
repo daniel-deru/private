@@ -6,8 +6,8 @@
  * 
  */
 
-require __DIR__ . "/woocommerce-api.php";
-require  __DIR__ . "/../includes/helpers.php";
+require "woocommerce-api.php";
+require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
 // require dirname(plugin_dir_url(__FILE__), 1) . "/includes/helpers.php";
 
 $login_page = "wp-smart-login";

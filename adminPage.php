@@ -8,10 +8,26 @@
 <?php
 
     if(isset($_POST["save-settings"])){
-        if(isset($_POST["wp_smart_products_consumer_key"])) update_option("wp_smart_products_consumer_key", $_POST["wp_smart_products_consumer_key"]);
-        if(isset($_POST["wp_smart_products_consumer_secret"])) update_option("wp_smart_products_consumer_secret", $_POST["wp_smart_products_consumer_secret"]);
-        if(isset($_POST["wp_smart_products_logo_url"])) update_option("wp_smart_products_logo_url", $_POST["wp_smart_products_logo_url"]);
-        if(isset($_POST["wp_smart_products_brand_color"])) update_option("wp_smart_products_brand_color", $_POST["wp_smart_products_brand_color"]);
+        if(isset($_POST["wp_smart_products_consumer_key"])){
+            $consumer_key = sanitize_key($_POST["wp_smart_products_consumer_key"]);
+            $consumerKeyRegex = "/ck_[0-9a-f]{40}/i";
+            if(preg_match($consumerKeyRegex, $consumer_key)) update_option("wp_smart_products_consumer_key", $consumer_key);
+        } 
+        if(isset($_POST["wp_smart_products_consumer_secret"])){
+            $consumer_secret = sanitize_key($_POST["wp_smart_products_consumer_secret"]);
+            $consumerSecretRegex = "/cs_[0-9a-f]{40}/i";
+            if(preg_match($consumerSecretRegex, $consumer_secret)) update_option("wp_smart_products_consumer_secret", $consumer_secret);
+        } 
+        if(isset($_POST["wp_smart_products_logo_url"])){
+            // TODO sanitize url
+            update_option("wp_smart_products_logo_url", $_POST["wp_smart_products_logo_url"]);
+        }
+
+        if(isset($_POST["wp_smart_products_brand_color"])){
+            $brand_color = sanitize_hex_color($_POST["wp_smart_products_brand_color"]);
+            $colorRegex = "/#[0-9a-f]{3,6}/i";
+            if(preg_match($colorRegex, $brand_color)) update_option("wp_smart_products_brand_color", $brand_color);
+        } 
     }
 
 

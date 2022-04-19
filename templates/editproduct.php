@@ -119,15 +119,29 @@ else {
 
 
         $data = [];
-        $data['name'] = $_POST['product-name'];
+        $data['name'] = sanitize_text_field($_POST['product-name']);
 
-        if(isset($_POST['product-regular-price']) && $_POST['product-regular-price'] != $product['regular_price']) $data['regular_price'] = $_POST['product-regular-price'];
+        if(isset($_POST['product-regular-price'])){
+            $regular_price = sanitize_text_field($_POST['product-regular-price']);
+            if(preg_match($priceRegex, $regular_price)) $data['regular_price'] = $regular_price;
+        } 
 
-        if(isset($_POST['product-sale-price']) && $_POST['product-sale-price'] != $product['sale_price']) $data['sale_price'] = $_POST['product-sale-price'];
+        if(isset($_POST['product-sale-price'])){
+            $sale_price = sanitize_text_field($_POST['product-sale-price']);
+            if(preg_match($priceRegex, $sale_price)) $data['sale_price'] = $sale_price;
+        }
 
-        if(isset($_POST['tax-class']) && $_POST['tax-class'] != $product['tax_class'])  $data['tax_class'] = $_POST['tax-class'];
+        if(isset($_POST['tax-class'])){
+            $taxClass = sanitize_text_field($_POST['tax-class']);
+            $correctClass = array_filter($taxClassData, function($class) use ($taxClass){ return $class['slug'] == $taxClass;});
+            if(count($correctClass) == 1) $data['tax_class'] = $taxClass;
+        }
 
-        if(isset($_POST['product-type']) && $_POST['product-type'] != $product['type']) $data['type'] = $_POST['product-type'];
+        if(isset($_POST['product-type'])){
+            $product_type = sanitize_text_field($_POST['product-type']);
+            $productRegex = "/simple|external|grouped|variable/";
+            if(preg_match($productRegex, $product_type)) $data['type'] = $product_type;
+        }
 
         if(isset($_POST['product-virtual'])) $data['virtual'] = true;
         else $data['virtual'] = false;
@@ -138,55 +152,93 @@ else {
         if(isset($_POST['draft'])) $data['status'] = 'draft';
         else $data['status'] = 'publish';
 
-        if(isset($_POST['wp-commerce-product-description']) && $_POST['wp-commerce-product-description'] != strip_tags($product['description'])){
-            $data['description'] = $_POST['wp-commerce-product-description'];
+        if(isset($_POST['wp-commerce-product-description'])){
+            $description = wp_kses_post($_POST['wp-commerce-product-description']);
+            $data['description'] = $description;
         } 
 
-        if(isset($_POST['wp-commerce-product-short-description']) && $_POST['wp-commerce-product-short-description'] != strip_tags($product['short_description'])){
-            $data['short_description'] = $_POST['wp-commerce-product-short-description'];
+        if(isset($_POST['wp-commerce-product-short-description'])){
+            $shortDescription = wp_kses_post($_POST['wp-commerce-product-short-description']);
+            $data['short_description'] = $shortDescription;
         } 
 
-        if(isset($_POST['product-sku']) && $_POST['product-sku'] != $product['sku']){
-            $data['sku'] = $_POST['product-sku'];
+        if(isset($_POST['product-sku'])){
+            $product_sku = sanitize_text_field($_POST['product-sku']);
+            $data['sku'] = $product_sku;
         }
 
+        
         if(isset($_POST['manage-stock'])) $data['manage_stock'] = true; 
         else  $data['manage_stock'] = false;
 
-        if(isset($_POST['stock-quantity']) && $_POST['stock-quantity']) $data['stock_quantity'] = $_POST['stock-quantity'];
+        if(isset($_POST['stock-quantity'])){
+            $stock_quantity = sanitize_text_field($_POST['stock-quantity']);
+            $quantityRegex = "/[0-9]{1,9}/";
+            if(preg_match($quantityRegex, $stock_quantity)) $data['stock-quantity'] = $stock_quantity;
+            if(!$_POST['stock-quantity']){
+                $data['stock-quantity'] = 0;
+            }
+        }
 
-        if(isset($_POST['stock-status']) && $_POST['stock-status'] != $product['stock_status']) $data['stock_status'] = $_POST['stock-status'];
+        if(isset($_POST['stock-status'])){
+            $stock_status = sanitize_key($_POST['stock-status']);
+            $statusRegex = "/instock|outofstock|onbackorder/";
+            if(preg_match($statusRegex, $stock_status)) $data['stock_status'] = $stock_status;
+        }
 
 
         // check if the dimensions are filled in and add them to the data object
+        $shippingRegex = "/[0-9]{1,6}((\.|,)[0-9]{1,6})?/";
         if(isset($_POST['length']) && isset($_POST['width']) && isset($_POST['height'])){
-            $dimensions = array(
-                'length' => $_POST['length'],
-                'width' => $_POST['width'],
-                'height' => $_POST['height']
-            );
 
-            $data['dimensions'] = $dimensions;
+            $length = sanitize_text_field($_POST['length']);
+            $width = sanitize_text_field($_POST['width']);
+            $height = sanitize_text_field($_POST['height']);
+
+            if(
+                preg_match($shippingRegex, $length) &&
+                preg_match($shippingRegex, $width) &&
+                preg_match($shippingRegex, $height)                
+            ) 
+            {
+                $dimensions = array(
+                    'length' => $length,
+                    'width' => $width,
+                    'height' => $height
+                );
+    
+                $data['dimensions'] = $dimensions;
+            }
+           
         }
 
         // Check if the weight is filled
-        if(isset($_POST['weight'])) $data["weight"] = $_POST["weight"];
+        if(isset($_POST['weight'])){
+            $weight = sanitize_text_field($_POST['weight']);
+            if(preg_match($shippingRegex, $weight)) $data["weight"] = $weight;
+        }
         
-        if(isset($_POST['shipping-class']) && $_POST['shipping-class'] != $product['shipping_class']) $data['shipping_class'] = $_POST['shipping-class'];
+        if(isset($_POST['shipping-class'])){
+            $shipping_class = sanitize_key($_POST['shipping-class']);
+
+            foreach($shippingClasses as $class){
+                if($class['slug'] == $shipping_class) $data['shipping_class'] = $shipping_class;
+            }
+        } 
 
          // Handle the image uploads
          if($_POST['image-urls']){
             
             $imageArray = explode(";", $_POST['image-urls']);
+            $featuredImage = sanitize_key($_POST['featured']);
 
-            $featuredImage = $_POST['featured'];
             if($featuredImage !== $imageArray[0]){
                 $featuredIndex = array_search($featuredImage, $imageArray);
                 array_splice($imageArray, $featuredIndex, 1);
                 array_unshift($imageArray, $featuredImage);
             };
 
-            $imageArray = array_map(function($item){return array('id' => $item);}, $imageArray);
+            $imageArray = array_map(function($item){return array('id' => sanitize_key($item));}, $imageArray);
             $data['images'] = $imageArray;
 
         }
@@ -199,7 +251,7 @@ else {
                 array_push($smt_smart_commerce_pro_productCategories, $newCategory['id']);
             }
             $productCategories = array_map(function($c){
-                return array('id' => $c);
+                return array('id' => sanitize_key($c));
             }, $productCategories);
             $data['categories'] = $productCategories;
         } else if(!$_POST['product-categories']) {
@@ -209,7 +261,7 @@ else {
         if(isset($_POST['product-tags']) && $_POST['product-tags']){
             $productTags = explode("%", $_POST['product-tags']);
             $productTags = array_map(function($t){
-                return array('name' => $t);
+                return array('name' => sanitize_key($t));
             }, $productTags);
             $data['tags'] = $productTags;
         } else if(!$_POST['product-tags']){
@@ -221,10 +273,6 @@ else {
 
            if($saveProduct['error']) $error = $saveProduct['message'];
         };
-
-        // echo "<pre>";
-        // print_r($data['images']);
-        // echo "</pre>";
 
 
         if(!$error) header("Location: " . $link . "/" . $products_page . "?id=1");

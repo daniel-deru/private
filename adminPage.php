@@ -19,31 +19,31 @@
 
 <div class="wrap" id="smt-admin-page">
         <div id="wp-smart-commerce-header-container">
-            <img src="<?= dirname(plugin_dir_url(__FILE__))?>/smart_commerce/assets/SC Color Logo 150X150.png" alt="">
+            <img src="<?php echo esc_url(plugins_url("assets/SC Color Logo 150X150.png", __FILE__)) ?>" alt="">
             <h1>WP Smart Commerce Dashboard</h1>
         </div>
         
         <form method="post" action="">
             <div>
                 <label>Consumer Key</label>
-                <input type="text" name="wp_smart_products_consumer_key" value="<?php echo get_option('wp_smart_products_consumer_key'); ?>" />
+                <input type="text" name="wp_smart_products_consumer_key" value="<?php echo esc_html(get_option('wp_smart_products_consumer_key')) ?>" />
             </div>
 
             <div>
                 <label >Consumer Secret</label>
-                <input type="text" name="wp_smart_products_consumer_secret" value="<?php echo get_option('wp_smart_products_consumer_secret'); ?>" />
+                <input type="text" name="wp_smart_products_consumer_secret" value="<?php echo esc_html(get_option('wp_smart_products_consumer_secret')) ?>" />
             </div>
 
             <div>
                 <label for="">Enter Logo URL</label>
-                <input type="text" name="wp_smart_products_logo_url" value="<?php echo get_option("wp_smart_products_logo_url");?>">
+                <input type="text" name="wp_smart_products_logo_url" value="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>">
             </div>
 
             <div>
                 <label for="wp_smart_products_color">Enter Brand Color</label>
                 <?php // This input is placed in a div because of the color pick eye dropper chrome extension?>
                 <div>
-                    <input type="color" name="wp_smart_products_brand_color" id="" value="<?php echo get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color"): "#21759b";?>">
+                    <input type="color" name="wp_smart_products_brand_color" id="" value="<?php echo get_option("wp_smart_products_brand_color") ? esc_html(get_option("wp_smart_products_brand_color")) : esc_html("#21759b") ?>">
                 </div>
                 
             </div>
@@ -55,14 +55,14 @@
         </form>
 
         <div>
-            <a href="<?= $link?>/wp-smart-login" target="_blank">Go To Products</a>
+            <a href="<?php echo esc_url($link . "/wp-smart-login") ?>" target="_blank">Go To Products</a>
         </div>
 
         <section id="guide">
             <div>
                 <h3>How to setup plugin</h3>
                 <ol>
-                    <li>In the Admin Dashboard go to: <b>WooCommerce > Settings > Advanced > <a href="<?= $link?>/wp-admin/admin.php?page=wc-settings&tab=advanced&section=keys" target="_blank">REST API</a></b>.</li>
+                    <li>In the Admin Dashboard go to: <b>WooCommerce > Settings > Advanced > <a href="<?php echo esc_url($link . "/wp-admin/admin.php?page=wc-settings&tab=advanced&section=keys")?>" target="_blank">REST API</a></b>.</li>
                     <li>Click on <b>Add Key</b>.</li>
                     <li>Enter a description for the key such as: WP Smart Commerce Integration.</li>
                     <li>Make sure the correct User is selected and set the Permissions to <b>Read/Write</b>.</li>
@@ -75,7 +75,7 @@
             <div>
                 <h3>Create a User To Use The Plugin (Administrators already have access)</h3>
                 <ol>
-                    <li>Go to Users and Click on <b> <a href="<?= $link?>/wp-admin/user-new.php" target="_blank">Add New</a></b>.</li>
+                    <li>Go to Users and Click on <b> <a href="<?php echo esc_url($link . "/wp-admin/user-new.php") ?>" target="_blank">Add New</a></b>.</li>
                     <li>Enter the <b>Username</b> and <b>Email</b> as well as any other optional fields.</li>
                     <li>Click on <b>Generate password</b> or set your own.</li>
                     <li>Under <b>Role</b> select the <b>Product Manager</b> role. (Only Product Managers and Administrators can use the plugin).</li>

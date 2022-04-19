@@ -237,7 +237,7 @@ else {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="<?= get_site_icon_url() ?>">
+    <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.php"?>">
@@ -248,16 +248,16 @@ else {
     <header>
         <?php if(get_option("wp_smart_products_logo_url") !== null): ?>
             <div>
-                <img src="<?= get_option("wp_smart_products_logo_url")?>"/>
+                <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
         <?php endif;?>
-        <a href="<?= $add_page?>">Add New Product</a>
-        <a href="<?= $products_page?>?id=1">Go back to products</a>
+        <a href="<?php echo esc_url($add_page) ?>">Add New Product</a>
+        <a href="<?php echo esc_url($products_page . "?id=1") ?>">Go back to products</a>
     </header>
     <?php if($validCodes): ?>
 
         <?php if($error): ?>
-            <div id="errors"><?= $error ?></div>
+            <div id="errors"><?php echo esc_html($error) ?></div>
         <?php endif; ?>
 
         <form enctype="multipart/form-data" action="" method="post" id="addeditproduct-form">
@@ -266,7 +266,7 @@ else {
                 <!-- This is the name field input -->
                 <div>
                     <label for="product-name" class="label-block">Product Name</label>
-                    <input type="text" name="product-name" id="name" value="<?= $product['name']?>">
+                    <input type="text" name="product-name" id="name" value="<?php echo esc_html($product['name'])?>">
                 </div>
             </div>
 
@@ -285,7 +285,6 @@ else {
             <div id="product-description">
                 <label for="product-description" class="label-block">Long Description</label>
                 <?php wp_editor($product['description'], "wp-commerce-product-description")?>
-                <!-- <textarea name="product-description" cols="30" rows="10" id="description"><?php //echo strip_tags($product['description']) ?></textarea> -->
             </div>
 
             <div id="product-settings">
@@ -330,12 +329,12 @@ else {
                 <div class="flex-container">
                     <div class="flex-container-vertical">
                         <label for="product-regular-price" class="">Regular Price</label>
-                        <input type="text" name="product-regular-price" id="regular-price" value="<?= $product['regular_price']?>">
+                        <input type="text" name="product-regular-price" id="regular-price" value="<?php echo esc_html($product['regular_price']) ?>">
                     </div>
 
                     <div class="flex-container-vertical">
                         <label for="product-sale-price" class="">Sale Price</label>
-                        <input type="text" name="product-sale-price" id="sale-price" value="<?= $product['sale_price']?>">
+                        <input type="text" name="product-sale-price" id="sale-price" value="<?php echo esc_html($product['sale_price']) ?>">
                     </div>
 
                     <div class="flex-container-vertical">
@@ -345,7 +344,7 @@ else {
                             <?php 
                             
                                 foreach($taxClassData as $taxClass){ ?>
-                                    <option value="<?= $taxClass["slug"]?>"><?= $taxClass['name']?></option>
+                                    <option value="<?php echo esc_html($taxClass["slug"]) ?>"><?php echo esc_html($taxClass['name']) ?></option>
                                <?php }
                             
                             ?>
@@ -366,7 +365,7 @@ else {
                 <div class="inventory-container">
                     <div id="sku" class="flex-container">
                         <label for="product-sku">SKU </label>
-                        <input type="text" name="product-sku" id="sku-input" value="<?= $product['sku']?>">
+                        <input type="text" name="product-sku" id="sku-input" value="<?php echo esc_html($product['sku']) ?>">
                     </div>
 
                     <div id="stock" class="flex-container">
@@ -379,7 +378,7 @@ else {
 
                     <div id="stock-quantity" class="flex-container">
                         <label for="stock-quantity">Stock Quantity </label>
-                        <input type="number" name="stock-quantity" value="<?= $product['stock_quantity'] ?>">
+                        <input type="number" name="stock-quantity" value="<?php echo esc_html($product['stock_quantity']) ?>">
                     </div>
 
                     <div id="stock-status-container" class="flex-container">
@@ -404,15 +403,15 @@ else {
                 </label>
                 <div>
                     <div id="weight" class="flex-container between">
-                        <label for="weight" class="">Weight (<?= $dimensionsUnit?>)</label>
-                        <input type="text" name="weight" value="<?= $product['weight'] ?>">
+                        <label for="weight" class="">Weight (<?php echo esc_html($dimensionsUnit) ?>)</label>
+                        <input type="text" name="weight" value="<?php echo esc_html($product['weight']) ?>">
                     </div>
 
                     <div id="dimensions" class="flex-container">
-                        <label for="">Dimensions (<?= $dimensionsUnit?>)</label>
-                        <input type="text" name="length" placeholder="Length" value="<?= $product["dimensions"]["length"]?>">
-                        <input type="text" name="width" placeholder="Width"  value="<?= $product["dimensions"]["width"]?>">
-                        <input type="text" name="height" placeholder="Height"  value="<?= $product["dimensions"]["height"]?>">
+                        <label for="">Dimensions (<?php echo esc_html($dimensionsUnit) ?>)</label>
+                        <input type="text" name="length" placeholder="Length" value="<?php echo esc_html($product["dimensions"]["length"]) ?>">
+                        <input type="text" name="width" placeholder="Width"  value="<?php echo esc_html($product["dimensions"]["width"]) ?>">
+                        <input type="text" name="height" placeholder="Height"  value="<?php echo esc_html($product["dimensions"]["height"]) ?>">
                     </div>
 
                     <?php if(count($shippingClasses) > 0):?>
@@ -421,7 +420,7 @@ else {
                             <select name="shipping-class" id="shipping-class">
                                 <option value="" >No Shipping Class</option>
                                 <?php foreach($shippingClasses as $shippingClass):?>
-                                    <option value="<?= $shippingClass['slug']?>"><?= $shippingClass['name']?></option>
+                                    <option value="<?php echo esc_html($shippingClass['slug']) ?>"><?php echo esc_html($shippingClass['name']) ?></option>
                                 <?php endforeach;?>
                             </select>
                         </div>
@@ -434,7 +433,6 @@ else {
             <div id="product-short-description">
                 <label for="product-short-description" class="label-block">Short Description</label>
                 <?php wp_editor($product['short_description'], "wp-commerce-product-short-description")?>
-                <!-- <textarea name="product-short-description" id="short-description" cols="30" rows="10"><?php //echo strip_tags($product['short_description']) ?></textarea> -->
             </div>
 
             
@@ -457,7 +455,7 @@ else {
                         <?php
                             foreach($categories as $category){
                                 if($category['parent'] == 0){?>
-                                <option value="<?= $category['id']?>" id="<?= $category['id']?>"><?= $category['name']?></option>
+                                <option value="<?php echo esc_html($category['id']) ?>" id="<?php echo esc_attr($category['id']) ?>"><?php echo esc_html($category['name']) ?></option>
                         <?php }}
                         
                         ?>
@@ -484,7 +482,7 @@ else {
                             $tags = $product['tags'];
                             foreach($tags as $tag){
                                 ?>
-                                <div><?= $tag['name']?></div>
+                                <div><?php echo esc_html($tag['name']) ?></div>
                             <?php }
                         
                         ?>
@@ -506,8 +504,8 @@ else {
             <input type="hidden" name="product-categories" id="hidden-categories">
             <input type="hidden" name="product-tags" id="hidden-tags">
             <?php // This will pass the data to javascript to handle the displaying of the categories?>
-            <input type="hidden" id="php-categories-data" value='<?php echo json_encode($categories)?>'>
-            <input type="hidden" id="product-data" value='<?php echo json_encode($javascriptProductData)?>'>
+            <input type="hidden" id="php-categories-data" value='<?php echo esc_html(json_encode($categories)) ?>'>
+            <input type="hidden" id="product-data" value='<?php echo esc_html(json_encode($javascriptProductData)) ?>'>
         </form>
     <?php else:?>
         <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>

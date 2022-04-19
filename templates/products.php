@@ -78,7 +78,7 @@ else {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="<?= get_site_icon_url() ?>">
+    <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>">
     <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script>
     <title>Products</title>
@@ -88,7 +88,7 @@ else {
         
         <?php if(get_option("wp_smart_products_logo_url") !== null): ?>
             <div>
-                <img src="<?= get_option("wp_smart_products_logo_url")?>"/>
+                <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
         <?php endif;?>
         
@@ -110,7 +110,7 @@ else {
                 <button id="reset">Reset Filter</button>
             </div>
         </div>
-        <a href="<?php echo $link . "/" . $add_page?>">Add New Product</a>
+        <a href="<?php echo esc_url($link . "/" . $add_page) ?>">Add New Product</a>
     </header>
     <section>
 
@@ -124,9 +124,9 @@ else {
                             $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
                             ?>
                             
-                            <div class="product-container <?= $categoryList?>" data-name="<?= $product['name']?>" data-price="<?= $product['regular_price']?>">
-                                <img src="<?php echo $product['images'][0]['src']?>" alt="" class="product-image">
-                                <div class="title"><?php echo $product['name']?></div>
+                            <div class="product-container <?php echo esc_attr($categoryList) ?>" data-name="<?php echo esc_attr($product['name']) ?>" data-price="<?php echo esc_attr($product['regular_price']) ?>">
+                                <img src="<?php echo esc_url($product['images'][0]['src']) ?>" alt="" class="product-image">
+                                <div class="title"><?php echo esc_html($product['name']) ?></div>
                                 <?php 
 
                                     if($product['regular_price']):
@@ -148,14 +148,14 @@ else {
                                         
                                         
                                 ?>
-                                    <div class="price"> <?php echo $product['price_html']?></div>
+                                    <div class="price"> <?php echo wp_kses_post($product['price_html'])?></div>
                                 <?php endif;?>
                                 
                                 <div class="SKU-categories">
-                                    <div class="SKU"><b>SKU: </b><?php echo smt_smart_commerce_pro_displayData($product['sku'])?></div>
-                                    <div class="Categories"><b>Categories: </b><?php echo $categoryList?></div>
+                                    <div class="SKU"><b>SKU: </b><?php echo esc_html(smt_smart_commerce_pro_displayData($product['sku'])) ?></div>
+                                    <div class="Categories"><b>Categories: </b><?php echo esc_html($categoryList) ?></div>
                                 </div>
-                                <a href="<?= $edit_page?>?id=<?= $product['id']?>" class="edit-product">Edit Product</a>
+                                <a href="<?php echo esc_url($edit_page . "?id=" . $product['id']) ?>" class="edit-product">Edit Product</a>
                             </div>
                     <?php }
                     }
@@ -163,14 +163,14 @@ else {
             ?>
         </main>
         <div id="pagination">
-            <div>Showing page <?=$page?> of 
-                <?= $productsHeaders['x-wp-totalpages']?>
+            <div>Showing page <?php echo esc_html($page) ?> of 
+                <?php echo esc_html($productsHeaders['x-wp-totalpages']) ?>
             </div>
                 <ul id="page-list">
                     <?php 
                         for($i = 1; $i <= $productsHeaders['x-wp-totalpages']; $i++){?>
                             <li class="page">
-                                <a href="<?= $products_page?>?id=<?= $i ?>"><?php echo $i ?></a>
+                                <a href="<?php echo esc_url($products_page . "?id=" . $i) ?>"><?php echo esc_html($i) ?></a>
                             </li>
                     <?php
                         }

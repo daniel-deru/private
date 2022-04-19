@@ -202,7 +202,7 @@ else {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="<?= get_site_icon_url() ?>">
+    <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.php"?>">
@@ -213,14 +213,14 @@ else {
     <header>
         <?php if(get_option("wp_smart_products_logo_url") !== null): ?>
             <div>
-                <img src="<?= get_option("wp_smart_products_logo_url")?>"/>
+                <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
         <?php endif;?>
-        <a href="<?= $products_page?>?id=1">Go back to products</a>
+        <a href="<?php echo esc_url($products_page . "?id=1") ?>">Go back to products</a>
     </header>
     <?php if($validCode): ?>
         <?php if($error):?>
-            <div id="errors"><?= $error?></div>
+            <div id="errors"><?php echo esc_html($error) ?></div>
         <?php endif;?>
         <form enctype="multipart/form-data" action="" method="post" enctype='multipart/form-data' id="addeditproduct-form">
 
@@ -228,7 +228,7 @@ else {
             <div id="title-price" class="flex-fields">
                 <div>
                     <label for="product-name" class="label-block">Product Name</label>
-                    <input type="text" name="product-name" id="name" value="<?php if(isset($_POST['product-name'])) echo htmlentities($_POST['product-name'])?>">
+                    <input type="text" name="product-name" id="name" value="<?php if(isset($_POST['product-name'])) echo esc_html($_POST['product-name'])?>">
                 </div>
             </div>
 
@@ -295,12 +295,12 @@ else {
                 <div class="flex-container">
                     <div class="flex-container-vertical">
                         <label for="product-regular-price" class="">Regular Price</label>
-                        <input type="text" name="product-regular-price" id="regular-price" value="<?php if(isset($_POST['product-regular-price'])) echo htmlentities($_POST['product-regular-price']) ?>">
+                        <input type="text" name="product-regular-price" id="regular-price" value="<?php if(isset($_POST['product-regular-price'])) echo esc_html($_POST['product-regular-price']) ?>">
                     </div>
 
                     <div class="flex-container-vertical">
                         <label for="product-sale-price" class="padding-left">Sale Price</label>
-                        <input type="text" name="product-sale-price" id="sale-price" value="<?php if(isset($_POST['product-sale-price'])) echo htmlentities($_POST['product-sale-price']) ?>">
+                        <input type="text" name="product-sale-price" id="sale-price" value="<?php if(isset($_POST['product-sale-price'])) echo esc_html($_POST['product-sale-price']) ?>">
                     </div>
 
                     <div class="flex-container-vertical">
@@ -310,7 +310,7 @@ else {
                             <?php 
                             
                                 foreach($taxClassData as $taxClass){ ?>
-                                    <option value="<?= $taxClass["slug"]?>"><?= $taxClass['name']?></option>
+                                    <option value="<?php echo esc_html($taxClass["slug"])?>"><?php echo esc_html($taxClass['name']) ?></option>
                                <?php }
                             
                             ?>
@@ -332,7 +332,7 @@ else {
                 <div class="inventory-container">
                     <div id="sku" class="flex-container">
                         <label for="product-sku" class="">SKU</label>
-                        <input type="text" name="product-sku" id="sku-input" value="<?php if(isset($_POST['product-sku'])) echo htmlentities($_POST['product-sku']) ?>">
+                        <input type="text" name="product-sku" id="sku-input" value="<?php if(isset($_POST['product-sku'])) echo esc_html($_POST['product-sku']) ?>">
                     </div>
 
                     <div id="stock" class="flex-container">
@@ -345,7 +345,7 @@ else {
 
                     <div id="stock-quantity" class="flex-container">
                         <label for="stock-quantity">Stock Quantity</label>
-                        <input type="number" value="0" name="stock-quantity" value="<?php if(isset($_POST['stock-quantity'])) echo htmlentities($_POST['stock-quantity']) ?>">
+                        <input type="number" value="0" name="stock-quantity" value="<?php if(isset($_POST['stock-quantity'])) echo esc_html($_POST['stock-quantity']) ?>">
                     </div>
 
                     <div id="stock-status-container" class="flex-container">
@@ -373,14 +373,14 @@ else {
                 <div>
                     <div id="weight" class="flex-container between">
                         <label for="weight" class="">Weight</label>
-                        <input type="text" name="weight" value="<?php if(isset($_POST['weight'])) echo htmlentities($_POST['weight']) ?>">
+                        <input type="text" name="weight" value="<?php if(isset($_POST['weight'])) echo esc_html($_POST['weight']) ?>">
                     </div>
 
                     <div id="dimensions" class="flex-container">
                         <label for="">Dimensions</label>
-                        <input type="text" name="length" placeholder="Length" value="<?php if(isset($_POST['length'])) echo htmlentities($_POST['length']) ?>">
-                        <input type="text" name="width" placeholder="Width" value="<?php if(isset($_POST['width'])) echo htmlentities($_POST['width']) ?>">
-                        <input type="text" name="height" placeholder="Height" value="<?php if(isset($_POST['height'])) echo htmlentities($_POST['height']) ?>">
+                        <input type="text" name="length" placeholder="Length" value="<?php if(isset($_POST['length'])) echo esc_html($_POST['length']) ?>">
+                        <input type="text" name="width" placeholder="Width" value="<?php if(isset($_POST['width'])) echo esc_html($_POST['width']) ?>">
+                        <input type="text" name="height" placeholder="Height" value="<?php if(isset($_POST['height'])) echo esc_html($_POST['height']) ?>">
                     </div>
 
                     <?php if(count($shippingClasses) > 0):?>
@@ -389,7 +389,7 @@ else {
                             <select name="shipping-class" id="shipping-class">
                                 <option value="">No Shipping Class</option>
                                 <?php foreach($shippingClasses as $shippingClass):?>
-                                    <option value="<?= $shippingClass['slug']?>"><?= $shippingClass['name']?></option>
+                                    <option value="<?php echo esc_html($shippingClass['slug']) ?>"><?php echo esc_html($shippingClass['name']) ?></option>
                                 <?php endforeach;?>
                             </select>
                         </div>
@@ -425,7 +425,7 @@ else {
                         <?php
                             foreach($categories as $category){
                                 if($category['parent'] == 0){?>
-                                <option value="<?= $category['id']?>" id="<?= $category['id']?>"><?= $category['name']?></option>
+                                <option value="<?php echo esc_html($category['id']) ?>" id="<?php echo $category['id']?>"><?php echo esc_html($category['name']) ?></option>
                         <?php }}
                         
                         ?>
@@ -467,7 +467,7 @@ else {
             <input type="hidden" name="product-categories" id="hidden-categories">
             <input type="hidden" name="product-tags" id="hidden-tags">
             <?php // This will pass the data to javascript to handle the displaying of the categories?>
-            <input type="hidden" id="php-categories-data" value='<?php echo json_encode($categories)?>'>
+            <input type="hidden" id="php-categories-data" value='<?php echo esc_html(json_encode($categories)) ?>'>
         </form>
     <?php else: ?>
         <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>

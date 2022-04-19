@@ -237,15 +237,8 @@ function smt_smart_commerce_pro_PageContent() {
 }
 
 function smt_smart_commerce_pro_admin_styles(){
-    echo '<link rel="stylesheet" href="' . dirname(plugin_dir_url(__FILE__)) .'/smart_commerce/public/css/admin.css">';
-    // echo  '<script src="' . dirname(plugin_dir_url(__FILE__)) . '/lk_supplier/public/js/wp_smart_feeds_help.js" defer></script>';
+    echo '<link rel="stylesheet" href="' . esc_url(plugins_url("public/css/admin.css") , __FILE__) .'">';
 }
-
-// register_activation_hook(__FILE__, "verifyDomain");
-
-// function verifyDomain(){
-//     $request = curl_init("http");
-// };
 
 add_action("wp_login", "smt_smart_commerce_pro_checkUser");
 register_activation_hook(__FILE__, "smt_smart_commerce_pro_checkUser");
@@ -294,7 +287,7 @@ function smt_smart_commerce_pro_addLinks($links){
             get_admin_url() . "admin.php"
         ));
 
-    $settings_link = "<a href='" . $url ."' target='_blank'>Settings</a>";
+    $settings_link = "<a href='" . esc_url($url) ."' target='_blank'>Settings</a>";
 
     array_unshift(
         $links,

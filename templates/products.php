@@ -155,7 +155,7 @@ else {
                                     <div class="SKU"><b>SKU: </b><?php echo esc_html(smt_smart_commerce_pro_displayData($product['sku'])) ?></div>
                                     <div class="Categories"><b>Categories: </b><?php echo esc_html($categoryList) ?></div>
                                 </div>
-                                <a href="<?php echo esc_url($edit_page . "?id=" . $product['id']) ?>" class="edit-product">Edit Product</a>
+                                <a href="<?php echo esc_url($link . "/" . $edit_page . "?id=" . $product['id']) ?>" class="edit-product">Edit Product</a>
                             </div>
                     <?php }
                     }

@@ -66,17 +66,17 @@ $link .= $_SERVER['HTTP_HOST'];
 // $link .= $_SERVER['REQUEST_URI'];
 
 if(isset($_POST['products-login'])){
-    if (empty($_POST['products-name']))
-    {
-       $error = "Please enter a name";
-    }
-    else if(empty($_POST["products-password"])){
-        $error = "Please enter a password";
-    }
+
+    if (empty($_POST['products-name'])) $error = "Please enter a name";
+    else if(empty($_POST["products-password"])) $error = "Please enter a password";
+    
     else if(!empty($_POST['products-name']) && !empty($_POST['products-password'])){
-        $name = $_POST['products-name'];
-        $password = $_POST['products-password'];
+
+        $name = sanitize_title($_POST['products-name']);
+        $password = sanitize_text_field($_POST['products-password']);
+
         $user = wp_authenticate($name, $password);
+        
         if(!is_wp_error($user)){
             if(in_array('product_manager', $user->roles) || in_array('administrator', $user->roles)){
 

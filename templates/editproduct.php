@@ -288,10 +288,6 @@ else {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <!-- <link rel="stylesheet" href="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.php"?>"> -->
-    <!-- <script src="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/editproduct.js"?>" defer></script> -->
     <?php wp_head() ?>
     <title>Edit Product</title>
 </head>
@@ -302,8 +298,8 @@ else {
                 <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
         <?php endif;?>
-        <a href="<?php echo esc_url($add_page) ?>">Add New Product</a>
-        <a href="<?php echo esc_url($products_page . "?id=1") ?>">Go back to products</a>
+        <a href="<?php echo esc_url($link . "/" . $add_page) ?>">Add New Product</a>
+        <a href="<?php echo esc_url($link . "/" . $products_page . "?id=1") ?>">Go back to products</a>
     </header>
     <?php if($validCodes): ?>
 
@@ -548,7 +544,7 @@ else {
                 <input type="submit" id="save-btn" value="Save" name="save">
                 <div>
                     <input type="checkbox" name="draft" id="draft">
-                    <label for="draft" class="inline">Hide Product</label>
+                    <label for="draft" class="inline" id="smt-smart-commerce-hide">Hide Product</label>
                 </div>
             </div>
             <?php //This will get the data from the form to submit to the api?>

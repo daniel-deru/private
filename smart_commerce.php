@@ -255,18 +255,12 @@ function smt_smart_commerce_pro_checkUser(){
         'domain' => $link
     );
 
-    $payload = http_build_query($data);
+    $args = array(
+        'body' => $data
+    );
+    $request = wp_remote_post("https://api.smartmetatec.com/api/verify/commerce/user", $args);
 
-    $ch = curl_init();
-
-    curl_setopt($ch, CURLOPT_URL, "https://api.smartmetatec.com/api/verify/commerce/user");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-    $response = curl_exec($ch);
-
-    curl_close($ch);
+    $response = wp_remote_retrieve_body( $request );
 
     $jsonResponse = json_decode($response, true);
 

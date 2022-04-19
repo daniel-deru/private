@@ -80,7 +80,8 @@ else {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
     <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>">
-    <script src="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script>
+    <!-- <script src="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script> -->
+    <?php wp_head() ?>
     <title>Products</title>
 </head>
 <body>
@@ -181,5 +182,6 @@ else {
         <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
 
     <?php endif;?>
+    <?php wp_footer() ?>
 </body>
 </html>

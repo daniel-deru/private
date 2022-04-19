@@ -207,7 +207,7 @@ function smt_smart_commerce_pro_hide_admin_bar(){
 
 add_action('admin_menu', 'smt_smart_commerce_pro_SetupPage');
 add_action('admin_init', 'smt_smart_commerce_pro_RegisterSettings');
-add_action("admin_head", "smt_smart_commerce_pro_admin_styles");
+// add_action("admin_head", "smt_smart_commerce_pro_admin_styles");
 add_action("wp_enqueue_scripts", "wp_enqueue_media");
 
 // add_action("admin_enqueue_scripts", "load_media");
@@ -230,15 +230,13 @@ function smt_smart_commerce_pro_RegisterSettings() {
 }
 
 function smt_smart_commerce_pro_PageContent() {
-    // if (!current_user_can('manage_options'))
-    //     wp_die(__("You don't have access to this page"));
+    if (!current_user_can('manage_options')) wp_die(__("You don't have access to this page"));
     require_once dirname( __FILE__ ) . "/adminPage.php";
-
 }
 
-function smt_smart_commerce_pro_admin_styles(){
-    echo '<link rel="stylesheet" href="' . esc_url(plugins_url("public/css/admin.css") , __FILE__) .'">';
-}
+// function smt_smart_commerce_pro_admin_styles(){
+//     echo '<link rel="stylesheet" href="' . esc_url(plugins_url("public/css/admin.css") , __FILE__) .'">';
+// }
 
 add_action("wp_login", "smt_smart_commerce_pro_checkUser");
 register_activation_hook(__FILE__, "smt_smart_commerce_pro_checkUser");
@@ -298,8 +296,46 @@ function smt_smart_commerce_pro_addLinks($links){
 
 add_filter('plugin_action_links_smart_commerce/smart_commerce.php', "smt_smart_commerce_pro_addLinks");
 
+// Enqueue the scripts and styles
+function smt_smart_commerce_register_scripts(){
 
+    wp_enqueue_style("smt_smart_commerce_fontawesome_css", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
+    wp_enqueue_script("smt_smart_commerce_fontawesome_js", "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js", [], false, true);
 
+    if ( is_page( 'WP Smart Login' ) ) {
+        // wp_enqueue_style("smt_smart_commerce_access_style", plugins_url("/public/css/access.css", __FILE__));
+        // wp_enqueue_style("smt_smart_commerce_access_style", admin_url('admin-ajax.php').'?action=smt_smart_commerce_access_style_dynamic');
+        wp_enqueue_script("smt_smart_commerce_access", plugins_url("/public/js/access.js", __FILE__), array('jquery'), false, true);
+    }
+    else if( is_page('WP Smart Products')){
+        // wp_enqueue_style("smt_smart_commerce_product_style", plugins_url("/public/css/products.css", __FILE__));
+        // wp_enqueue_style("smt_smart_commerce_product_style", admin_url('admin-ajax.php').'?action=smt_smart_commerce_product_style_dynamic');
+        wp_enqueue_script("smt_smart_commerce_products", plugins_url("/public/js/products.js", __FILE__), array('jquery'), false, true);
+    }
+    else if(is_page('WP Smart Add Product')){
+        // wp_enqueue_style("smt_smart_commerce_add_product_style", plugins_url("/public/css/addproduct.css", __FILE__));
+        // wp_enqueue_style("smt_smart_commerce_add_product_style", admin_url('admin-ajax.php').'?action=smt_smart_commerce_add_product_style_dynamic');
+        wp_enqueue_script("smt_smart_commerce_add_product", plugins_url("/public/js/addproduct.js", __FILE__), array('jquery'), false, true);
+    }
+    else if(is_page('WP Smart Edit Product')){
+        // wp_enqueue_style("smt_smart_commerce_edit_product_style", plugins_url("/public/css/addproduct.css", __FILE__));
+        // wp_enqueue_style("smt_smart_commerce_edit_product_style", admin_url('admin-ajax.php').'?action=smt_smart_commerce_edit_product_style_dynamic');
+        wp_enqueue_script("smt_smart_commerce_edit_product", plugins_url("/public/js/editproduct.js", __FILE__), array('jquery'), false, true);
+    }
 
+}
 
+add_action("wp_enqueue_scripts", "smt_smart_commerce_register_scripts");
 
+// Add the admin stylesheet
+function smt_smart_commerce_admin_style(){
+    global $pagenow;
+
+    if(isset($_GET['page'])) $page = sanitize_text_field($_GET['page']);
+
+    if($pagenow === "admin.php" && $page === "smart_commerce/smart_commerce.php"){
+        wp_register_style("smt_smart_metatec_admin", plugins_url("/public/css/admin.css", __FILE__));
+        wp_enqueue_style("smt_smart_metatec_admin");
+    }
+}
+add_action('admin_enqueue_scripts', 'smt_smart_commerce_admin_style');

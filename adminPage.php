@@ -57,7 +57,7 @@
 
             <div>
                 <label for="wp_smart_products_color">Enter Brand Color</label>
-                <?php // This input is placed in a div because of the color pick eye dropper chrome extension?>
+                <?php // This input is placed in a div because of the color pick eye dropper chrome extension ?>
                 <div>
                     <input type="color" name="wp_smart_products_brand_color" id="" value="<?php echo get_option("wp_smart_products_brand_color") ? esc_html(get_option("wp_smart_products_brand_color")) : esc_html("#21759b") ?>">
                 </div>

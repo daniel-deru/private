@@ -27,7 +27,7 @@ wp_enqueue_media();
 
 // Check where the request for the current page is coming from
 if(isset($_SERVER['HTTP_REFERER'])){
-    $previous_page = $_SERVER['HTTP_REFERER'];
+    $previous_page = sanitize_url($_SERVER['HTTP_REFERER']);
     $from_products = preg_match("/" . $products_page . "\/\?id=[1-9]{1,5}/", $previous_page);
     $from_self = preg_match("/" . $add_page ."/", $previous_page);
 
@@ -77,19 +77,21 @@ else {
         $error = "";
 
         if(isset($_POST['category']) && $_POST['category']){
-            $categortArray = array(
-                'name' => $_POST['category']
-            );
 
-            $data['name'] = $_POST['category'];
+            // This array is for when a new category gets created
+            $categoryArray = array('name' => sanitize_title($_POST['category']));
 
+            // This adds the new category to the list of product categories
+            $data['name'] = sanitize_title($_POST['category']);
+
+            // Check if a parent category was specified
             if(isset($_POST['parent-category']) && $_POST['parent-category']){
-                $categortArray['parent'] = $_POST['parent-category'];
-            }
+                $categoryArray['parent'] = sanitize_title($_POST['parent-category']);
+            } 
 
-          if($validCode) {
-              $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categortArray), true);
-              if($newCategory['error']) $error = $newCategory['message'];
+            if($validCode) {
+                $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categoryArray), true);
+                if($newCategory['error']) $error = $newCategory['message'];
             };
         }
         
@@ -124,17 +126,11 @@ else {
             if(preg_match($productRegex, $product_type)) $data['type'] = $product_type;
         } 
 
-        if(isset($_POST['product-virtual'])){
-            $data['virtual'] = true;
-        } 
+        if(isset($_POST['product-virtual'])) $data['virtual'] = true;
 
-        if(isset($_POST['product-downloadable'])){
-            $data['downloadable'] = true;
-        } 
+        if(isset($_POST['product-downloadable'])) $data['downloadable'] = true;
 
-        if(isset($_POST['draft'])){
-            $data["status"] = "draft";
-        } 
+        if(isset($_POST['draft'])) $data["status"] = "draft";
 
         if(isset($_POST['wp-commerce-product-description'])){
             $description = wp_kses_post($_POST['wp-commerce-product-description']);
@@ -151,9 +147,7 @@ else {
             $data['sku'] = $product_sku;
         } 
 
-        if(isset($_POST['manage-stock'])){
-            $data['manage_stock'] = true;
-        } 
+        if(isset($_POST['manage-stock'])) $data['manage_stock'] = true;
 
         if(isset($_POST['stock-quantity'])){
             $stock_quantity = sanitize_text_field($_POST['stock-quantity']);

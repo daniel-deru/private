@@ -7,46 +7,46 @@
  */
 
 
-function smt_smart_commerce_pro_check(){
-    $link = 'http://';
-    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
-        $link = 'https://';
-    }
+// function smt_smart_commerce_pro_check(){
+//     $link = 'http://';
+//     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
+//         $link = 'https://';
+//     }
 
-    $link .= str_replace("www.", "", $_SERVER['HTTP_HOST']);
-    // $link .= $_SERVER['HTTP_HOST'];
+//     $link .= str_replace("www.", "", $_SERVER['HTTP_HOST']);
+//     // $link .= $_SERVER['HTTP_HOST'];
 
-    $data = array(
-        'domain' => $link
-    );
+//     $data = array(
+//         'domain' => $link
+//     );
 
-    $payload = http_build_query($data);
+//     $payload = http_build_query($data);
 
-    $ch = curl_init();
+//     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.smartmetatec.com/api/verify/commerce/user");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+//     curl_setopt($ch, CURLOPT_URL, "https://api.smartmetatec.com/api/verify/commerce/user");
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_POST, true);
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
 
-    $response = curl_exec($ch);
+//     $response = curl_exec($ch);
 
-    curl_close($ch);
+//     curl_close($ch);
 
-    $jsonResponse = json_decode($response, true);
-    echo "<pre>";
-    print_r($data);
-    print_r($jsonResponse);
-    echo "</pre>";
+//     $jsonResponse = json_decode($response, true);
+//     echo "<pre>";
+//     print_r($data);
+//     print_r($jsonResponse);
+//     echo "</pre>";
 
-    if(!$jsonResponse['pass']){
-        echo "the response didn't pass";
-    }
-    else {
-        echo "The response passed";
-    }
+//     if(!$jsonResponse['pass']){
+//         echo "the response didn't pass";
+//     }
+//     else {
+//         echo "The response passed";
+//     }
 
-};
+// };
 
 
 // smt_smart_commerce_pro_check();
@@ -103,10 +103,6 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-    <!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <!-- <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/access.php"?>"> -->
-    <!-- <script src="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/access.js"?>" defer></script> -->
     <?php wp_head() ?>
     <title>Login</title>
 </head>

@@ -16,12 +16,8 @@ $edit_page = "wp-smart-edit-product";
 $add_page = "wp-smart-add-product";
 
 function smt_smart_commerce_pro_displayData($data){
-    if($data){
-        return $data;
-    }
-    else {
-        return "Not Set";
-    }
+    if($data) return $data;
+    return "Not Set";
 }
 
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
@@ -34,7 +30,7 @@ $link .= "://" . $_SERVER['HTTP_HOST'];
 global $categories;
 if(isset($_SERVER['HTTP_REFERER'])){
     
-    $previous_page = $_SERVER['HTTP_REFERER'];
+    $previous_page = sanitize_title($_SERVER['HTTP_REFERER']);
     $from_login = preg_match("/" . $login_page . "/", $previous_page);
     $from_self = preg_match("/" . $products_page ."\/\?id=[1-9]{1,5}/", $previous_page);
     $from_edit = preg_match("/" . $edit_page . "\/\?id=[1-9]{1,5}/", $previous_page);
@@ -81,8 +77,6 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
-    <!-- <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/products.php"?>"> -->
-    <!-- <script src="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/products.js"?>" defer></script> -->
     <?php wp_head() ?>
     <title>Products</title>
 </head>

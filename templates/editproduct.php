@@ -26,7 +26,7 @@ wp_enqueue_media();
 
 // Check where the request for the current page is coming from
 if(isset($_SERVER['HTTP_REFERER'])){
-    $previous_page = $_SERVER['HTTP_REFERER'];
+    $previous_page = sanitize_url($_SERVER['HTTP_REFERER']);
     $from_products = preg_match("/" . $products_page . "\/\?id=[1-9]{1,5}/", $previous_page);
     $from_self = preg_match("/" . $edit_page ."/", $previous_page);
 
@@ -36,11 +36,11 @@ if(isset($_SERVER['HTTP_REFERER'])){
             $categories = $categoriesData['data'];
             $id = $_GET['id'];
 
-            if(isset($_GET['id'])){
-                $product = json_decode($smt_smart_commerce_pro_getProduct($_GET['id']), true);
-            }
+            if(isset($_GET['id'])) $product = json_decode($smt_smart_commerce_pro_getProduct($_GET['id']), true);
 
-            $productImages = json_encode(array_map(function($item){return array('src' => $item["src"], "id" => $item['id']);}, $product['images']));
+            $productImages = json_encode(array_map(function($item){
+                return array('src' => $item["src"], "id" => $item['id']);
+            }, $product['images']));
 
             $taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
 
@@ -101,18 +101,19 @@ else {
         $error = "";
 
         if(isset($_POST['category']) && $_POST['category']){
-            $categortArray = array(
-                'name' => $_POST['category']
-            );
 
+            // This array is for when a new category gets created
+            $categoryArray = array('name' => sanitize_title($_POST['category']));
+
+            // This adds the new category to the list of product categories
             $data['name'] = $_POST['category'];
 
             if(isset($_POST['parent-category']) && $_POST['parent-category']){
-                $categortArray['parent'] = $_POST['parent-category'];
+                $categoryArray['parent'] = sanitize_title($_POST['parent-category']);
             }
 
            if($validCodes) {
-               $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categortArray), true);
+               $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categoryArray), true);
                if($newCategory["error"]) $error = $newCategory["message"];
             };
         }
@@ -270,7 +271,6 @@ else {
         
        if($validCodes) {
            $saveProduct = json_decode($smt_smart_commerce_pro_updateProduct($id, $data), true);
-
            if($saveProduct['error']) $error = $saveProduct['message'];
         };
 

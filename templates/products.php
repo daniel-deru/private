@@ -24,7 +24,7 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
 else $link = "http";
 
-$link .= "://" . $_SERVER['HTTP_HOST'];
+$link = sanitize_url($link . "://" . $_SERVER['HTTP_HOST']);
 
 
 global $categories;
@@ -40,7 +40,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
     $validCodes = smt_smart_commerce_pro_checkCode();
     if($from_login || $from_self || $from_edit || $from_add){
         if(isset($_GET['id'])){
-            $page = intval($_GET['id']);
+            $page = intval(sanitize_key($_GET['id']));
         }
         
         if($validCodes){
@@ -127,7 +127,7 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
                                 <?php 
 
                                     if($product['regular_price']):
-                                        $full_price = explode(".", $product['regular_price']);
+                                        $full_price = explode(".", sanitize_text_field($product['regular_price']));
 
                                         $integer_price = str_split($full_price[0]);
 

@@ -60,7 +60,7 @@ else $link = "http";
 $link .= "://";
 
 // Append the host(domain name, ip) to the URL.
-$link .= $_SERVER['HTTP_HOST'];
+$link = sanitize_url($link = $_SERVER['HTTP_HOST']);
 
 // Append the requested resource location to the URL
 // $link .= $_SERVER['REQUEST_URI'];

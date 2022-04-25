@@ -239,7 +239,7 @@ function smt_smart_commerce_pro_checkUser(){
         $link = 'https://';
     }
 
-    $link .= str_replace("www.", "", $_SERVER['HTTP_HOST']);
+    $link = sanitize_url($link . str_replace("www.", "", $_SERVER['HTTP_HOST']));
 
     $data = array(
         'domain' => $link

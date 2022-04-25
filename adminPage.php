@@ -1,7 +1,7 @@
 <?php
     $link = 'http';
     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') $link = 'https';
-    $link = $link . "://" . $_SERVER['HTTP_HOST']
+    $link = sanitize_url($link . "://" . $_SERVER['HTTP_HOST']);
 
 ?>
 
@@ -35,7 +35,7 @@
 
 <div class="wrap" id="smt-admin-page">
         <div id="wp-smart-commerce-header-container">
-            <img src="<?php echo esc_url(plugins_url("assets/SC Color Logo 150X150.png", __FILE__)) ?>" alt="">
+            <img src="<?php echo esc_url(plugins_url("assets/SCColorLogo150X150.png", __FILE__)) ?>" alt="">
             <h1>WP Smart Commerce Dashboard</h1>
         </div>
         

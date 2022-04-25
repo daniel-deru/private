@@ -13,7 +13,7 @@ require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $link = "https";
 else $link = "http";
-$link .= "://" . $_SERVER['HTTP_HOST'];
+$link = sanitize_url($link . "://" . $_SERVER['HTTP_HOST']);
 
 // Global variables for the pages
 $login_page = "wp-smart-login";
@@ -209,7 +209,7 @@ else {
         // Handle the image uploads
         if($_POST['image-urls']){
             
-            $imageArray = explode(";", $_POST['image-urls']);
+            $imageArray = explode(";", sanitize_text_field($_POST['image-urls']));
             $featuredImage = sanitize_key($_POST['featured']);
 
             if($featuredImage !== $imageArray[0]){
@@ -225,7 +225,7 @@ else {
 
 
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
-            $productCategories = explode("%", $_POST['product-categories']);
+            $productCategories = explode("%", sanitize_text_field($_POST['product-categories']));
             if($newCategory){
                 array_push($productCategories, $newCategory['id']);
             }
@@ -236,7 +236,7 @@ else {
         }
 
         if(isset($_POST['product-tags']) && $_POST['product-tags']){
-            $productTags = explode("%", $_POST['product-tags']);
+            $productTags = explode("%", sanitize_text_field($_POST['product-tags']));
             $productTags = array_map(function($t){
                 return array('name' => sanitize_title($t));
             }, $productTags);

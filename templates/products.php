@@ -57,13 +57,13 @@ if(isset($_SERVER['HTTP_REFERER'])){
     }
     else {
             // Remove the product part
-        header("Location: " . $link . "/" . $login_page);
+        header("Location: " . get_site_url(null, $login_page));
         exit;
     }
 }
 else {
     // Remove the product part
-    header("Location: " . $link . "/" . $login_page);
+    header("Location: " . get_site_url(null, $login_page));
     exit;
 }
 
@@ -107,7 +107,7 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
                 <button id="reset">Reset Filter</button>
             </div>
         </div>
-        <a href="<?php echo esc_url($link . "/" . $add_page) ?>">Add New Product</a>
+        <a href="<?php echo esc_url(get_site_url(null, $add_page)) ?>">Add New Product</a>
     </header>
     <section>
 
@@ -152,7 +152,7 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
                                     <div class="SKU"><b>SKU: </b><?php echo esc_html(smt_smart_commerce_pro_displayData($product['sku'])) ?></div>
                                     <div class="Categories"><b>Categories: </b><?php echo esc_html($categoryList) ?></div>
                                 </div>
-                                <a href="<?php echo esc_url($link . "/" . $edit_page . "?id=" . $product['id']) ?>" class="edit-product">Edit Product</a>
+                                <a href="<?php echo esc_url(get_site_url($edit_page . "?id=" . $product['id'])) ?>" class="edit-product">Edit Product</a>
                             </div>
                     <?php }
                     }

@@ -7,49 +7,6 @@
  */
 
 
-// function smt_smart_commerce_pro_check(){
-//     $link = 'http://';
-//     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'){
-//         $link = 'https://';
-//     }
-
-//     $link .= str_replace("www.", "", $_SERVER['HTTP_HOST']);
-//     // $link .= $_SERVER['HTTP_HOST'];
-
-//     $data = array(
-//         'domain' => $link
-//     );
-
-//     $payload = http_build_query($data);
-
-//     $ch = curl_init();
-
-//     curl_setopt($ch, CURLOPT_URL, "https://api.smartmetatec.com/api/verify/commerce/user");
-//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//     curl_setopt($ch, CURLOPT_POST, true);
-//     curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-
-//     $response = curl_exec($ch);
-
-//     curl_close($ch);
-
-//     $jsonResponse = json_decode($response, true);
-//     echo "<pre>";
-//     print_r($data);
-//     print_r($jsonResponse);
-//     echo "</pre>";
-
-//     if(!$jsonResponse['pass']){
-//         echo "the response didn't pass";
-//     }
-//     else {
-//         echo "The response passed";
-//     }
-
-// };
-
-
-// smt_smart_commerce_pro_check();
 $error = null;
 
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
@@ -80,7 +37,7 @@ if(isset($_POST['products-login'])){
         if(!is_wp_error($user)){
             if(in_array('product_manager', $user->roles) || in_array('administrator', $user->roles)){
 
-                header("Location:" . $link . "/wp-smart-products?id=1");
+                header("Location:" . get_site_url(null, "wp-smart-products?id=1"));
                 exit;
             } else {
                 $error = "The password is wrong or the user doesn't exist";

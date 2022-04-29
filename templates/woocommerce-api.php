@@ -11,7 +11,7 @@ use Automattic\WooCommerce\Client;
 $key = get_option('wp_smart_products_consumer_key');
 $secret = get_option('wp_smart_products_consumer_secret');
 $woocommerce = new Client(
-    $host, 
+    get_site_url(), 
     $key, 
     $secret,
     [

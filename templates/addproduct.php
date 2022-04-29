@@ -59,13 +59,13 @@ if(isset($_SERVER['HTTP_REFERER'])){
     }
     else {
         // Add product to test on local
-        header("Location: " . $link . "/" . $login_page);
+        header("Location: " . get_site_url(null, $login_page));
         exit;
     }
 }
 else {
     // Add product to test on local
-    header("Location: " . $link . "/" . $login_page);
+    header("Location: " . get_site_url(null, $login_page));
     exit;
 }
 
@@ -249,7 +249,7 @@ else {
             if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
        }
 
-       if(!$error)  header("Location: " . $link . "/" . $products_page . "?id=1");
+       if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
 
     }
 

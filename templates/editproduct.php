@@ -83,13 +83,13 @@ if(isset($_SERVER['HTTP_REFERER'])){
     }
     else {
         // Add product to test on local
-        header("Location: " . $link . "/" . $login_page);
+        header("Location: " . get_site_url(null, $login_page));
         exit;
     }
 }
 else {
     // Add product to test on local
-    header("Location: " . $link . "/" . $login_page);
+    header("Location: " . get_site_url(null, $login_page));
     exit;
 }
 
@@ -275,7 +275,7 @@ else {
         };
 
 
-        if(!$error) header("Location: " . $link . "/" . $products_page . "?id=1");
+        if(!$error) header("Location: " . get_site_url(null, $products_page . "?id=1"));
     }
 
     $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
@@ -298,8 +298,8 @@ else {
                 <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
         <?php endif;?>
-        <a href="<?php echo esc_url($link . "/" . $add_page) ?>">Add New Product</a>
-        <a href="<?php echo esc_url($link . "/" . $products_page . "?id=1") ?>">Go back to products</a>
+        <a href="<?php echo esc_url(get_site_url(null, $add_page)) ?>">Add New Product</a>
+        <a href="<?php echo esc_url(get_site_url(null, $products_page . "?id=1")) ?>">Go back to products</a>
     </header>
     <?php if($validCodes): ?>
 

@@ -5,7 +5,7 @@ if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
 $host = "https";
 else $host = "http";
 
-$host = sanitize_url($link . "://" . $_SERVER['HTTP_HOST']);
+// $host = sanitize_url($link . "://" . $_SERVER['HTTP_HOST']);
 
 use Automattic\WooCommerce\Client;
 $key = get_option('wp_smart_products_consumer_key');

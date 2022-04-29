@@ -19,6 +19,7 @@ $link = sanitize_url($link . "://" . $_SERVER['HTTP_HOST']);
 $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
 $add_page = "wp-smart-add-product";
+$edit_page = "wp-smart-edit-product";
 $validCode = smt_smart_commerce_pro_checkCode();
 wp_enqueue_media();
 
@@ -30,8 +31,9 @@ if(isset($_SERVER['HTTP_REFERER'])){
     $previous_page = sanitize_url($_SERVER['HTTP_REFERER']);
     $from_products = preg_match("/" . $products_page . "\/\?id=[1-9]{1,5}/", $previous_page);
     $from_self = preg_match("/" . $add_page ."/", $previous_page);
+    $from_edit_page = preg_match("/" . $edit_page ."/", $previous_page);
 
-    if($from_products || $from_self){
+    if($from_products || $from_self || $from_edit_page){
         if($validCode){
             $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
             $categories = $categoriesData['data'];
@@ -263,10 +265,6 @@ else {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="<?php echo esc_url(get_site_icon_url()) ?>">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
-    <!-- <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <!-- <link rel="stylesheet" href="<?php echo dirname(plugin_dir_url(__FILE__), 1) . "/public/css/addproduct.php"?>"> -->
-    <!-- <script src="<?php // echo dirname(plugin_dir_url(__FILE__), 1) . "/public/js/addproduct.js"?>" defer></script> -->
     <?php wp_head() ?>
     <title>Add Product</title>
 </head>
@@ -277,7 +275,7 @@ else {
                 <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
         <?php endif;?>
-        <a href="<?php echo esc_url($products_page . "?id=1") ?>">Go back to products</a>
+        <a href="<?php echo esc_url(get_site_url($products_page . "?id=1")) ?>">Go back to products</a>
     </header>
     <?php if($validCode): ?>
         <?php if($error):?>

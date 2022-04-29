@@ -33,7 +33,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
     $previous_page = sanitize_title($_SERVER['HTTP_REFERER']);
     $from_login = preg_match("/" . $login_page . "/", $previous_page);
     $from_self = preg_match("/" . $products_page ."\/\?id=[1-9]{1,5}/", $previous_page);
-    $from_edit = preg_match("/" . $edit_page . "\/\?id=[1-9]{1,5}/", $previous_page);
+    $from_edit = preg_match("/" . $edit_page . "/", $previous_page);
     $from_add = preg_match("/" . $add_page . "/", $previous_page);
 
     $page = 1;
@@ -152,7 +152,7 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
                                     <div class="SKU"><b>SKU: </b><?php echo esc_html(smt_smart_commerce_pro_displayData($product['sku'])) ?></div>
                                     <div class="Categories"><b>Categories: </b><?php echo esc_html($categoryList) ?></div>
                                 </div>
-                                <a href="<?php echo esc_url(get_site_url($edit_page . "?id=" . $product['id'])) ?>" class="edit-product">Edit Product</a>
+                                <a href="<?php echo esc_url(get_site_url(null, $edit_page . "?id=" . $product['id'])) ?>" class="edit-product">Edit Product</a>
                             </div>
                     <?php }
                     }

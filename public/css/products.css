@@ -64,6 +64,9 @@ h1 {
 #filter-container div {
     margin: 0px 10px;
 }
+#filter-range-price {
+    display: flex;
+}
 
 select option {
     background-color: var(--main-blue);
@@ -92,10 +95,10 @@ header a {
     font-family: sans-serif;
 }
 .product-image {
-    max-width: 15vw;
-    max-height: 15vw;
-    width: 15vw;
-    height: 15vw;
+    max-width: 10vw;
+    max-height: 10vw;
+    width: 10vw;
+    height: 10vw;
 }
 
 .product-container {

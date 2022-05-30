@@ -45,7 +45,7 @@ $woocommerce = new Client(
  $smt_smart_commerce_pro_listProducts = function ($page=1) use ($woocommerce, $smt_smart_commerce_pro_getHeaders){
     $data = array(
         'data'=>$woocommerce->get("products", array(
-            "per_page" => 20,
+            "per_page" => 99,
             "page" => $page)),
         'headers' => $smt_smart_commerce_pro_getHeaders());
 

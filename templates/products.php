@@ -93,7 +93,7 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
             <div>
                 <input type="text" name="name" placeholder="Product Name" id="filter-name">
             </div>
-            <div>
+            <div id="filter-range-price">
                 <select name="more-less" id="filter-range">
                     <option value="more" selected>More Than</option>
                     <option value="less">Less Than</option>
@@ -119,10 +119,13 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
                     if(isset($products)){
                         foreach($products as $product){
                             $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
+                            $images = array_filter($product['attributes'], function($attr){ return $attr['name'] == "external_image"; });
+                            $image = isset($product['images'][0]) ? $product['images'][0]['src'] : $images[0]['options'][0];
                             ?>
                             
+                            
                             <div class="product-container <?php echo esc_attr($categoryList) ?>" data-name="<?php echo esc_attr($product['name']) ?>" data-price="<?php echo esc_attr($product['regular_price']) ?>">
-                                <img src="<?php echo esc_url($product['images'][0]['src']) ?>" alt="" class="product-image">
+                                <img src="<?php echo esc_url($image) ?>" alt="" class="product-image">
                                 <div class="title"><?php echo esc_html($product['name']) ?></div>
                                 <?php 
 

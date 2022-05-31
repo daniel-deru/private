@@ -8,7 +8,7 @@
 
 require "woocommerce-api.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
-// require dirname(plugin_dir_url(__FILE__), 1) . "/includes/helpers.php";
+require  dirname(plugin_dir_path(__FILE__)) . "/includes/products.php";
 
 $login_page = "wp-smart-login";
 $products_page = "wp-smart-products";
@@ -52,7 +52,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
             $productsHeaders = $productsData['headers'];
         }
 
-
+        $wpproducts = get_products();
+        // show(wc_get_product_category_list($wpproducts[1]->get_id()));
 
     }
     else {
@@ -116,46 +117,47 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
         <main id="product-grid">
             <?php
             
-                    if(isset($products)){
-                        foreach($products as $product){
-                            $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
-                            $images = array_filter($product['attributes'], function($attr){ return $attr['name'] == "external_image"; });
-                            $image = isset($product['images'][0]) ? $product['images'][0]['src'] : $images[0]['options'][0];
+                    if(isset($wpproducts)){
+                        foreach($wpproducts as $product){
+                            // $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
+                            // $images = array_filter($product['attributes'], function($attr){ return $attr['name'] == "external_image"; });
+                            // $image = isset($product['images'][0]) ? $product['images'][0]['src'] : $images[0]['options'][0];
+                            $image = wp_get_attachment_url($product->get_image_id());
                             ?>
                             
                             
-                            <div class="product-container <?php echo esc_attr($categoryList) ?>" data-name="<?php echo esc_attr($product['name']) ?>" data-price="<?php echo esc_attr($product['regular_price']) ?>">
+                            <div class="product-container <?php //echo esc_attr($categoryList) ?>" data-name="<?php echo esc_attr($product->get_name()) ?>" data-price="<?php echo esc_attr($product->get_regular_price()) ?>">
                                 <img src="<?php echo esc_url($image) ?>" alt="" class="product-image">
-                                <div class="title"><?php echo esc_html($product['name']) ?></div>
+                                <div class="title"><?php echo esc_html($product->get_name()) ?></div>
                                 <?php 
 
-                                    if($product['regular_price']):
-                                        $full_price = explode(".", sanitize_text_field($product['regular_price']));
+                                    // if($product['regular_price']):
+                                    //     $full_price = explode(".", sanitize_text_field($product['regular_price']));
 
-                                        $integer_price = str_split($full_price[0]);
+                                    //     $integer_price = str_split($full_price[0]);
 
-                                        $price_array = array_reverse($integer_price);
+                                    //     $price_array = array_reverse($integer_price);
 
                                         
-                                       $price_array = array_map(function ($index, $value){
-                                            // return ($index + 1) % 3;
-                                            if(($index + 1) % 3 == 0) return "  " . $value;
-                                            return $value;
-                                        }, array_keys($price_array) ,$price_array);
+                                    //    $price_array = array_map(function ($index, $value){
+                                    //         // return ($index + 1) % 3;
+                                    //         if(($index + 1) % 3 == 0) return "  " . $value;
+                                    //         return $value;
+                                    //     }, array_keys($price_array) ,$price_array);
                                         
-                                        $integer_price_str = implode("", array_reverse($price_array));
-                                        $final_price = count($full_price) > 1 ? $integer_price_str . "." . $full_price[1] : $integer_price_str;
+                                    //     $integer_price_str = implode("", array_reverse($price_array));
+                                    //     $final_price = count($full_price) > 1 ? $integer_price_str . "." . $full_price[1] : $integer_price_str;
                                         
                                         
                                 ?>
-                                    <div class="price"> <?php echo wp_kses_post($product['price_html'])?></div>
-                                <?php endif;?>
+                                    <div class="price"> <?php echo wp_kses_post($product->get_price_html())?></div>
+                                <?php //endif;?>
                                 
                                 <div class="SKU-categories">
-                                    <div class="SKU"><b>SKU: </b><?php echo esc_html(smt_smart_commerce_pro_displayData($product['sku'])) ?></div>
-                                    <div class="Categories"><b>Categories: </b><?php echo esc_html($categoryList) ?></div>
+                                    <div class="SKU"><b>SKU: </b><?php echo esc_html($product->get_sku()) ?></div>
+                                    <div class="Categories"><b>Categories: </b><?php echo wp_kses_post(wc_get_product_category_list($product->get_id())) ?></div>
                                 </div>
-                                <a href="<?php echo esc_url(get_site_url(null, $edit_page . "?id=" . $product['id'])) ?>" class="edit-product">Edit Product</a>
+                                <a href="<?php echo esc_url(get_site_url(null, $edit_page . "?id=" . $product->get_id())) ?>" class="edit-product">Edit Product</a>
                             </div>
                     <?php }
                     }

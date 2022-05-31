@@ -8,5 +8,11 @@ function smt_smart_commerce_pro_checkCode(){
     return true;
 }
 
+function show($data){
+    echo "<pre>";
+    print_r($data);
+    echo "</pre>";
+}
+
 
 ?>

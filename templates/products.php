@@ -6,7 +6,7 @@
  * 
  */
 
-require "woocommerce-api.php";
+// require "woocommerce-api.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/products.php";
 
@@ -42,18 +42,12 @@ if(isset($_SERVER['HTTP_REFERER'])){
         if(isset($_GET['id'])){
             $page = intval(sanitize_key($_GET['id']));
         }
-        
-        if($validCodes){
-            $productsData = json_decode($smt_smart_commerce_pro_listProducts($page), true);
-            $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
-    
-            $products = $productsData['data'];
-            $categories = $categoriesData['data'];
-            $productsHeaders = $productsData['headers'];
-        }
 
         $wpproducts = get_products();
-        // show(wc_get_product_category_list($wpproducts[1]->get_id()));
+        
+        $categories = array_column(get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]), null, 'term_id');
+        // show($categories['46']->to_array());
+
 
     }
     else {
@@ -123,40 +117,27 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
                             // $images = array_filter($product['attributes'], function($attr){ return $attr['name'] == "external_image"; });
                             // $image = isset($product['images'][0]) ? $product['images'][0]['src'] : $images[0]['options'][0];
                             $image = wp_get_attachment_url($product->get_image_id());
+                            $product_category_ids = $product->get_category_ids();
+                            $product_categories = "";
+
+                            foreach($product_category_ids as $id){
+                                if(isset($categories[$id])) $product_categories .= $categories[strval($id)]->to_array()['name'] . " ";
+                            }
+                            // show($product_categories);
+
                             ?>
                             
                             
                             <div class="product-container <?php //echo esc_attr($categoryList) ?>" data-name="<?php echo esc_attr($product->get_name()) ?>" data-price="<?php echo esc_attr($product->get_regular_price()) ?>">
                                 <img src="<?php echo esc_url($image) ?>" alt="" class="product-image">
                                 <div class="title"><?php echo esc_html($product->get_name()) ?></div>
-                                <?php 
-
-                                    // if($product['regular_price']):
-                                    //     $full_price = explode(".", sanitize_text_field($product['regular_price']));
-
-                                    //     $integer_price = str_split($full_price[0]);
-
-                                    //     $price_array = array_reverse($integer_price);
-
-                                        
-                                    //    $price_array = array_map(function ($index, $value){
-                                    //         // return ($index + 1) % 3;
-                                    //         if(($index + 1) % 3 == 0) return "  " . $value;
-                                    //         return $value;
-                                    //     }, array_keys($price_array) ,$price_array);
-                                        
-                                    //     $integer_price_str = implode("", array_reverse($price_array));
-                                    //     $final_price = count($full_price) > 1 ? $integer_price_str . "." . $full_price[1] : $integer_price_str;
-                                        
-                                        
-                                ?>
-                                    <div class="price"> <?php echo wp_kses_post($product->get_price_html())?></div>
-                                <?php //endif;?>
-                                
-                                <div class="SKU-categories">
-                                    <div class="SKU"><b>SKU: </b><?php echo esc_html($product->get_sku()) ?></div>
-                                    <div class="Categories"><b>Categories: </b><?php echo wp_kses_post(wc_get_product_category_list($product->get_id())) ?></div>
-                                </div>
+                                <div class="price"> <?php echo wp_kses_post($product->get_price_html())?></div>
+                                <div class="SKU">
+                                    <?php if($product->get_sku()): ?>
+                                        <b>SKU: </b><?php echo esc_html($product->get_sku()) ?>
+                                    <?php endif; ?>
+                                </div>                             
+                                <div class="Categories"><b>Categories: </b><?php echo wp_kses_post($product_categories) ?></div>
                                 <a href="<?php echo esc_url(get_site_url(null, $edit_page . "?id=" . $product->get_id())) ?>" class="edit-product">Edit Product</a>
                             </div>
                     <?php }
@@ -164,24 +145,21 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
             
             ?>
         </main>
-        <div id="pagination">
-            <div>Showing page <?php echo esc_html($page) ?> of 
-                <?php echo esc_html($productsHeaders['x-wp-totalpages']) ?>
+        <!-- <div id="pagination">
+            <div>Showing page <?php //echo esc_html($page) ?> of 
+                <?php //echo esc_html($productsHeaders['x-wp-totalpages']) ?>
             </div>
                 <ul id="page-list">
                     <?php 
-                        for($i = 1; $i <= $productsHeaders['x-wp-totalpages']; $i++){?>
+                       // for($i = 1; $i <= $productsHeaders['x-wp-totalpages']; $i++){?>
                             <li class="page">
-                                <a href="<?php echo esc_url($products_page . "?id=" . $i) ?>"><?php echo esc_html($i) ?></a>
+                                <a href="<?php //echo esc_url($products_page . "?id=" . $i) ?>"><?php //echo esc_html($i) ?></a>
                             </li>
                     <?php
-                        }
+                       // }
                     ?>
                 </ul>
-        </div>
-    <?php else: ?>
-        <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
-
+        </div> -->
     <?php endif;?>
     <input type="hidden" value="<?php echo esc_html($color) ?>" id="brand-color">
     <?php wp_footer() ?>

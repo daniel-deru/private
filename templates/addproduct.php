@@ -35,26 +35,24 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
     if($from_products || $from_self || $from_edit_page){
         if($validCode){
-            $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
-            $categories = $categoriesData['data'];
+            // $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
+            // $categories = $categoriesData['data'];
 
-            $unitData = json_decode($smt_smart_commerce_pro_units(), true);            
-
-            $weightUnit;
-            $dimensionsUnit;
-
-            foreach($unitData as $option){
-                if($option['id'] == "woocommerce_weight_unit"){
-                    $weightUnit = $option['value'];
-                }
-                if($option['id'] == "woocommerce_dimension_unit"){
-                    $dimensionsUnit = $option['value'];
-                }
-            }
-
-            $taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
+            //$taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
 
             $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
+
+            // This is the new implementation
+            
+            $categories = array_map(function($category){
+                return $category->to_array();
+            }, get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]));
+
+            $weightUnit = get_option('woocommerce_weight_unit');
+            $dimensionsUnit = get_option('woocommerce_dimension_unit');
+
+            $taxClasses = WC_Tax::get_tax_classes();
+            $taxClassSlugs = WC_Tax::get_tax_class_slugs();
         }
         
 
@@ -368,8 +366,8 @@ else {
                             <option value="" disabled selected>Select Tax Class</option>
                             <?php 
                             
-                                foreach($taxClassData as $taxClass){ ?>
-                                    <option value="<?php echo esc_html($taxClass["slug"])?>"><?php echo esc_html($taxClass['name']) ?></option>
+                                foreach($taxClasses as $i => $taxClass){ ?>
+                                    <option value="<?php echo esc_html($taxClassSlugs[$i])?>"><?php echo esc_html($taxClass) ?></option>
                                <?php }
                             
                             ?>
@@ -431,12 +429,12 @@ else {
 
                 <div>
                     <div id="weight" class="flex-container between">
-                        <label for="weight" class="">Weight</label>
+                        <label for="weight" class="">Weight (<?php echo esc_html($weightUnit) ?>)</label>
                         <input type="text" name="weight" value="<?php if(isset($_POST['weight'])) echo esc_html($_POST['weight']) ?>">
                     </div>
 
                     <div id="dimensions" class="flex-container">
-                        <label for="">Dimensions</label>
+                        <label for="">Dimensions (<?php echo esc_html($dimensionsUnit) ?>)</label>
                         <input type="text" name="length" placeholder="Length" value="<?php if(isset($_POST['length'])) echo esc_html($_POST['length']) ?>">
                         <input type="text" name="width" placeholder="Width" value="<?php if(isset($_POST['width'])) echo esc_html($_POST['width']) ?>">
                         <input type="text" name="height" placeholder="Height" value="<?php if(isset($_POST['height'])) echo esc_html($_POST['height']) ?>">
@@ -484,7 +482,9 @@ else {
                         <?php
                             foreach($categories as $category){
                                 if($category['parent'] == 0){?>
-                                <option value="<?php echo esc_html($category['id']) ?>" id="<?php echo $category['id']?>"><?php echo esc_html($category['name']) ?></option>
+                                <option value="<?php echo esc_html($category['id']) ?>" id="<?php echo $category['id']?>">
+                                    <?php echo esc_html($category['name']) ?>
+                                </option>
                         <?php }}
                         
                         ?>

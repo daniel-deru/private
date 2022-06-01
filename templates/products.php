@@ -5,8 +5,6 @@
  *  Template Post Type: page
  * 
  */
-
-// require "woocommerce-api.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/products.php";
 

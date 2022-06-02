@@ -27,18 +27,18 @@ function create_product($data){
     if($data['type']){
         switch($data['type']){
             case 'grouped':
-                $product = new WP_Product_Grouped();
+                $product = new WC_Product_Grouped();
                 break;
             case 'external':
-                $product = new WP_Product_External();
+                $product = new WC_Product_External();
                 break;
             case 'variable':
-                $product = new WP_Product_Variable();
+                $product = new WC_Product_Variable();
                 break;
             default:
-                $product = new WP_Product();
+                $product = new WC_Product();
         }
-    } else $product = new WP_Product();
+    } else $product = new WC_Product();
 
     // Set the name
     if(isset($data['name'])) $product->set_name($data['name']);
@@ -72,6 +72,9 @@ function create_product($data){
     // Set the sale price
     if(isset($data['sale_price'])) $product->set_sale_price($data['sale_price']);
 
+    // Set the tax class
+    if(isset($data['tax_class'])) $product->set_tax_class($data['tax_class']);
+
     // Set the sku
     if(isset($data['sku'])) $product->set_sku($data['sku']);
 
@@ -103,6 +106,9 @@ function create_product($data){
 
     // Set the short description
     if(isset($data['short_description'])) $product->set_short_description($data['short_description']);
+
+    // Set the product categories
+    if(isset($data['categories'])) $product->set_category_ids($data['categories']);
 
     // Save the product to get the product id
     $product_id = $product->save();

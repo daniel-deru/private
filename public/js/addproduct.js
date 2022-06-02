@@ -68,12 +68,12 @@ function displayCategories(){
 
         let categoryCheckbox = document.createElement('input')
         categoryCheckbox.type = "checkbox"
-        categoryCheckbox.id = sortedCategories[i].id
+        categoryCheckbox.id = sortedCategories[i].term_id
         categoryCheckbox.classList.add("category-checkbox")
         categoryCheckbox.classList.add("checkbox")
         categoryCheckbox.dataset.parent = 0
         categoryCheckbox.dataset.name = sortedCategories[i].name
-        categoryCheckbox.dataset.id = sortedCategories[i].id
+        categoryCheckbox.dataset.id = sortedCategories[i].term_id
 
         checkboxContainer.appendChild(categoryCheckbox)
 
@@ -105,13 +105,13 @@ function displayCategories(){
                 subcategoryCheckbox.classList.add("checkbox")
                 subcategoryCheckbox.dataset.parent = subcategories[j].parent
                 subcategoryCheckbox.dataset.name = subcategories[j].name
-                subcategoryCheckbox.dataset.id = subcategories[j].id
+                subcategoryCheckbox.dataset.id = subcategories[j].term_id
 
                 subCheckboxContainer.appendChild(subcategoryCheckbox)
 
                 let subcategoryLabel = document.createElement("label")
                 subcategoryLabel.innerText = subcategories[j].name
-                subcategoryLabel.id = subcategories[j].id
+                subcategoryLabel.id = subcategories[j].term_id
                 subcategoryLabel.classList.add("checkbox-label")
                 subcategoryLabel.classList.add("inline")
 
@@ -134,11 +134,12 @@ function parseCategories(){
 // Sort the categories according to parent and child relationships. subcategories cannot have children
 function sortCategories(categories){
     categoriesList = []
+   
     for(let i = 0; i < categories.length; i++){
         if(categories[i].parent == 0){
             let parent = {
                 name: categories[i].name,
-                id: categories[i].id,
+                term_id: categories[i].term_id,
                 children: [],
                 parent: categories[i].parent
             }
@@ -147,13 +148,13 @@ function sortCategories(categories){
             i--
         }
     }
-
+  
     for(let i = 0; i < categories.length; i++){
         categoriesList.filter((category, index) => {
-            if( categories[i].parent && category.id == categories[i].parent){
+            if( categories[i].parent && category.term_id == categories[i].parent){
                 let child = {
                     name: categories[i].name,
-                    id: categories[i].id,
+                    term_id: categories[i].term_id,
                     children: [],
                     parent: categories[i].parent
                 }
@@ -175,10 +176,6 @@ function showImage(event){
 }
 
 function saveClicked(event){
-    // event.preventDefault()
-    // const errors = document.getElementById("errors")
-
-    // errors.innerHTML = ""
 
     let categories = document.querySelectorAll(".checkbox")
     let categoryList = []

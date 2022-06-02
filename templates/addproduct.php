@@ -8,6 +8,7 @@
 // Get the woocommerce api functions
 require "woocommerce-api.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
+require dirname(plugin_dir_path(__FILE__)) . "/includes/products.php";
 
 // get the correct protocol
 if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
@@ -41,6 +42,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
                 return $category->to_array();
             }, get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]));
 
+            // show($categories);
+
             // Get the weight and dimensions unit
             $weightUnit = get_option('woocommerce_weight_unit');
             $dimensionsUnit = get_option('woocommerce_dimension_unit');
@@ -52,8 +55,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
             // Get the shipping classes
             $shippingClasses = get_terms(array('taxonomy' => 'product_shipping_class', 'hide_empty' => false ));
             if(count($shippingClasses) > 0) $shippingClasses = array_map(function($cls){ return $cls->to_array(); }, $shippingClasses);
-            echo "This is the shipping class";
-            show($shippingClasses);
+
             
         }
         
@@ -118,11 +120,7 @@ else {
             if(preg_match($priceRegex, $sale_price)) $data['sale_price'] = $sale_price;
         } 
 
-        if(isset($_POST['tax-class']) && $_POST['tax-class']){
-            $taxClass = sanitize_text_field($_POST['tax-class']);
-            $correctClass = array_filter($taxClassData, function($class) use ($taxClass){ return $class['slug'] == $taxClass;});
-            if(count($correctClass) == 1) $data['tax_class'] = $taxClass;
-        } 
+        if(isset($_POST['tax-class']) && $_POST['tax-class']) $data['tax_class'] = $_POST['tax-class'];
 
         if(isset($_POST['product-type'])){
             $product_type = sanitize_text_field($_POST['product-type']);
@@ -230,10 +228,11 @@ else {
 
 
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
-            $productCategories = explode("%", sanitize_text_field($_POST['product-categories']));
-            if($newCategory){
-                array_push($productCategories, $newCategory['id']);
-            }
+            $productCategories = explode("%", wp_kses_post($_POST['product-categories']));
+            // if($newCategory){
+            //     array_push($productCategories, $newCategory['id']);
+            // }
+
             $productCategories = array_map(function($c){
                 return array('id' => sanitize_key($c));
             }, $productCategories);
@@ -247,7 +246,8 @@ else {
             }, $productTags);
             $data['tags'] = $productTags;
         }
-        show($data);
+
+        create_product($data);
         // Change this 
     //    if($validCode) {
 
@@ -255,7 +255,7 @@ else {
     //         if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
     //    }
 
-    //    if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
+       if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
 
     }
 
@@ -279,7 +279,7 @@ else {
                 <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
         <?php endif;?>
-        <a href="<?php echo esc_url(get_site_url($products_page . "?id=1")) ?>">Go back to products</a>
+        <a href="<?php echo esc_url(get_site_url(null, $products_page . "?id=1")) ?>">Go back to products</a>
     </header>
     <?php if($validCode): ?>
         <?php if($error):?>
@@ -488,7 +488,7 @@ else {
                         <?php
                             foreach($categories as $category){
                                 if($category['parent'] == 0){?>
-                                <option value="<?php echo esc_html($category['id']) ?>" id="<?php echo $category['id']?>">
+                                <option value="<?php echo esc_html($category['term_id']) ?>" id="<?php echo $category['term_id']?>">
                                     <?php echo esc_html($category['name']) ?>
                                 </option>
                         <?php }}

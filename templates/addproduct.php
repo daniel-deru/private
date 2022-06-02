@@ -35,24 +35,26 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
     if($from_products || $from_self || $from_edit_page){
         if($validCode){
-            // $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
-            // $categories = $categoriesData['data'];
-
-            //$taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
-
-            $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
-
-            // This is the new implementation
             
+            // Get all the categories
             $categories = array_map(function($category){
                 return $category->to_array();
             }, get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]));
 
+            // Get the weight and dimensions unit
             $weightUnit = get_option('woocommerce_weight_unit');
             $dimensionsUnit = get_option('woocommerce_dimension_unit');
 
+            // Get the tax class and the tax class slugs
             $taxClasses = WC_Tax::get_tax_classes();
             $taxClassSlugs = WC_Tax::get_tax_class_slugs();
+
+            // Get the shipping classes
+            $shippingClasses = get_terms(array('taxonomy' => 'product_shipping_class', 'hide_empty' => false ));
+            if(count($shippingClasses) > 0) $shippingClasses = array_map(function($cls){ return $cls->to_array(); }, $shippingClasses);
+            echo "This is the shipping class";
+            show($shippingClasses);
+            
         }
         
 
@@ -76,6 +78,7 @@ else {
     if(isset($_POST['save'])){
         $error = "";
 
+        // If a new category needs to be created
         if(isset($_POST['category']) && $_POST['category']){
 
             // This array is for when a new category gets created
@@ -89,10 +92,11 @@ else {
                 $categoryArray['parent'] = sanitize_title($_POST['parent-category']);
             } 
 
-            if($validCode) {
-                $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categoryArray), true);
-                if($newCategory['error']) $error = $newCategory['message'];
-            };
+            // Change this
+            // if($validCode) {
+            //     $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categoryArray), true);
+            //     if($newCategory['error']) $error = $newCategory['message'];
+            // };
         }
         
         
@@ -114,7 +118,7 @@ else {
             if(preg_match($priceRegex, $sale_price)) $data['sale_price'] = $sale_price;
         } 
 
-        if(isset($_POST['tax-class'])){
+        if(isset($_POST['tax-class']) && $_POST['tax-class']){
             $taxClass = sanitize_text_field($_POST['tax-class']);
             $correctClass = array_filter($taxClassData, function($class) use ($taxClass){ return $class['slug'] == $taxClass;});
             if(count($correctClass) == 1) $data['tax_class'] = $taxClass;
@@ -201,7 +205,8 @@ else {
             $shipping_class = sanitize_key($_POST['shipping-class']);
 
             foreach($shippingClasses as $class){
-                if($class['slug'] == $shipping_class) $data['shipping_class'] = $shipping_class;
+                // Set the shipping class id
+                if($class['slug'] == $shipping_class) $data['shipping_class'] = $class['term_id'];
             }
         } 
 
@@ -242,14 +247,15 @@ else {
             }, $productTags);
             $data['tags'] = $productTags;
         }
+        show($data);
+        // Change this 
+    //    if($validCode) {
 
-       if($validCode) {
+    //         $saveProduct = json_decode($smt_smart_commerce_pro_addProduct($data), true);
+    //         if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
+    //    }
 
-            $saveProduct = json_decode($smt_smart_commerce_pro_addProduct($data), true);
-            if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
-       }
-
-       if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
+    //    if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
 
     }
 

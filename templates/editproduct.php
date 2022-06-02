@@ -32,52 +32,95 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
     if($from_products || $from_self){
         if($validCodes){
-            $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
-            $categories = $categoriesData['data'];
+            // DEPRECATED
+            // $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
+            // $categories = $categoriesData['data'];
+
+
+            // Get the product id from the url
             $id = $_GET['id'];
 
-            if(isset($_GET['id'])) $product = json_decode($smt_smart_commerce_pro_getProduct($_GET['id']), true);
+            // This is the new categories
+            // Get all the categories
+            $categories = array_map(function($category){
+                return $category->to_array();
+            }, get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]));
 
-            $productImages = json_encode(array_map(function($item){
-                return array('src' => $item["src"], "id" => $item['id']);
-            }, $product['images']));
+            // DEPRECATED
+            // if(isset($_GET['id'])) $product = json_decode($smt_smart_commerce_pro_getProduct($_GET['id']), true);
 
-            $taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
+            // This is the new product
+            // Get a WC_Product instance of the product using the product id
+            if(isset($_GET['id'])) $product = new WC_Product($_GET['id']);
 
-            $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
+            // Get the product category ids
+            $product_category_ids = $product->get_category_ids();
+            
+            // Create an array for the product categories
+            $product_categories = [];
 
+            // Loop over all the categories and get the category info for that category and add it to the product category array
+            foreach($categories as $category){
+                if(in_array($category['term_id'], $product_category_ids)) array_push($product_categories, $category);
+            }
+            
+            // Create images array
+            $product_images = [];
+            // Get the product image id
+            $product_image_id = $product->get_image_id();
 
-            $unitData = json_decode($smt_smart_commerce_pro_units(), true);
-
-            $weightUnit;
-            $dimensionsUnit;
-
-            foreach($unitData as $option){
-                if($option['id'] == "woocommerce_weight_unit"){
-                    $weightUnit = $option['value'];
-                }
-                if($option['id'] == "woocommerce_dimension_unit"){
-                    $dimensionsUnit = $option['value'];
-                }
+            // If there is a product image id get the product image url and add it to the product images array
+            if($product_image_id){
+                $product_image_url = wp_get_attachment_image_url($product_image_id);
+                array_push($product_images, array('id' => $product_image_id, 'src' => $product_image_url));
             }
 
-            $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
+            // Get an array of the product gallery image ids
+            $product_gallery_image_ids = $product->get_gallery_image_ids();
+
+            // Loop over the gallery image id array and get the image urls and add them to the product images array
+            foreach($product_gallery_image_ids as $gallery_id){
+                $product_gallery_image_url = wp_get_attachment_image_url($gallery_id);
+                array_push($product_images, array('id' => $gallery_id, 'src' => $product_gallery_image_url));
+            }
+
+            $product_images = json_encode($product_images);
+
+            // $taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
+
+            // This is the new tax class data
+            // Get the tax class and the tax class slugs
+            $taxClasses = WC_Tax::get_tax_classes();
+            $taxClassSlugs = WC_Tax::get_tax_class_slugs();
+
+            // DEPRECATED
+            // $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
+
+            // This is the new shippingClasses
+            // Get the shipping classes
+            $shippingClasses = get_terms(array('taxonomy' => 'product_shipping_class', 'hide_empty' => false ));
+            if(count($shippingClasses) > 0) $shippingClasses = array_map(function($cls){ return $cls->to_array(); }, $shippingClasses);
+
+
+             // Get the weight and dimensions unit
+             $weightUnit = get_option('woocommerce_weight_unit');
+             $dimensionsUnit = get_option('woocommerce_dimension_unit');
 
             //  Make an array to send to javascript to handle the display of the categories
             $javascriptProductData = array(
-                'downloadable' => $product['downloadable'],
-                'virtual' => $product['virtual'],
-                'draft' => $product["status"] == "draft" ? true : false,
-                'categories' => $product['categories'],
-                'manage_stock' => $product['manage_stock'],
-                'product_images' => $productImages,
-                'product_type' => $product['type'],
-                'tax_class' => $product["tax_class"],
-                'stock_status' => $product['stock_status'],
+                'downloadable' => $product->get_downloadable(),
+                'virtual' => $product->get_virtual(),
+                'draft' => $product->get_status() == "draft" ? true : false,
+                'categories' => $product_categories,
+                'manage_stock' => $product->get_manage_stock(),
+                'product_images' => $product_images,
+                'product_type' => $product->get_type(),
+                'tax_class' => $product->get_tax_class(),
+                'stock_status' => $product->get_stock_status(),
             );
 
             // Check if the product has a shipping class before sending it to javascript
-            $product['shipping_class'] && $javascriptProductData['shipping_class'] = $product['shipping_class'];
+            $product->get_shipping_class() && $javascriptProductData['shipping_class'] = $product->get_shipping_class();
         }
 
     }
@@ -313,7 +356,7 @@ else {
                 <!-- This is the name field input -->
                 <div>
                     <label for="product-name" class="label-block">Product Name</label>
-                    <input type="text" name="product-name" id="name" value="<?php echo esc_html($product['name'])?>">
+                    <input type="text" name="product-name" id="name" value="<?php echo esc_html($product->get_name()) ?>">
                 </div>
             </div>
 
@@ -331,7 +374,7 @@ else {
             
             <div id="product-description">
                 <label for="product-description" class="label-block">Long Description</label>
-                <?php wp_editor($product['description'], "wp-commerce-product-description")?>
+                <?php wp_editor($product->get_description(), "wp-commerce-product-description")?>
             </div>
 
             <div id="product-settings">
@@ -376,23 +419,21 @@ else {
                 <div class="flex-container">
                     <div class="flex-container-vertical">
                         <label for="product-regular-price" class="">Regular Price</label>
-                        <input type="text" name="product-regular-price" id="regular-price" value="<?php echo esc_html($product['regular_price']) ?>">
+                        <input type="text" name="product-regular-price" id="regular-price" value="<?php echo esc_html($product->get_regular_price()) ?>">
                     </div>
 
                     <div class="flex-container-vertical">
                         <label for="product-sale-price" class="">Sale Price</label>
-                        <input type="text" name="product-sale-price" id="sale-price" value="<?php echo esc_html($product['sale_price']) ?>">
+                        <input type="text" name="product-sale-price" id="sale-price" value="<?php echo esc_html($product->get_sale_price()) ?>">
                     </div>
 
                     <div class="flex-container-vertical">
                         <label for="tax-class">Tax Class</label>
                         <select name="tax-class" id="tax-class">
                             <option value="" disabled selected>Select Tax Class</option>
-                            <?php 
-                            
-                                foreach($taxClassData as $taxClass){ ?>
-                                    <option value="<?php echo esc_html($taxClass["slug"]) ?>"><?php echo esc_html($taxClass['name']) ?></option>
-                               <?php }
+                            <?php for($i = 0; $i < count($taxClasses); $i++): ?>
+                                <option value="<?php echo esc_html($taxClassSlugs[$i]) ?>"><?php echo esc_html($taxClasses[$i]) ?></option>
+                            <?php endfor; ?>
                             
                             ?>
                         </select>
@@ -412,7 +453,7 @@ else {
                 <div class="inventory-container">
                     <div id="sku" class="flex-container">
                         <label for="product-sku">SKU </label>
-                        <input type="text" name="product-sku" id="sku-input" value="<?php echo esc_html($product['sku']) ?>">
+                        <input type="text" name="product-sku" id="sku-input" value="<?php echo esc_html($product->get_sku()) ?>">
                     </div>
 
                     <div id="stock" class="flex-container">
@@ -425,7 +466,7 @@ else {
 
                     <div id="stock-quantity" class="flex-container">
                         <label for="stock-quantity">Stock Quantity </label>
-                        <input type="number" name="stock-quantity" value="<?php echo esc_html($product['stock_quantity']) ?>">
+                        <input type="number" name="stock-quantity" value="<?php echo esc_html($product->get_stock_quantity()) ?>">
                     </div>
 
                     <div id="stock-status-container" class="flex-container">
@@ -451,14 +492,14 @@ else {
                 <div>
                     <div id="weight" class="flex-container between">
                         <label for="weight" class="">Weight (<?php echo esc_html($dimensionsUnit) ?>)</label>
-                        <input type="text" name="weight" value="<?php echo esc_html($product['weight']) ?>">
+                        <input type="text" name="weight" value="<?php echo esc_html($product->get_weight()) ?>">
                     </div>
 
                     <div id="dimensions" class="flex-container">
                         <label for="">Dimensions (<?php echo esc_html($dimensionsUnit) ?>)</label>
-                        <input type="text" name="length" placeholder="Length" value="<?php echo esc_html($product["dimensions"]["length"]) ?>">
-                        <input type="text" name="width" placeholder="Width"  value="<?php echo esc_html($product["dimensions"]["width"]) ?>">
-                        <input type="text" name="height" placeholder="Height"  value="<?php echo esc_html($product["dimensions"]["height"]) ?>">
+                        <input type="text" name="length" placeholder="Length" value="<?php echo esc_html($product->get_length()) ?>">
+                        <input type="text" name="width" placeholder="Width"  value="<?php echo esc_html($product->get_width()) ?>">
+                        <input type="text" name="height" placeholder="Height"  value="<?php echo esc_html($product->get_height()) ?>">
                     </div>
 
                     <?php if(count($shippingClasses) > 0):?>
@@ -479,7 +520,7 @@ else {
 
             <div id="product-short-description">
                 <label for="product-short-description" class="label-block">Short Description</label>
-                <?php wp_editor($product['short_description'], "wp-commerce-product-short-description")?>
+                <?php wp_editor($product->get_short_description(), "wp-commerce-product-short-description")?>
             </div>
 
             
@@ -502,7 +543,7 @@ else {
                         <?php
                             foreach($categories as $category){
                                 if($category['parent'] == 0){?>
-                                <option value="<?php echo esc_html($category['id']) ?>" id="<?php echo esc_attr($category['id']) ?>"><?php echo esc_html($category['name']) ?></option>
+                                <option value="<?php echo esc_html($category['term_id']) ?>" id="<?php echo esc_attr($category['term_id']) ?>"><?php echo esc_html($category['name']) ?></option>
                         <?php }}
                         
                         ?>
@@ -526,6 +567,7 @@ else {
 
                     <div id="tags-container">
                         <?php
+                            // Check the tags
                             $tags = $product['tags'];
                             foreach($tags as $tag){
                                 ?>

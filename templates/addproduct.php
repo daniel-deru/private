@@ -6,7 +6,6 @@
 
 
 // Get the woocommerce api functions
-require "woocommerce-api.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
 require dirname(plugin_dir_path(__FILE__)) . "/includes/products.php";
 
@@ -84,21 +83,19 @@ else {
         if(isset($_POST['category']) && $_POST['category']){
 
             // This array is for when a new category gets created
-            $categoryArray = array('name' => sanitize_title($_POST['category']));
-
-            // This adds the new category to the list of product categories
-            $data['name'] = sanitize_title($_POST['category']);
+            $category = sanitize_title($_POST['category']);
 
             // Check if a parent category was specified
+            $categoryParent = 0;
             if(isset($_POST['parent-category']) && $_POST['parent-category']){
-                $categoryArray['parent'] = sanitize_title($_POST['parent-category']);
-            } 
+                $categoryParent = sanitize_title($_POST['parent-category']);
+            }
 
-            // Change this
-            // if($validCode) {
-            //     $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categoryArray), true);
-            //     if($newCategory['error']) $error = $newCategory['message'];
-            // };
+            // Add the category to wordpress
+            $new_category_id = wp_insert_term($category, 'product_cat', array(
+                'parent' => $categoryParent,
+                'slug' => $category
+            ));
         }
         
         
@@ -229,9 +226,10 @@ else {
 
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
             $productCategories = explode("%", wp_kses_post($_POST['product-categories']));
-            // if($newCategory){
-            //     array_push($productCategories, $newCategory['id']);
-            // }
+            // If their is a new category add it to the array
+            if($new_category_id){
+                array_push($productCategories, $new_category_id);
+            }
 
             $productCategories = array_map(function($c){
                 return array('id' => sanitize_key($c));
@@ -248,12 +246,6 @@ else {
         }
 
         create_product($data);
-        // Change this 
-    //    if($validCode) {
-
-    //         $saveProduct = json_decode($smt_smart_commerce_pro_addProduct($data), true);
-    //         if(isset($saveProduct['error'])) $error = $saveProduct['message'];  
-    //    }
 
        if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
 

@@ -212,13 +212,13 @@ else {
             $imageArray = explode(";", sanitize_text_field($_POST['image-urls']));
             $featuredImage = sanitize_key($_POST['featured']);
 
-            if($featuredImage !== $imageArray[0]){
+            if($featuredImage != $imageArray[0]){
                 $featuredIndex = array_search($featuredImage, $imageArray);
                 array_splice($imageArray, $featuredIndex, 1);
                 array_unshift($imageArray, $featuredImage);
             };
-
-            $imageArray = array_map(function($item){return array('id' => sanitize_key($item));}, $imageArray);
+            show($imageArray);
+            // $imageArray = array_map(function($item){return array('id' => sanitize_key($item));}, $imageArray);
             $data['images'] = $imageArray;
 
         }
@@ -247,7 +247,7 @@ else {
 
         create_product($data);
 
-       if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
+    //    if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
 
     }
 

@@ -8,6 +8,7 @@
 // Get the woocommerce api functions
 require "woocommerce-api.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
+require dirname(plugin_dir_path(__FILE__)) . "/includes/products.php";
 // get the correct protocol
 
 // Everything in this php tag happens when the page is loaded
@@ -257,17 +258,15 @@ else {
 
          // Handle the image uploads
          if($_POST['image-urls']){
-            
             $imageArray = explode(";", sanitize_text_field($_POST['image-urls']));
             $featuredImage = sanitize_key($_POST['featured']);
-
             if($featuredImage !== $imageArray[0]){
                 $featuredIndex = array_search($featuredImage, $imageArray);
                 array_splice($imageArray, $featuredIndex, 1);
                 array_unshift($imageArray, $featuredImage);
             };
 
-            $imageArray = array_map(function($item){return array('id' => sanitize_key($item));}, $imageArray);
+            // $imageArray = array_map(function($item){return array('id' => sanitize_key($item));}, $imageArray);
             $data['images'] = $imageArray;
 
         }
@@ -276,7 +275,7 @@ else {
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
             $productCategories = explode("%", wp_kses_post($_POST['product-categories']));
 
-            if($new_category_id){
+            if(isset($new_category_id)){
                 array_push($productCategories, $new_category_id);
             }
 
@@ -298,15 +297,9 @@ else {
             $data['tags'] = array();
         } 
 
-        show($data);
-        
-    //    if($validCodes) {
-    //        $saveProduct = json_decode($smt_smart_commerce_pro_updateProduct($id, $data), true);
-    //        if($saveProduct['error']) $error = $saveProduct['message'];
-    //     };
+        update_product($data, $product->get_id());
 
-
-        // if(!$error) header("Location: " . get_site_url(null, $products_page . "?id=1"));
+        if(!$error) header("Location: " . get_site_url(null, $products_page . "?id=1"));
     }
 
     $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";

@@ -24,7 +24,7 @@ function get_products(){
 
 function create_product($data){
     // Set the product type initially
-    if($data['type']){
+    if(isset($data['type'])){
         switch($data['type']){
             case 'grouped':
                 $product = new WC_Product_Grouped();
@@ -45,8 +45,9 @@ function create_product($data){
 
     // Set the product images and gallery images
     if(isset($data['images']) && count($data['images']) > 0) {
+        show($data['images']);
         $product->set_image_id($data['images'][0]);
-        $product->set_gallery_image_ids($data['images']);
+        if(count($data['images']) > 1) $product->set_gallery_image_ids($data['images']);
     }
 
     // Set the long description
@@ -151,7 +152,7 @@ function update_product($data, $product_id){
         // Set the product images and gallery images
         if(isset($data['images']) && count($data['images']) > 0) {
             $product->set_image_id($data['images'][0]);
-            $product->set_gallery_image_ids($data['images']);
+            if(count($data['images']) > 1) $product->set_gallery_image_ids($data['images']);
         }
     
         // Set the long description

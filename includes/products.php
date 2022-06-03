@@ -45,7 +45,6 @@ function create_product($data){
 
     // Set the product images and gallery images
     if(isset($data['images']) && count($data['images']) > 0) {
-        show($data['images']);
         $product->set_image_id($data['images'][0]);
         if(count($data['images']) > 1) $product->set_gallery_image_ids($data['images']);
     }
@@ -109,7 +108,10 @@ function create_product($data){
     if(isset($data['short_description'])) $product->set_short_description($data['short_description']);
 
     // Set the product categories
-    if(isset($data['categories'])) $product->set_category_ids($data['categories']);
+    if(isset($data['categories'])){
+        $category_ids = array_map(function($id){ return intval($id['id']); }, $data['categories']);
+        $product->set_category_ids($category_ids);
+    } 
 
     // Set the product as a draft
     if(isset($data['status']) && $data['status'] == 'draft') $product->set_status('draft');
@@ -214,7 +216,10 @@ function update_product($data, $product_id){
         if(isset($data['short_description'])) $product->set_short_description($data['short_description']);
     
         // Set the product categories
-        if(isset($data['categories'])) $product->set_category_ids($data['categories']);
+        if(isset($data['categories'])){
+            $category_ids = array_map(function($id){ return intval($id['id']); }, $data['categories']);
+            $product->set_category_ids($category_ids);
+        } 
         
         // Set the product as a draft
         if(isset($data['status']) && $data['status'] == 'draft') $product->set_status('draft');

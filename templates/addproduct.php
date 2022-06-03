@@ -217,8 +217,7 @@ else {
                 array_splice($imageArray, $featuredIndex, 1);
                 array_unshift($imageArray, $featuredImage);
             };
-            show($imageArray);
-            // $imageArray = array_map(function($item){return array('id' => sanitize_key($item));}, $imageArray);
+
             $data['images'] = $imageArray;
 
         }
@@ -227,7 +226,7 @@ else {
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
             $productCategories = explode("%", wp_kses_post($_POST['product-categories']));
             // If their is a new category add it to the array
-            if($new_category_id){
+            if(isset($new_category_id)){
                 array_push($productCategories, $new_category_id);
             }
 
@@ -247,7 +246,7 @@ else {
 
         create_product($data);
 
-    //    if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
+       if(!$error)  header("Location: " . get_site_url(null, $products_page . "?id=1"));
 
     }
 
@@ -273,7 +272,6 @@ else {
         <?php endif;?>
         <a href="<?php echo esc_url(get_site_url(null, $products_page . "?id=1")) ?>">Go back to products</a>
     </header>
-    <?php if($validCode): ?>
         <?php if($error):?>
             <div id="errors"><?php echo esc_html($error) ?></div>
         <?php endif;?>
@@ -526,9 +524,6 @@ else {
             <?php // This will pass the data to javascript to handle the displaying of the categories?>
             <input type="hidden" id="php-categories-data" value='<?php echo esc_html(json_encode($categories)) ?>'>
         </form>
-    <?php else: ?>
-        <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
-    <?php endif; ?>
     <input type="hidden" value="<?php echo esc_html($color) ?>" id="brand-color">
 </body>
 <?php wp_footer(); ?>

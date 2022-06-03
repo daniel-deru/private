@@ -280,11 +280,14 @@ else {
             }
 
             $productCategories = array_map(function($c){
-                return array('id' => sanitize_key($c));
+                return array('id' => $c);
             }, $productCategories);
+
             $data['categories'] = $productCategories;
+
         } else if(!$_POST['product-categories']) {
             $data['categories'] = array();
+
         }
 
         if(isset($_POST['product-tags']) && $_POST['product-tags']){
@@ -325,7 +328,6 @@ else {
         <a href="<?php echo esc_url(get_site_url(null, $add_page)) ?>">Add New Product</a>
         <a href="<?php echo esc_url(get_site_url(null, $products_page . "?id=1")) ?>">Go back to products</a>
     </header>
-    <?php if($validCodes): ?>
 
         <?php if($error): ?>
             <div id="errors"><?php echo esc_html($error) ?></div>
@@ -572,9 +574,6 @@ else {
             <input type="hidden" id="php-categories-data" value='<?php echo esc_html(json_encode($categories)) ?>'>
             <input type="hidden" id="product-data" value='<?php echo esc_html(json_encode($javascriptProductData)) ?>'>
         </form>
-    <?php else:?>
-        <h1>Please enter the required codes in the WP Smart Commerce plugin.</h1>
-    <?php endif;?>
     <div id="errors"></div>
     <input type="hidden" value="<?php echo esc_html($color) ?>" id="brand-color">
     <?php wp_footer(); ?>

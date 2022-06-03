@@ -309,7 +309,7 @@ function sortCategories(categories){
         if(categories[i].parent == 0){
             let parent = {
                 name: categories[i].name,
-                id: categories[i].id,
+                term_id: categories[i].term_id,
                 children: [],
                 parent: categories[i].parent
             }
@@ -321,10 +321,10 @@ function sortCategories(categories){
 
     for(let i = 0; i < categories.length; i++){
         categoriesList.filter((category, index) => {
-            if( categories[i].parent && category.id == categories[i].parent){
+            if( categories[i].parent && category.term_id == categories[i].parent){
                 let child = {
                     name: categories[i].name,
-                    id: categories[i].id,
+                    term_id: categories[i].term_id,
                     children: [],
                     parent: categories[i].parent
                 }
@@ -333,7 +333,6 @@ function sortCategories(categories){
         })
 
     }
-
     return categoriesList
     
 }

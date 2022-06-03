@@ -32,24 +32,15 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
     if($from_products || $from_self){
         if($validCodes){
-            // DEPRECATED
-            // $categoriesData = json_decode($smt_smart_commerce_pro_listCategories(), true);
-            // $categories = $categoriesData['data'];
-
 
             // Get the product id from the url
             $id = $_GET['id'];
 
-            // This is the new categories
             // Get all the categories
             $categories = array_map(function($category){
                 return $category->to_array();
             }, get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]));
 
-            // DEPRECATED
-            // if(isset($_GET['id'])) $product = json_decode($smt_smart_commerce_pro_getProduct($_GET['id']), true);
-
-            // This is the new product
             // Get a WC_Product instance of the product using the product id
             if(isset($_GET['id'])) $product = new WC_Product($_GET['id']);
 
@@ -86,17 +77,10 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
             $product_images = json_encode($product_images);
 
-            // $taxClassData = json_decode($smt_smart_commerce_pro_getTaxClasses(), true);
-
-            // This is the new tax class data
             // Get the tax class and the tax class slugs
             $taxClasses = WC_Tax::get_tax_classes();
             $taxClassSlugs = WC_Tax::get_tax_class_slugs();
 
-            // DEPRECATED
-            // $shippingClasses = json_decode($smt_smart_commerce_pro_getShippingClasses(), true);
-
-            // This is the new shippingClasses
             // Get the shipping classes
             $shippingClasses = get_terms(array('taxonomy' => 'product_shipping_class', 'hide_empty' => false ));
             if(count($shippingClasses) > 0) $shippingClasses = array_map(function($cls){ return $cls->to_array(); }, $shippingClasses);
@@ -155,15 +139,16 @@ else {
                 $categoryArray['parent'] = sanitize_title($_POST['parent-category']);
             }
 
-           if($validCodes) {
-               $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categoryArray), true);
-               if($newCategory["error"]) $error = $newCategory["message"];
-            };
+        //    if($validCodes) {
+        //        $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categoryArray), true);
+        //        if($newCategory["error"]) $error = $newCategory["message"];
+        //     };
         }
 
 
         $data = [];
         $data['name'] = sanitize_text_field($_POST['product-name']);
+        $priceRegex = "/[0-9]{1,5}(\.[0-9]{1,5})?/";
 
         if(isset($_POST['product-regular-price'])){
             $regular_price = sanitize_text_field($_POST['product-regular-price']);
@@ -177,7 +162,7 @@ else {
 
         if(isset($_POST['tax-class'])){
             $taxClass = sanitize_text_field($_POST['tax-class']);
-            $correctClass = array_filter($taxClassData, function($class) use ($taxClass){ return $class['slug'] == $taxClass;});
+            $correctClass = array_filter($taxClassSlugs, function($class) use ($taxClass){ return $class == $taxClass;});
             if(count($correctClass) == 1) $data['tax_class'] = $taxClass;
         }
 
@@ -310,15 +295,17 @@ else {
             $data['tags'] = $productTags;
         } else if(!$_POST['product-tags']){
             $data['tags'] = array();
-        }   
+        } 
+
+        show($data);
         
-       if($validCodes) {
-           $saveProduct = json_decode($smt_smart_commerce_pro_updateProduct($id, $data), true);
-           if($saveProduct['error']) $error = $saveProduct['message'];
-        };
+    //    if($validCodes) {
+    //        $saveProduct = json_decode($smt_smart_commerce_pro_updateProduct($id, $data), true);
+    //        if($saveProduct['error']) $error = $saveProduct['message'];
+    //     };
 
 
-        if(!$error) header("Location: " . get_site_url(null, $products_page . "?id=1"));
+        // if(!$error) header("Location: " . get_site_url(null, $products_page . "?id=1"));
     }
 
     $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
@@ -566,15 +553,10 @@ else {
                     </div>
 
                     <div id="tags-container">
-                        <?php
-                            // Check the tags
-                            $tags = $product['tags'];
-                            foreach($tags as $tag){
-                                ?>
-                                <div><?php echo esc_html($tag['name']) ?></div>
-                            <?php }
-                        
-                        ?>
+                        <?php  $tags = $product->get_tag_ids(); ?>
+                        <?php foreach($tags as $tag): ?>
+                            <div><?php echo esc_html(get_term($tag)->name); ?></div>                           
+                        <?php endforeach; ?>
                     </div>
                 </div>
 

@@ -239,12 +239,12 @@ function displayCategories(){
 
         let categoryCheckbox = document.createElement('input')
         categoryCheckbox.type = "checkbox"
-        categoryCheckbox.id = sortedCategories[i].id
+        categoryCheckbox.id = sortedCategories[i].term_id
         categoryCheckbox.classList.add("category-checkbox")
         categoryCheckbox.classList.add("checkbox")
         categoryCheckbox.dataset.parent = 0
         categoryCheckbox.dataset.name = sortedCategories[i].name
-        categoryCheckbox.dataset.id = sortedCategories[i].id
+        categoryCheckbox.dataset.id = sortedCategories[i].term_id
 
         checkboxContainer.appendChild(categoryCheckbox)
 
@@ -271,18 +271,18 @@ function displayCategories(){
 
                 let subcategoryCheckbox = document.createElement("input")
                 subcategoryCheckbox.type = "checkbox"
-                subcategoryCheckbox.id = subcategories[j].id
+                subcategoryCheckbox.id = subcategories[j].term_id
                 subcategoryCheckbox.classList.add("subcategory-checkbox")
                 subcategoryCheckbox.classList.add("checkbox")
                 subcategoryCheckbox.dataset.parent = subcategories[j].parent
                 subcategoryCheckbox.dataset.name = subcategories[j].name
-                subcategoryCheckbox.dataset.id = subcategories[j].id
+                subcategoryCheckbox.dataset.id = subcategories[j].term_id
 
                 subCheckboxContainer.appendChild(subcategoryCheckbox)
 
                 let subcategoryLabel = document.createElement("label")
                 subcategoryLabel.innerText = subcategories[j].name
-                subcategoryLabel.id = subcategories[j].id
+                subcategoryLabel.id = subcategories[j].term_id
                 subcategoryLabel.classList.add("checkbox-label")
                 subcategoryLabel.classList.add("inline")
 

@@ -212,7 +212,6 @@ function update_product($data, $product_id){
         // Set the short description
         if(isset($data['short_description'])) $product->set_short_description($data['short_description']);
     
-        // TODO: Check the undefined categories
         // Set the product categories
         if(isset($data['categories'])) $product->set_category_ids($data['categories']);
         

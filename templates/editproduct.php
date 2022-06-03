@@ -105,6 +105,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
             // Check if the product has a shipping class before sending it to javascript
             $product->get_shipping_class() && $javascriptProductData['shipping_class'] = $product->get_shipping_class();
+
         }
 
     }
@@ -129,20 +130,19 @@ else {
 
         if(isset($_POST['category']) && $_POST['category']){
 
-            // This array is for when a new category gets created
-            $categoryArray = array('name' => sanitize_title($_POST['category']));
+            $category = sanitize_title($_POST['category']);
 
-            // This adds the new category to the list of product categories
-            $data['name'] = $_POST['category'];
-
+            // Check if a parent category was specified
+            $categoryParent = 0;
             if(isset($_POST['parent-category']) && $_POST['parent-category']){
-                $categoryArray['parent'] = sanitize_title($_POST['parent-category']);
+                $categoryParent = sanitize_title($_POST['parent-category']);
             }
 
-        //    if($validCodes) {
-        //        $newCategory = json_decode($smt_smart_commerce_pro_createCategory($categoryArray), true);
-        //        if($newCategory["error"]) $error = $newCategory["message"];
-        //     };
+            // Add the category to wordpress
+            $new_category_id = wp_insert_term($category, 'product_cat', array(
+                'parent' => $categoryParent,
+                'slug' => $category
+            ));
         }
 
 
@@ -274,11 +274,12 @@ else {
 
 
         if(isset($_POST['product-categories']) && $_POST['product-categories']){
-            
-            $productCategories = explode("%", sanitize_text_field($_POST['product-categories']));
-            if(isset($newCategory)){
-                array_push($smt_smart_commerce_pro_productCategories, $newCategory['id']);
+            $productCategories = explode("%", wp_kses_post($_POST['product-categories']));
+
+            if($new_category_id){
+                array_push($productCategories, $new_category_id);
             }
+
             $productCategories = array_map(function($c){
                 return array('id' => sanitize_key($c));
             }, $productCategories);
@@ -290,7 +291,7 @@ else {
         if(isset($_POST['product-tags']) && $_POST['product-tags']){
             $productTags = explode("%", sanitize_text_field($_POST['product-tags']));
             $productTags = array_map(function($t){
-                return array('name' => sanitize_key($t));
+                return array('name' => $t);
             }, $productTags);
             $data['tags'] = $productTags;
         } else if(!$_POST['product-tags']){

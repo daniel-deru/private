@@ -33,9 +33,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
     $from_self = preg_match("/" . $add_page ."/", $previous_page);
     $from_edit_page = preg_match("/" . $edit_page ."/", $previous_page);
 
-    if($from_products || $from_self || $from_edit_page){
-        if($validCode){
-            
+    if($from_products || $from_self || $from_edit_page){            
             // Get all the categories
             $categories = array_map(function($category){
                 return $category->to_array();
@@ -53,11 +51,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
             // Get the shipping classes
             $shippingClasses = get_terms(array('taxonomy' => 'product_shipping_class', 'hide_empty' => false ));
-            if(count($shippingClasses) > 0) $shippingClasses = array_map(function($cls){ return $cls->to_array(); }, $shippingClasses);
-
-            
-        }
-        
+            if(count($shippingClasses) > 0) $shippingClasses = array_map(function($cls){ return $cls->to_array(); }, $shippingClasses);        
 
     }
     else {
@@ -265,7 +259,7 @@ else {
 </head>
 <body>
     <header>
-        <?php if(get_option("wp_smart_products_logo_url") !== null): ?>
+        <?php if(get_option("wp_smart_products_logo_url")): ?>
             <div>
                 <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>

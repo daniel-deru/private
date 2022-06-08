@@ -1,5 +1,6 @@
 :root {
-    --main-blue: transparent;
+    --main-blue: rgb(33, 117, 155);
+    /* --main-blue: transparent; */
 }
 
 * {
@@ -68,6 +69,7 @@ form > div {
 }
 
 label {
+    margin-bottom: 0px;
     display: inline-block;
     width: max-content;
     min-width: 150px;
@@ -101,10 +103,15 @@ select,
 input[type="text"],
 input[type="number"],
 textarea {
-    width: 100%;
-    border: none;
-    border-radius: 3px;
-    padding: 5px;
+    width: 100% !important;
+    max-width: 100%;
+    border: none !important;
+    border-radius: 3px !important;
+    background-color: white !important;
+    background: white !important;
+    background-image: none !important;
+    padding: 5px !important;
+    appearance: inherit !important;
 }
 
 select,
@@ -238,7 +245,7 @@ textarea:focus {
 }
 
 #product-settings .flex-container select {
-    width: 80%;
+    width: 80% !important;
 }
 
 #general > div {
@@ -256,7 +263,7 @@ textarea:focus {
 
 #general .flex-container-vertical select, 
 #general .flex-container-vertical input {
-    width: 80%;
+    width: 80% !important;
 } 
 
 #product-settings  {
@@ -344,7 +351,7 @@ textarea:focus {
 }
 
 #btn-save label {
-    color: white;
+    color: white !important;
 }
 
 .help {

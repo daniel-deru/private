@@ -5,7 +5,7 @@
 Plugin Name: WP Smart Commerce
 Plugin URI: https://smartmetatec.com/wpsmartcommerce
 Description: Save your precious time by letting your clients add and edit their Woocommerce products easily and hassle free without your help.
-Version: 1.0.0
+Version: 2.0.0
 Author: Smart Meta Technologies
 Author URI: https://smartmetatec.com
 
@@ -280,6 +280,26 @@ function smt_smart_commerce_pro_addLinks($links){
 
 add_filter('plugin_action_links_smart_commerce/smart_commerce.php', "smt_smart_commerce_pro_addLinks");
 
+function smt_smart_commerce_remove_all_styles() {
+    // global $wp_styles;
+    if (    
+            is_page( 'WP Smart Login' ) || 
+            is_page( 'WP Smart Products' ) //|| 
+            // is_page( 'WP Smart Add Product' ) || 
+            // is_page( 'WP Smart Edit Product' )
+        )
+        {
+            // wp_deregister_style('theme_stylesheet');
+            // wp_dequeue_style('theme_stylesheet');
+            // wp_deregister_style('auxin-base');
+            // wp_dequeue_style('auxin-base');
+            // wp_deregister_style('auxin-main');
+            // wp_dequeue_style('auxin-main');
+        }
+}
+
+// add_action( 'wp_print_styles', 'smt_smart_commerce_remove_all_styles', 100 );
+
 // Enqueue the scripts and styles
 function smt_smart_commerce_register_scripts(){
 
@@ -305,7 +325,7 @@ function smt_smart_commerce_register_scripts(){
 
 }
 
-add_action("wp_enqueue_scripts", "smt_smart_commerce_register_scripts");
+add_action("wp_enqueue_scripts", "smt_smart_commerce_register_scripts", 20);
 
 // Add the admin stylesheet
 function smt_smart_commerce_admin_style(){

@@ -36,19 +36,9 @@
         <div id="wp-smart-commerce-header-container">
             <img src="<?php echo esc_url(plugins_url("assets/SCColorLogo150X150.png", __FILE__)) ?>" alt="">
             <h1>WP Smart Commerce Dashboard</h1>
-            <?php echo get_site_url(null, "wp-smart-login") ?>
         </div>
         
         <form method="post" action="">
-            <div>
-                <label>Consumer Key</label>
-                <input type="text" name="wp_smart_products_consumer_key" value="<?php echo esc_html(get_option('wp_smart_products_consumer_key')) ?>" />
-            </div>
-
-            <div>
-                <label >Consumer Secret</label>
-                <input type="text" name="wp_smart_products_consumer_secret" value="<?php echo esc_html(get_option('wp_smart_products_consumer_secret')) ?>" />
-            </div>
 
             <div>
                 <label for="">Enter Logo URL</label>

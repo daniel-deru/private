@@ -6,7 +6,6 @@
 
 
 // Get the woocommerce api functions
-require "woocommerce-api.php";
 require  dirname(plugin_dir_path(__FILE__)) . "/includes/helpers.php";
 require dirname(plugin_dir_path(__FILE__)) . "/includes/products.php";
 // get the correct protocol
@@ -32,8 +31,6 @@ if(isset($_SERVER['HTTP_REFERER'])){
     $from_self = preg_match("/" . $edit_page ."/", $previous_page);
 
     if($from_products || $from_self){
-        if($validCodes){
-
             // Get the product id from the url
             $id = $_GET['id'];
 
@@ -44,6 +41,8 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
             // Get a WC_Product instance of the product using the product id
             if(isset($_GET['id'])) $product = new WC_Product($_GET['id']);
+
+            // show($product->get_name());
 
             // Get the product category ids
             $product_category_ids = $product->get_category_ids();
@@ -106,8 +105,6 @@ if(isset($_SERVER['HTTP_REFERER'])){
 
             // Check if the product has a shipping class before sending it to javascript
             $product->get_shipping_class() && $javascriptProductData['shipping_class'] = $product->get_shipping_class();
-
-        }
 
     }
     else {
@@ -308,6 +305,8 @@ else {
     $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_products_brand_color") : "#21759b";
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -318,9 +317,10 @@ else {
     <?php wp_head() ?>
     <title>Edit Product</title>
 </head>
+
 <body>
     <header>
-        <?php if(get_option("wp_smart_products_logo_url") !== null): ?>
+        <?php if(get_option("wp_smart_products_logo_url")): ?>
             <div>
                 <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
@@ -335,10 +335,22 @@ else {
 
         <form enctype="multipart/form-data" action="" method="post" id="addeditproduct-form">
 
+        <?php
+            // Get the product object since it's not available after the header
+            if(isset($_GET['id'])) $product = new WC_Product($_GET['id']); 
+        ?>
+ 
+
             <div id="title-price" class="flex-fields">
                 <!-- This is the name field input -->
                 <div>
                     <label for="product-name" class="label-block">Product Name</label>
+                    <?php
+                        // show("Product");
+                        // show($product); 
+                        // show("End");
+                    ?>
+
                     <input type="text" name="product-name" id="name" value="<?php echo esc_html($product->get_name()) ?>">
                 </div>
             </div>

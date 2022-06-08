@@ -19,6 +19,10 @@ header > * {
     margin: 1em;
 }
 
+header a:hover {
+    color: white;
+}
+
 header img {
     height: 100px;
 }
@@ -27,17 +31,19 @@ header select {
     font-size: 1em;
     outline: none;
     color: white;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 5px !important;
+    border-radius: 5px !important;
     background-color: transparent;
-    border: 2px solid white;
+    border: 2px solid white !important;
 }
 
 header input {
     font-size: 1em;
-    padding: 5px;
+    padding: 5px !important;
     border-radius: 5px;
-    border: 2px solid white;
+    border: 2px solid white !important;
+    background-color: white !important;
+    background: white !important;
 }
 
 header button {
@@ -122,6 +128,9 @@ header a {
 .product-container .title {
     font-weight: bolder;
     font-size: 1.2em;
+    text-overflow: '';
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .product-container ins {
@@ -130,11 +139,12 @@ header a {
 
 .product-container a {
     display: block;
-    margin-top: auto;
+    margin: auto;
+    margin-top: 2rem;
+    line-height: 2rem;
     width: 90%;
     font-family: sans-serif;
     font-size: 1.2em;
-    padding: 10px 16px;
     border-radius: 5px;
     border: none;
     background: var(--main-blue);

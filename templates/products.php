@@ -42,7 +42,7 @@ if(isset($_SERVER['HTTP_REFERER'])){
         }
 
         $wpproducts = get_products();
-        
+
         $categories = array_column(get_terms(['taxonomy' => 'product_cat', 'hide_empty' => false]), null, 'term_id');
         // show($categories['46']->to_array());
 
@@ -76,7 +76,7 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
 <body>
     <header>
         
-        <?php if(get_option("wp_smart_products_logo_url") !== null): ?>
+        <?php if(get_option("wp_smart_products_logo_url")): ?>
             <div>
                 <img src="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>"/>
             </div>
@@ -105,25 +105,24 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
     <section>
 
     </section>
-    <?php if($validCodes): ?>
         <main id="product-grid">
             <?php
             
-                    if(isset($wpproducts)){
-                        foreach($wpproducts as $product){
-                            // $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
-                            // $images = array_filter($product['attributes'], function($attr){ return $attr['name'] == "external_image"; });
-                            // $image = isset($product['images'][0]) ? $product['images'][0]['src'] : $images[0]['options'][0];
-                            $image = wp_get_attachment_url($product->get_image_id());
-                            $product_category_ids = $product->get_category_ids();
-                            $product_categories = "";
+                if(isset($wpproducts)){
+                    foreach($wpproducts as $product){
+                        // $categoryList = implode(" ", array_map(function ($category){ return $category['name'];}, $product['categories']));
+                        $image = wp_get_attachment_url($product->get_image_id());
 
-                            foreach($product_category_ids as $id){
-                                if(isset($categories[$id])) $product_categories .= $categories[strval($id)]->to_array()['name'] . " ";
-                            }
-                            // show($product_categories);
+                        $image = wp_get_attachment_url($product->get_image_id());
+                        if(!$image) $image = $product->get_attributes()['external_image']->get_options()[0];
 
-                            ?>
+                        $product_category_ids = $product->get_category_ids();
+                        $product_categories = "";
+
+                        foreach($product_category_ids as $id){
+                            if(isset($categories[$id])) $product_categories .= $categories[strval($id)]->to_array()['name'] . " ";
+                        }
+            ?>
                             
                             
                             <div class="product-container <?php //echo esc_attr($categoryList) ?>" data-name="<?php echo esc_attr($product->get_name()) ?>" data-price="<?php echo esc_attr($product->get_regular_price()) ?>">
@@ -143,22 +142,6 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
             
             ?>
         </main>
-        <!-- <div id="pagination">
-            <div>Showing page <?php //echo esc_html($page) ?> of 
-                <?php //echo esc_html($productsHeaders['x-wp-totalpages']) ?>
-            </div>
-                <ul id="page-list">
-                    <?php 
-                       // for($i = 1; $i <= $productsHeaders['x-wp-totalpages']; $i++){?>
-                            <li class="page">
-                                <a href="<?php //echo esc_url($products_page . "?id=" . $i) ?>"><?php //echo esc_html($i) ?></a>
-                            </li>
-                    <?php
-                       // }
-                    ?>
-                </ul>
-        </div> -->
-    <?php endif;?>
     <input type="hidden" value="<?php echo esc_html($color) ?>" id="brand-color">
     <?php wp_footer() ?>
 </body>

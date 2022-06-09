@@ -65,10 +65,10 @@
         </div>
 
         <section id="guide">
-            <div>
+            <!-- <div>
                 <h3>How to setup plugin</h3>
                 <ol>
-                    <li>In the Admin Dashboard go to: <b>WooCommerce > Settings > Advanced > <a href="<?php echo esc_url(admin_url("admin.php?page=wc-settings&tab=advanced&section=keys"))?>" target="_blank">REST API</a></b>.</li>
+                    <li>In the Admin Dashboard go to: <b>WooCommerce > Settings > Advanced > <a href="<?php //echo esc_url(admin_url("admin.php?page=wc-settings&tab=advanced&section=keys"))?>" target="_blank">REST API</a></b>.</li>
                     <li>Click on <b>Add Key</b>.</li>
                     <li>Enter a description for the key such as: WP Smart Commerce Integration.</li>
                     <li>Make sure the correct User is selected and set the Permissions to <b>Read/Write</b>.</li>
@@ -77,7 +77,7 @@
                     <li>In the <b>Smart Commerce Admin Dashboard</b> paste the keys in the correct fields as they are labelled.</li>
                     <li>Optionally enter your Logo URL and brand color and click Save.</li>
                 </ol>
-            </div>
+            </div> -->
             <div>
                 <h3>Create a User To Use The Plugin (Administrators already have access)</h3>
                 <ol>

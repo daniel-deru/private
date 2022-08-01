@@ -114,7 +114,12 @@ $color = get_option("wp_smart_products_brand_color") ? get_option("wp_smart_prod
                         $image = wp_get_attachment_url($product->get_image_id());
 
                         $image = wp_get_attachment_url($product->get_image_id());
-                        if(!$image) $image = $product->get_attributes()['external_image']->get_options()[0];
+                        if(!$image) {
+                            $external_image = $product->get_attributes();
+                            if(isset($external_image['external_image'])){
+                                $image = $product->get_attributes()['external_image']->get_options()[0];
+                            }
+                        }
 
                         $product_category_ids = $product->get_category_ids();
                         $product_categories = "";

@@ -6,7 +6,7 @@ Plugin Name: WP Smart Commerce
 Slug: wp-smart-commerce
 Plugin URI: https://smartmetatec.com/wpsmartcommerce
 Description: Save your precious time by letting your clients add and edit their Woocommerce products easily and hassle free without your help.
-Version: 3.0.1
+Version: 3.0.2
 Author: Smart Meta Technologies
 Author URI: https://smartmetatec.com
 
@@ -230,9 +230,9 @@ function smt_smart_commerce_pro_PageContent() {
     require_once "adminPage.php";
 }
 
-// add_action("wp_login", "smt_smart_commerce_pro_checkUser");
-// register_activation_hook(__FILE__, "smt_smart_commerce_pro_checkUser");
-// wp_schedule_event(time(), 'hourly', 'smt_smart_commerce_pro_checkUser');
+add_action("wp_login", "smt_smart_commerce_pro_checkUser");
+register_activation_hook(__FILE__, "smt_smart_commerce_pro_checkUser");
+wp_schedule_event(time(), 'hourly', 'smt_smart_commerce_pro_checkUser');
 
 function smt_smart_commerce_pro_checkUser(){
 

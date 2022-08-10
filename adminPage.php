@@ -65,23 +65,10 @@
         </div>
 
         <section id="guide">
-            <!-- <div>
-                <h3>How to setup plugin</h3>
-                <ol>
-                    <li>In the Admin Dashboard go to: <b>WooCommerce > Settings > Advanced > <a href="<?php //echo esc_url(admin_url("admin.php?page=wc-settings&tab=advanced&section=keys"))?>" target="_blank">REST API</a></b>.</li>
-                    <li>Click on <b>Add Key</b>.</li>
-                    <li>Enter a description for the key such as: WP Smart Commerce Integration.</li>
-                    <li>Make sure the correct User is selected and set the Permissions to <b>Read/Write</b>.</li>
-                    <li>Click on <b>Generate Key</b>.</li>
-                    <li>Copy both the <b>Consumer Key</b> and <b>Consumer Secret</b> and put them somewhere safe.</li>
-                    <li>In the <b>Smart Commerce Admin Dashboard</b> paste the keys in the correct fields as they are labelled.</li>
-                    <li>Optionally enter your Logo URL and brand color and click Save.</li>
-                </ol>
-            </div> -->
             <div>
                 <h3>Create a User To Use The Plugin (Administrators already have access)</h3>
                 <ol>
-                    <li>Go to Users and Click on <b> <a href="<?php echo esc_url(admin_url("ser-new.php")) ?>" target="_blank">Add New</a></b>.</li>
+                    <li>Go to Users and Click on <b> <a href="<?php echo esc_url(admin_url("user-new.php")) ?>" target="_blank">Add New</a></b>.</li>
                     <li>Enter the <b>Username</b> and <b>Email</b> as well as any other optional fields.</li>
                     <li>Click on <b>Generate password</b> or set your own.</li>
                     <li>Under <b>Role</b> select the <b>Product Manager</b> role. (Only Product Managers and Administrators can use the plugin).</li>

@@ -6,7 +6,7 @@ Plugin Name: WP Smart Commerce
 Slug: wp-smart-commerce
 Plugin URI: https://smartmetatec.com/wpsmartcommerce
 Description: Save your precious time by letting your clients add and edit their Woocommerce products easily and hassle free without your help.
-Version: 3.0.2
+Version: 3.0.3
 Author: Smart Meta Technologies
 Author URI: https://smartmetatec.com
 
@@ -191,6 +191,8 @@ register_deactivation_hook( __FILE__, 'smt_smart_commerce_pro_delete_products' )
 register_deactivation_hook( __FILE__, 'smt_smart_commerce_pro_delete_addproduct' );
 register_deactivation_hook( __FILE__, 'smt_smart_commerce_pro_delete_editproduct' );
 register_deactivation_hook( __FILE__, 'smt_smart_commerce_pro_delete_custom_user_role' );
+register_deactivation_hook(__FILE__, 'smt_smart_commerce_remove_options' );
+
 
 // these custom filters create the custom page templates and assigns them to the correct page
 add_filter( 'page_template', 'smt_smart_commerce_pro_login_page_template' );
@@ -222,7 +224,17 @@ function smt_smart_commerce_pro_RegisterSettings() {
     add_option("wp_smart_products_consumer_secret", "", "", "yes");
     add_option("wp_smart_products_logo_url", "", "", "yes");
     add_option("wp_smart_products_brand_color", "", "", "yes");
+    add_option("wp_smart_products_registered", false);
 
+}
+
+function smt_smart_commerce_remove_options(){
+    
+    delete_option("wp_smart_products_consumer_key", "", "", "yes");
+    delete_option("wp_smart_products_consumer_secret", "", "", "yes");
+    delete_option("wp_smart_products_logo_url", "", "", "yes");
+    delete_option("wp_smart_products_brand_color", "", "", "yes");
+    delete_option("wp_smart_products_registered", false);
 }
 
 function smt_smart_commerce_pro_PageContent() {

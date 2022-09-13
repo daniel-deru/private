@@ -3,6 +3,8 @@
     if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') $link = 'https';
     $link = sanitize_url($link . "://" . $_SERVER['HTTP_HOST']);
 
+    $registered = get_option("wp_smart_products_registered");
+
 ?>
 
 <?php
@@ -37,47 +39,45 @@
             <img src="<?php echo esc_url(plugins_url("assets/SCColorLogo150X150.png", __FILE__)) ?>" alt="">
             <h1>WP Smart Commerce Dashboard</h1>
         </div>
-        
-        <form method="post" action="">
+        <?php if(!$registered): ?>
+            <?php echo include(dirname(__FILE__) . "/adminform.php") ?>
+        <?php else: ?>
 
-            <div>
-                <label for="">Enter Logo URL</label>
-                <input type="text" name="wp_smart_products_logo_url" value="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>">
-            </div>
-
-            <div>
-                <label for="wp_smart_products_color">Enter Brand Color</label>
-                <?php // This input is placed in a div because of the color pick eye dropper chrome extension ?>
+            <form method="post" action="">
                 <div>
-                    <input type="color" name="wp_smart_products_brand_color" id="" value="<?php echo get_option("wp_smart_products_brand_color") ? esc_html(get_option("wp_smart_products_brand_color")) : esc_html("#21759b") ?>">
+                    <label for="">Enter Logo URL</label>
+                    <input type="text" name="wp_smart_products_logo_url" value="<?php echo esc_url(get_option("wp_smart_products_logo_url")) ?>">
                 </div>
-                
-            </div>
 
-            <div class="submit">
-                <input type="submit" class="button-primary" value="Save" name="save-settings"/>
-            </div>
+                <div>
+                    <label for="wp_smart_products_color">Enter Brand Color</label>
+                    <?php // This input is placed in a div because of the color pick eye dropper chrome extension ?>
+                    <div>
+                        <input type="color" name="wp_smart_products_brand_color" id="" value="<?php echo get_option("wp_smart_products_brand_color") ? esc_html(get_option("wp_smart_products_brand_color")) : esc_html("#21759b") ?>">
+                    </div>
+                    
+                </div>
 
-        </form>
+                <div class="submit">
+                    <input type="submit" class="button-primary" value="Save" name="save-settings"/>
+                </div>
+            </form>
 
-        <div>
-            <a href="<?php echo esc_url(get_site_url(null, "wp-smart-login")) ?>" target="_blank">Go To Products</a>
-        </div>
-
-        <section id="guide">
             <div>
-                <h3>Create a User To Use The Plugin (Administrators already have access)</h3>
-                <ol>
-                    <li>Go to Users and Click on <b> <a href="<?php echo esc_url(admin_url("user-new.php")) ?>" target="_blank">Add New</a></b>.</li>
-                    <li>Enter the <b>Username</b> and <b>Email</b> as well as any other optional fields.</li>
-                    <li>Click on <b>Generate password</b> or set your own.</li>
-                    <li>Under <b>Role</b> select the <b>Product Manager</b> role. (Only Product Managers and Administrators can use the plugin).</li>
-                    <li>Click on <b>Add New User</b>.</li>
-                </ol>
+                <a href="<?php echo esc_url(get_site_url(null, "wp-smart-login")) ?>" target="_blank">Go To Products</a>
             </div>
 
-
-            
-        </section>
- 
+            <section id="guide">
+                <div>
+                    <h3>Create a User To Use The Plugin (Administrators already have access)</h3>
+                    <ol>
+                        <li>Go to Users and Click on <b> <a href="<?php echo esc_url(admin_url("user-new.php")) ?>" target="_blank">Add New</a></b>.</li>
+                        <li>Enter the <b>Username</b> and <b>Email</b> as well as any other optional fields.</li>
+                        <li>Click on <b>Generate password</b> or set your own.</li>
+                        <li>Under <b>Role</b> select the <b>Product Manager</b> role. (Only Product Managers and Administrators can use the plugin).</li>
+                        <li>Click on <b>Add New User</b>.</li>
+                    </ol>
+                </div>   
+            </section>
+        <?php endif; ?>
     </div>

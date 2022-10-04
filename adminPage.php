@@ -39,10 +39,6 @@
             <img src="<?php echo esc_url(plugins_url("assets/SCColorLogo150X150.png", __FILE__)) ?>" alt="">
             <h1>WP Smart Commerce Dashboard</h1>
         </div>
-        <?php if(!$registered): ?>
-            <?php echo include(dirname(__FILE__) . "/adminform.php") ?>
-        <?php else: ?>
-
             <form method="post" action="">
                 <div>
                     <label for="">Enter Logo URL</label>
@@ -77,7 +73,6 @@
                         <li>Under <b>Role</b> select the <b>Product Manager</b> role. (Only Product Managers and Administrators can use the plugin).</li>
                         <li>Click on <b>Add New User</b>.</li>
                     </ol>
-                </div>   
+                </div> 
             </section>
-        <?php endif; ?>
     </div>

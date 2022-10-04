@@ -264,7 +264,13 @@ textarea:focus {
 #general .flex-container-vertical select, 
 #general .flex-container-vertical input {
     width: 80% !important;
-} 
+}
+
+#general .checkbox-container {
+    display: flex;
+    padding-top: 20px;
+    justify-content: flex-start;
+}
 
 #product-settings  {
     padding: 20px;
@@ -299,7 +305,7 @@ textarea:focus {
 }
 
 #addeditproduct-form button:not(#product-description button, #product-short-description button) {
-    margin: 0px 10px;
+    margin: 10px 0px;
     padding: 5px 30px;
     color: white;
     background-color: var(--main-blue);

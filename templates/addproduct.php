@@ -302,40 +302,6 @@ else {
                 </textarea> -->
             </div>
 
-            <!-- Product Data -->
-            <div id="product-settings" class="flex-fields">
-                <label class="label-block">
-                    Product Data
-                    <span class="help">
-                        <i class="fa-regular fa-circle-question"></i>
-                        <div>Set the product type, if the product is downloadable or virtual (i.e. Not a physical product)</div>
-                    </span>
-                </label>
-                <div class="flex-container">
-                    <div >
-                        <select name="product-type" id="product-type">
-                            <option value="" selected disabled>Product Type</option>
-                            <option value="simple">Simple Product</option>
-                            <option value="grouped">Grouped Product</option>
-                            <option value="external">External/Affiliate Product</option>
-                            <option value="variable">Variable Product</option>
-                        </select>
-                    </div>
-        
-                    <div>
-                        <input type="checkbox" name="product-virtual" id="virtual">
-                        <label for="virtual" class="inline">Virtual</label>
-                    </div>
-        
-                    <div>
-                        <input type="checkbox" name="product-downloadable" id="downloadable">
-                        <label for="downloadable" class="inline">Downloadable</label>
-                    </div>
-
-
-                </div>
-            </div>
-
             <!-- General -->
             <div id="general">
                 <label class="label-block">General</label>
@@ -362,6 +328,17 @@ else {
                             
                             ?>
                         </select>
+                    </div>
+                </div>
+                <div class="checkbox-container">
+                    <div>
+                        <input type="checkbox" name="product-virtual" id="virtual">
+                        <label for="virtual" class="inline">Virtual</label>
+                    </div>
+        
+                    <div>
+                        <input type="checkbox" name="product-downloadable" id="downloadable">
+                        <label for="downloadable" class="inline">Downloadable</label>
                     </div>
                 </div>
 
@@ -502,8 +479,6 @@ else {
                 </div>
 
         </div>
-
-        
 
             <div id="btn-save">
                 <input type="submit" id="save-btn" value="Save" name="save">
